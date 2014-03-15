@@ -13,7 +13,27 @@ At the moment, "svmetaextract" is known to work properly (and does not require D
 svmetaextract
 -------------
 
-This extension is capable of extracting IPTC and EXIF with native PHP data and takes advantage of two optional external
-binaries :program:`exiftools` and :program:`exiftags`.
+This extension is capable of extracting IPTC and EXIF with native PHP data and takes advantage of third optional external
+binaries :program:`exiftools`, :program:`exiftags` and :program:`pdfinfo`.
+
+You may check that the extraction service is properly configured by opening module System > Reports > Installed Services
+and check section "Service type: metaExtract". Everything service you want to work should be "green".
 
 Additional information: http://typo3.org/extensions/repository/view/svmetaextract
+
+
+Implemented
+^^^^^^^^^^^
+
+- tx_svmetaextract_sv1 (IPTC metadata with PHP solely)
+- tx_svmetaextract_sv2 (EXIF metadata with PHP solely)
+- tx_svmetaextract_sv3 (EXIF metadata using external tool :program:`exiftags`)
+- tx_svmetaextract_sv5 (PDF metadata using external tool :program:`pdfinfo`)
+
+
+How to help
+-----------
+
+Test and provide JSON mapping configuration files for other metadata extraction services.
+
+Thanks!
