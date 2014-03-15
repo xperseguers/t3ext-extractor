@@ -20,6 +20,10 @@
 		"DATA": "fields|meta|EXIF|ImageWidth"
 	},
 	{
+		"FAL":  "unit",
+		"DATA": "static:px"
+	},
+	{
 		"FAL":  "latitude",
 		"DATA": "fields|meta|EXIF|Latitude->\\Causal\\Extractor\\Utility\\Gps::toDecimal"
 	},

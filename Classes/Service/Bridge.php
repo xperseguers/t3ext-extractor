@@ -242,7 +242,11 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 				$keys = explode('|', $compoundKey);
 				$value = $data;
 				foreach ($keys as $key) {
-					$value = isset($value[$key]) ? $value[$key] : NULL;
+					if (substr($key, 0, 7) === 'static:') {
+						$value = substr($key, 7);
+					} else {
+						$value = isset($value[$key]) ? $value[$key] : NULL;
+					}
 					if ($value === NULL) {
 						break;
 					}

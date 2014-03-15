@@ -1,0 +1,49 @@
+[
+	{
+		"FAL":  "content_creation_date",
+		"DATA": "fields|date_cr"
+	},
+	{
+		"FAL":  "content_modification_date",
+		"DATA": "fields|date_mod"
+	},
+	{
+		"FAL":  "creator",
+		"DATA": "fields|creator"
+	},
+	{
+		"FAL":  "creator_tool",
+		"DATA": "fields|file_creator"
+	},
+	{
+		"FAL":  "description",
+		"DATA": "fields|description"
+	},
+	{
+		"FAL":  "height",
+		"DATA": "fields|height"
+	},
+	{
+		"FAL":  "width",
+		"DATA": "fields|width"
+	},
+	{
+		"FAL":  "unit",
+		"DATA": [
+			"fields|height_unit",
+			"fields|width_unit"
+		]
+	},
+	{
+		"FAL":  "keywords",
+		"DATA": "fields|keywords"
+	},
+	{
+		"FAL":  "pages",
+		"DATA": "fields|pages"
+	},
+	{
+		"FAL":  "title",
+		"DATA": "fields|title"
+	}
+]
