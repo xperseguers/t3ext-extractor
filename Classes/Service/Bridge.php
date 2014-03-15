@@ -48,6 +48,11 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 	static protected $serviceSubTypes = array();
 
 	/**
+	 * @var string
+	 */
+	protected $extKey = 'extractor';
+
+	/**
 	 * Returns an array of supported file types
 	 * An empty array indicates all file types
 	 *
@@ -121,48 +126,12 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 	public function extractMetaData(Resource\File $file, array $previousExtractedData = array()) {
 		$serviceSubTypes = $this->findServiceSubTypesByExtension($file->getProperty('extension'));
 
-		$falMapping = array(
-			'caption' => '',
-			'color_space' => 'color_space,EXIF_ColorSpaceInformation',
-			'content_creation_date' => 'date_cr|1,date_cr|0',
-			'content_modification_date' => 'date_mod',
-			'creator' => 'EXIF_CameraSoftware,creator',
-			'creator_tool' => 'file_creator|0,EXIF_CameraModel',
-			'description' => 'IPTC_caption,description',
-			'duration' => '',
-			'height' => 'EXIF_ImageHeight',
-			'keywords' => 'IPTC_keywords,keywords',
-			'language' => '',
-			'latitude' => 'EXIF_Latitude->gpsToDecimal',
-			'location_city' => 'IPTC_city,loc_city',
-			'location_country' => 'IPTC_country,IPTC_country_code,loc_country',
-			'location_region' => 'IPTC_state',
-			'longitude' => 'EXIF_Longitude->gpsToDecimal',
-			'note' => '',
-			'pages' => '',
-			'publisher' => 'EXIF_Photographer,publisher',
-			'ranking' => '',
-			'source' => 'IPTC_source',
-			'status' => '',
-			'title' => 'IPTC_headline,title',
-			'unit' => '',
-			'width' => 'EXIF_ImageWidth',
-		);
-
 		$metadata = array();
 		foreach ($serviceSubTypes as $serviceSubType) {
 			$data = $this->getMetadata($file, $serviceSubType);
-			foreach ($falMapping as $key => $mapping) {
-				$dataMapping = explode(',', $mapping);
-				if (empty($metadata[$key])) {
-					foreach ($dataMapping as $dataKey) {
-						// TODO: handle subkeys and post-processing (GPS to decimal)
-						if (!empty($data[$dataKey])) {
-							$metadata[$key] = $data[$dataKey];
-						}
-					}
-				}
-			}
+
+			// Existing data has precedence over new information, due to service's precedence
+			$metadata = array_merge($data, $metadata);
 		}
 
 		return $metadata;
@@ -188,7 +157,7 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 		unset($service);
 
 		if (GeneralUtility::inList('jpg,jpeg,tif,tiff', $extension)) {
-			$alternativeServiceSubType = array('image:exif', 'image:iptc');
+			$alternativeServiceSubType = array('image:iptc', 'image:exif');
 			foreach ($alternativeServiceSubType as $alternativeServiceSubType) {
 				$service = GeneralUtility::makeInstanceService('metaExtract', $alternativeServiceSubType);
 				if (is_object($service)) {
@@ -213,48 +182,86 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 		$data = array();
 		$serviceChain = '';
 
+		$pathConfiguration = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Configuration/Services/';
+
 		/** @var \TYPO3\CMS\Core\Service\AbstractService $serviceObj */
 		while (is_object($serviceObj = GeneralUtility::makeInstanceService('metaExtract', $serviceSubType, $serviceChain))) {
 			$serviceChain .= ',' . $serviceObj->getServiceKey();
 
-			$storageConfiguration = $file->getStorage()->getConfiguration();
-			$fileName = $storageConfiguration['pathType'] === 'relative' ? PATH_site : '';
-			$fileName .= rtrim($storageConfiguration['basePath'], '/') . $file->getIdentifier();
+			$mappingFilename = $pathConfiguration . $serviceObj->getServiceKey() . '/' . str_replace(':', '_', $serviceSubType) . '.json';
+			if (!is_file($mappingFilename)) {
+				// Try a default mapping
+				$mappingFilename = $pathConfiguration . $serviceObj->getServiceKey() . '/default.json';
+			}
+			if (!is_file($mappingFilename)) {
+				continue;
+			}
 
+			$dataMapping = json_decode(file_get_contents($mappingFilename), TRUE);
+			if (!is_array($dataMapping)) {
+				continue;
+			}
+
+			$fileName = $file->getForLocalProcessing(FALSE);
 			$serviceObj->setInputFile($fileName, $file->getProperty('extension'));
+
 			if ($serviceObj->process()) {
 				$output = $serviceObj->getOutput();
 				if (is_array($output)) {
+					$output = $this->remapServiceOutput($output, $dataMapping);
+
 					// Existing data has precedence over new information, due to service's precedence
 					$data = array_merge_recursive($output, $data);
 				}
 			}
 		}
 
-		$data = $this->normalizeMetadata($data);
 		return $data;
 	}
 
 	/**
-	 * Noramlizes the metadata.
+	 * Remaps $data coming from a service to a FAL-compliant array.
 	 *
 	 * @param array $data
+	 * @param array $mapping
 	 * @return array
 	 */
-	protected function normalizeMetadata(array $data) {
-		if (isset($data['fields'])) {
-			$data = array_merge_recursive($data, $data['fields']);
-			unset($data['fields']);
-		}
-		if (isset($data['meta'])) {
-			foreach ($data['meta'] as $type => $info) {
-				foreach ($info as $key => $value) {
-					$data[$type . '_' . $key] = $value;
+	protected function remapServiceOutput(array $data, array $mapping) {
+		$output = array();
+
+		foreach ($mapping as $m) {
+			$falKey = $m['FAL'];
+			$alternativeKeys = $m['DATA'];
+			if (!is_array($alternativeKeys)) {
+				$alternativeKeys = array($alternativeKeys);
+			}
+
+			$value = NULL;
+			foreach ($alternativeKeys as $dataKey) {
+				list($compoundKey, $processor) = explode('->', $dataKey);
+				$keys = explode('|', $compoundKey);
+				$value = $data;
+				foreach ($keys as $key) {
+					$value = isset($value[$key]) ? $value[$key] : NULL;
+					if ($value === NULL) {
+						break;
+					}
+				}
+				if (isset($processor)) {
+					$value = call_user_func($processor, $value);
+				}
+				if ($value !== NULL) {
+					// Do not try any further alternative key, we have a value
+					break;
 				}
 			}
-			unset($data['meta']);
+
+			if ($value !== NULL) {
+				$output[$falKey] = $value;
+			}
 		}
-		return $data;
+
+		return $output;
 	}
 
 }
