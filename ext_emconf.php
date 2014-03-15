@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'TYPO3 Bridge Metadata Extractor for FAL',
-	'description' => 'Provides a bridge between TYPO3 metadata extraction services and FAL extractors. Lets you use extensions such as "svmetaextract" or "tika" with FAL. Will automatically populate EXIF / IPTC and other file metadata extracted from images, videos, sounds or standard files (PDF, DOC, ...) while uploading them to your TYPO3 website',
+	'description' => 'Provides a bridge between TYPO3 metadata extraction services and FAL extractors. Lets you use extensions such as "svmetaextract" or "tika" with FAL. Will automatically populate EXIF / IPTC and other file metadata extracted from images, videos, sounds or standard files (PDF, DOC, ...) by running the FAL indexer scheduler task.',
 	'category' => 'services',
 	'author' => 'Xavier Perseguers (Causal)',
 	'author_company' => 'Causal Sàrl',
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
-	'version' => '0.0.1-dev',
+	'version' => '0.1.0',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.3-5.5.99',
@@ -38,7 +38,6 @@ $EM_CONF[$_EXTKEY] = array(
 		'conflicts' => array(
 		),
 		'suggests' => array(
-			'restdoc' => '1.3.0-0.0.0',
 		),
 	),
 	'_md5_values_when_last_written' => '',
