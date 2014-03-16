@@ -53,6 +53,19 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 	protected $extKey = 'extractor';
 
 	/**
+	 * @var bool
+	 */
+	protected $debug;
+
+	/**
+	 * Default constructor.
+	 */
+	public function __construct() {
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+		$this->debug = (isset($configuration['debug']) && (bool)$configuration['debug']);
+	}
+
+	/**
 	 * Returns an array of supported file types
 	 * An empty array indicates all file types
 	 *
@@ -208,6 +221,9 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 			if ($serviceObj->process()) {
 				$output = $serviceObj->getOutput();
 				if (is_array($output)) {
+					if ($this->debug) {
+						$this->debugServiceOutput($serviceObj->getServiceKey(), $serviceSubType, $fileName, $output);
+					}
 					$output = $this->remapServiceOutput($output, $dataMapping);
 
 					// Existing data has precedence over new information, due to service's precedence
@@ -260,12 +276,36 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 				}
 			}
 
-			if ($value !== NULL) {
+			if ($value !== NULL && $value !== '') {
 				$output[$falKey] = $value;
 			}
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Debugs the output of a given service.
+	 *
+	 * @param string $serviceKey
+	 * @param string $serviceSubType
+	 * @param string $fileName
+	 * @param array $output
+	 * @return void
+	 */
+	protected function debugServiceOutput($serviceKey, $serviceSubType, $fileName, array $output) {
+		$logPath = GeneralUtility::getFileAbsFileName('typo3temp/tx_extractor/');
+		GeneralUtility::mkdir_deep($logPath);
+		$logFilename = date('Ymd-His-') . GeneralUtility::shortMD5($fileName) . '-' . GeneralUtility::shortMD5($serviceKey . $serviceSubType) . '.log';
+
+		$content = array();
+		$content[] = 'File:    ' . $fileName;
+		$content[] = 'Service: ' . $serviceKey;
+		$content[] = 'Subtype: ' . $serviceSubType;
+		$content[] = 'Output:';
+		$content[] = var_export($output, TRUE);
+
+		@file_put_contents($logPath . $logFilename, implode(LF, $content));
 	}
 
 }

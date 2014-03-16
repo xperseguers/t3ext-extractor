@@ -1,0 +1,2 @@
+# cat=basic//10; type=boolean; label=Debug output of invoked services: If ticked, raw output of the metadata extraction services will be logged to directory typo3temp/tx_extractor/ and let you figure out if some mapping needs rework
+debug = 0
