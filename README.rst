@@ -31,6 +31,7 @@ Implemented
 - tx_svmetaextract_sv3 (EXIF metadata using external tool :program:`exiftags`)
 - tx_svmetaextract_sv4 (EXIF/IPTC/XMP metadata using external tool :program:`exiftools`)
 - tx_svmetaextract_sv5 (PDF metadata using external tool :program:`pdfinfo`)
+- tx_svmetaextract_sv6 (XMP metadata with PHP solely)
 
 
 How to help

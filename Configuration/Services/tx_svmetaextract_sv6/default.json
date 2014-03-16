@@ -1,0 +1,66 @@
+[
+	{
+		"FAL":  "content_creation_date",
+		"DATA": "fields|date_cr"
+	},
+	{
+		"FAL":  "content_modification_date",
+		"DATA": "fields|date_mod"
+	},
+	{
+		"FAL":  "creator",
+		"DATA": "fields|creator"
+	},
+	{
+		"FAL":  "creator_tool",
+		"DATA": "fields|file_creator"
+	},
+	{
+		"FAL":  "description",
+		"DATA": "fields|description"
+	},
+	{
+		"FAL":  "alternative",
+		"DATA": "fields|instructions"
+	},
+	{
+		"FAL":  "keywords",
+		"DATA": "fields|keywords"
+	},
+	{
+		"FAL":  "location_city",
+		"DATA": "fields|meta|xmp|photoshop:City"
+	},
+	{
+		"FAL":  "location_country",
+		"DATA": [
+			"fields|meta|xmp|photoshop:Country",
+			"fields|meta|xmp|Iptc4xmlCore:CountryCode",
+			"fields|loc_country"
+		]
+	},
+	{
+		"FAL":  "location_region",
+		"DATA": "fields|meta|xmp|photoshop:State"
+	},
+	{
+		"FAL":  "note",
+		"DATA": "fields|copyright"
+	},
+	{
+		"FAL":  "publisher",
+		"DATA": "fields|meta|xmp|photoshop:Credit"
+	},
+	{
+		"FAL":  "ranking",
+		"DATA": "fields|meta|xmp|xmp:Rating"
+	},
+	{
+		"FAL":  "source",
+		"DATA": "fields|meta|xmp|photoshop:Source"
+	},
+	{
+		"FAL":  "title",
+		"DATA": "fields|title"
+	}
+]
