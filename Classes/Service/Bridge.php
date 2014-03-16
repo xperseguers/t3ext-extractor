@@ -256,11 +256,13 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 			foreach ($alternativeKeys as $dataKey) {
 				list($compoundKey, $processor) = explode('->', $dataKey);
 				$keys = explode('|', $compoundKey);
+				$parentValue = NULL;
 				$value = $data;
 				foreach ($keys as $key) {
 					if (substr($key, 0, 7) === 'static:') {
 						$value = substr($key, 7);
 					} else {
+						$parentValue = $value;
 						$value = isset($value[$key]) ? $value[$key] : NULL;
 					}
 					if ($value === NULL) {
@@ -268,7 +270,17 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 					}
 				}
 				if (isset($processor)) {
-					$value = call_user_func($processor, $value);
+					if (preg_match('/^([^(]+)(\((.*)\))?$/', $processor, $matches)) {
+						$processor = $matches[1];
+						$parameters = array($value);
+						if (isset($matches[3])) {
+							$fields = GeneralUtility::trimExplode(',', $matches[3]);
+							foreach ($fields as $field) {
+								$parameters[] = $parentValue[$field];
+							}
+						}
+						$value = call_user_func_array($processor, $parameters);
+					}
 				}
 				if ($value !== NULL) {
 					// Do not try any further alternative key, we have a value

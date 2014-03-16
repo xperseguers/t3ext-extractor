@@ -28,7 +28,7 @@ namespace Causal\Extractor\Utility;
  ***************************************************************/
 
 /**
- * GPS utility class.
+ * Date/Time utility class.
  *
  * @category    Utility
  * @package     TYPO3
@@ -36,44 +36,16 @@ namespace Causal\Extractor\Utility;
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Gps {
+class DateTime {
 
 	/**
-	 * Converts a latitude/longitude from a string representation to
-	 * its decimal value.
+	 * Converts a date/time into its Unix timestamp.
 	 *
-	 * @param string $str DDD MM.MMMM
-	 * @param string $reference ('N', 'S', 'E', 'W')
-	 * @return string DDD.DDDD
+	 * @param string $str
+	 * @return integer
 	 */
-	static public function toDecimal($str, $reference = '') {
-		$decimal = NULL;
-		if ($reference !== '') {
-			$str = $reference . ' ' . $str;
-		}
-
-		if (preg_match('/^([NSEW]) (\d+)° (\d+.\d+)\'?$/', $str, $matches)) {
-			$decimal = (int)$matches[2];
-			$minutes = floor($matches[3]);
-			$seconds = 60 * (float)($matches[3] - $minutes);
-			$decimal += $minutes / 60;
-			$decimal += $seconds / 3600;
-
-			$reference = $matches[1];
-			$decimal *= $reference === 'N' || $reference === 'E' ? 1 : -1;
-
-		} elseif (preg_match('/^([NSEW]) (\d+\.\d+)° (\d+\.\d+)\' (\d+\.\d+)"$/', $str, $matches)) {
-			$decimal = (float)$matches[2];
-			$minutes = (float)$matches[3];
-			$seconds = (float)$matches[4];
-			$decimal += $minutes / 60;
-			$decimal += $seconds / 3600;
-
-			$reference = $matches[1];
-			$decimal *= $reference === 'N' || $reference === 'E' ? 1 : -1;
-		}
-
-		return $decimal;
+	static public function timestamp($str) {
+		return strtotime($str);
 	}
 
 }
