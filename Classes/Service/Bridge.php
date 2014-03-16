@@ -227,7 +227,7 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 					$output = $this->remapServiceOutput($output, $dataMapping);
 
 					// Existing data has precedence over new information, due to service's precedence
-					$data = array_merge_recursive($output, $data);
+					$data = array_merge($output, $data);
 				}
 			}
 		}
