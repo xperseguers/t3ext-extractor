@@ -1,2 +1,5 @@
-# cat=basic//10; type=boolean; label=Debug output of invoked services: If ticked, raw output of the metadata extraction services will be logged to directory typo3temp/tx_extractor/ and let you figure out if some mapping needs rework
+# cat=basic//10; type=boolean; label=Extract metadata after upload: If ticked, the metadata extraction will be invoked after uploading a file. You will not have to wait until the corresponding FAL scheduler task is run. BEWARE! Upload workflow will be slown-down and may put additional stress to your server.
+auto_extract = 0
+
+# cat=basic//20; type=boolean; label=Debug output of invoked services: If ticked, raw output of the metadata extraction services will be logged to directory typo3temp/tx_extractor/ and let you figure out if some mapping needs rework.
 debug = 0
