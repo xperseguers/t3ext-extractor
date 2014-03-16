@@ -55,6 +55,7 @@ Implemented
 ^^^^^^^^^^^
 
 - metadata extraction for image files
+- metadata extraction for common document types
 
 
 How to help

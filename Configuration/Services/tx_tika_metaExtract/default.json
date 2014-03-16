@@ -16,7 +16,11 @@
 	},
 	{
 		"FAL":  "content_modification_date",
-		"DATA": "Date/Time->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+		"DATA": [
+			"Date/Time->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
+			"Last-Modified->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
+			"Last-Save-Date->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+		]
 	},
 	{
 		"FAL":  "creator",
@@ -24,11 +28,17 @@
 	},
 	{
 		"FAL":  "creator_tool",
-		"DATA": "fields|file_creator"
+		"DATA": [
+			"fields|file_creator",
+			"producer"
+		]
 	},
 	{
 		"FAL":  "description",
-		"DATA": "Image Description"
+		"DATA": [
+			"Image Description",
+			"subject"
+		]
 	},
 	{
 		"FAL":  "alternative",
@@ -68,7 +78,8 @@
 		"FAL":  "note",
 		"DATA": [
 			"fields|meta|Copyright Notice",
-			"fields|meta|Credit"
+			"fields|meta|Credit",
+			"Comments"
 		]
 	},
 	{
@@ -80,6 +91,10 @@
 		"DATA": "GPS Longitude->\\Causal\\Extractor\\Utility\\Gps::toDecimal(GPS Longitude Ref)"
 	},
 	{
+		"FAL":  "pages",
+		"DATA": "xmpTPg->\\Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd"
+	},
+	{
 		"FAL":  "publisher",
 		"DATA": [
 			"fields|meta|Artist",
@@ -88,7 +103,11 @@
 	},
 	{
 		"FAL":  "source",
-		"DATA": "Source"
+		"DATA": [
+			"Source",
+			"Manager",
+			"Company"
+		]
 	},
 	{
 		"FAL":  "title",
