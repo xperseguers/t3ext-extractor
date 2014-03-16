@@ -1,5 +1,5 @@
-TYPO3 Bridge Metadata Extractor for FAL
-=======================================
+Bridge between Metadata Services and FAL Extractors
+===================================================
 
 This extension provides a bridge between TYPO3 metadata extraction services and FAL
 extractors.
