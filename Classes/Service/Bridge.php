@@ -147,6 +147,13 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 			$metadata = array_merge($data, $metadata);
 		}
 
+		// Extract language
+		$languageMetatada = $this->getLanguage($file);
+		if (!empty($languageMetatada)) {
+			// Existing data has precedence over new information, due to service's precedence
+			$metadata = array_merge($languageMetatada, $metadata);
+		}
+
 		return $metadata;
 	}
 
@@ -195,23 +202,12 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 		$data = array();
 		$serviceChain = '';
 
-		$pathConfiguration = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Configuration/Services/';
-
 		/** @var \TYPO3\CMS\Core\Service\AbstractService $serviceObj */
 		while (is_object($serviceObj = GeneralUtility::makeInstanceService('metaExtract', $serviceSubType, $serviceChain))) {
 			$serviceChain .= ',' . $serviceObj->getServiceKey();
 
-			$mappingFilename = $pathConfiguration . $serviceObj->getServiceKey() . '/' . str_replace(':', '_', $serviceSubType) . '.json';
-			if (!is_file($mappingFilename)) {
-				// Try a default mapping
-				$mappingFilename = $pathConfiguration . $serviceObj->getServiceKey() . '/default.json';
-			}
-			if (!is_file($mappingFilename)) {
-				continue;
-			}
-
-			$dataMapping = json_decode(file_get_contents($mappingFilename), TRUE);
-			if (!is_array($dataMapping)) {
+			$dataMapping = $this->getDataMapping($serviceObj->getServiceKey(), $serviceSubType);
+			if (empty($dataMapping)) {
 				continue;
 			}
 
@@ -233,6 +229,74 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Returns language metadata of a given file.
+	 *
+	 * @param Resource\File $file
+	 * @return array
+	 */
+	protected function getLanguage(Resource\File $file) {
+		$data = array();
+		$serviceChain = '';
+
+		/** @var \TYPO3\CMS\Core\Service\AbstractService $serviceObj */
+		while (is_object($serviceObj = GeneralUtility::makeInstanceService('textLang', '*', $serviceChain))) {
+			$serviceChain .= ',' . $serviceObj->getServiceKey();
+
+			$dataMapping = $this->getDataMapping($serviceObj->getServiceKey());
+			if (empty($dataMapping)) {
+				continue;
+			}
+
+			$fileName = $file->getForLocalProcessing(FALSE);
+			$serviceObj->setInputFile($fileName, $file->getProperty('extension'));
+
+			if ($serviceObj->process()) {
+				$output = $serviceObj->getOutput();
+				if (!empty($output)) {
+					$output = explode(LF, $output);
+					if ($this->debug) {
+						$this->debugServiceOutput($serviceObj->getServiceKey(), $serviceSubType, $fileName, $output);
+					}
+					$data = $this->remapServiceOutput($output, $dataMapping);
+					break;
+				}
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Returns the data mapping for a given service key/subtype.
+	 *
+	 * @param string $serviceKey
+	 * @param string $serviceSubType
+	 * @return array|NULL
+	 */
+	protected function getDataMapping($serviceKey, $serviceSubType = '') {
+		$pathConfiguration = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Configuration/Services/';
+
+		if (empty($serviceSubType) || $serviceSubType === '*') {
+			$serviceSubType = 'default';
+		}
+		$mappingFilename = $pathConfiguration . $serviceKey . '/' . str_replace(':', '_', $serviceSubType) . '.json';
+		if (!is_file($mappingFilename) && $serviceSubType !== 'default') {
+			// Try a default mapping
+			$mappingFilename = $pathConfiguration . $serviceKey . '/default.json';
+		}
+		if (!is_file($mappingFilename)) {
+			return NULL;
+		}
+
+		$dataMapping = json_decode(file_get_contents($mappingFilename), TRUE);
+		if (!is_array($dataMapping)) {
+			return NULL;
+		}
+
+		return $dataMapping;
 	}
 
 	/**
