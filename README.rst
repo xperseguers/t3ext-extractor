@@ -17,9 +17,9 @@ At the moment, "svmetaextract" and "tika" are known to work properly.
 svmetaextract
 -------------
 
-This extension is capable of extracting IPTC and EXIF with native PHP data and takes advantage of third optional external
-binaries :program:`exiftools`, :program:`exiftags` and :program:`pdfinfo` for better extraction and support for XMP
-metadata extension.
+This extension is capable of extracting IPTC and EXIF with native PHP data and takes advantage of three optional
+external binaries :program:`exiftools`, :program:`exiftags` and :program:`pdfinfo` for better extraction and support for
+XMP metadata extension.
 
 You may check that the extraction service is properly configured by opening module System > Reports > Installed Services
 and check section "Service type: metaExtract". Every service you want to work should be "green".
@@ -41,11 +41,11 @@ Implemented
 Apache Tika
 -----------
 
-This extension is capable of extracting loads of metadata and guess the language of documents from many many file
-formats. It requires Java in order to be able to run a JAR archive you have to manually download and place wherever you
-want on your server.
+This extension is capable of extracting loads of metadata and guess the language of documents from many file formats. It
+requires Java in order to be able to run a JAR archive you have to manually download and place wherever you want on your
+server.
 
-Make sure to "Clear all caches" when installing this extension as the activation of the various tika services is
+Make sure to "Clear all caches" when installing this extension as the activation of the various Apache Tika services is
 triggered by this TYPO3 mechanism.
 
 Additional information: http://typo3.org/extensions/repository/view/tika
@@ -54,14 +54,22 @@ Additional information: http://typo3.org/extensions/repository/view/tika
 Implemented
 ^^^^^^^^^^^
 
-- metadata extraction for image files
-- metadata extraction for common document types
-- language extraction
+- tx_tika_metaExtract (metadata extraction for image files and common document types)
+- tx_tika_textLang (guess of the document's language)
+
+
+TODO
+----
+
+- Review the mapping configuration between services to ensure it is consistent (same metadata assigned to same FAL
+  attribute regardless of the service used)
+- Step out the service chain if further services are known to provide only metadata which were already populated
 
 
 How to help
 -----------
 
-Test and provide JSON mapping configuration files for other metadata extraction services.
+Test and provide JSON mapping configuration files for other metadata extraction services. See existing on
+https://git.typo3.org/TYPO3CMS/Extensions/Extractor.git/tree/HEAD:/Configuration/Services.
 
 Thanks!
