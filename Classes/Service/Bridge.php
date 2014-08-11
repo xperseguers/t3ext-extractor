@@ -269,16 +269,36 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 		if (empty($serviceSubType) || $serviceSubType === '*') {
 			$serviceSubType = 'default';
 		}
-		$mappingFilename = $pathConfiguration . $serviceKey . '/' . str_replace(':', '_', $serviceSubType) . '.json';
-		if (!is_file($mappingFilename) && $serviceSubType !== 'default') {
+		$mappingFileName = $pathConfiguration . $serviceKey . '/' . str_replace(':', '_', $serviceSubType) . '.json';
+		if (!is_file($mappingFileName) && $serviceSubType !== 'default') {
 			// Try a default mapping
-			$mappingFilename = $pathConfiguration . $serviceKey . '/default.json';
+			$mappingFileName = $pathConfiguration . $serviceKey . '/default.json';
 		}
-		if (!is_file($mappingFilename)) {
+
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'] as $classRef) {
+				$hookObject = GeneralUtility::getUserObj($classRef);
+				if (!method_exists($hookObject, 'postProcessDataMapping')) {
+					throw new \Exception($classRef . ' must provide a method "postProcessDataMapping', 1425290629);
+				}
+				$hookData = array(
+					'serviceKey' => $serviceKey,
+					'serviceSubType' => $serviceSubType,
+					'mappingFileName' => $mappingFileName,
+				);
+				$newMappingFileName = $hookObject->postProcessDataMapping($hookData, $this);
+				if ($newMappingFileName !== NULL) {
+					$mappingFileName = $newMappingFileName;
+				}
+			}
+		}
+
+		// Safeguard
+		if (!is_file($mappingFileName)) {
 			return NULL;
 		}
 
-		$dataMapping = json_decode(file_get_contents($mappingFilename), TRUE);
+		$dataMapping = json_decode(file_get_contents($mappingFileName), TRUE);
 		if (!is_array($dataMapping)) {
 			return NULL;
 		}

@@ -58,6 +58,12 @@ Implemented
 - tx_tika_textLang (guess of the document's language)
 
 
+Hooks
+-----
+
+A hook lets you dynamically override the JSON mapping file name. See https://forge.typo3.org/issues/60496 for details.
+
+
 TODO
 ----
 
