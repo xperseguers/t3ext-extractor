@@ -25,7 +25,7 @@
 				<source>Server</source>
 			</trans-unit>
 			<trans-unit id="settings.tika_jar_path">
-				<source>Tika Application Path: Absolute path to your Apache Tika application jar file (tika-app-x.x.jar).</source>
+				<source>Tika Application Path: Absolute path to your Apache Tika application jar file (tika-app-x.x.jar). Download from https://tika.apache.org/download.html</source>
 			</trans-unit>
 			<trans-unit id="settings.tika_server_host">
 				<source>Tika Server Host: Host running the Apache Tika server. OPTIONAL if you rely on the standalone Tika JAR application.</source>
@@ -33,11 +33,8 @@
 			<trans-unit id="settings.tika_server_port">
 				<source>Tika Server Port: Port on the Apache Tika server. OPTIONAL if you rely on the standalone Tika JAR application.</source>
 			</trans-unit>
-			<trans-unit id="settings.tools_exiftags">
-				<source>exiftags: Absolute path to external program "exiftags". Leave empty if not available.</source>
-			</trans-unit>
-			<trans-unit id="settings.tools_exiftool">
-				<source>exiftool: Absolute path to external program "exiftool". Leave empty if not available.</source>
+			<trans-unit id="settings.tools_exiv2">
+				<source>exiftags: Absolute path to external program "exiv2". Leave empty if not available.</source>
 			</trans-unit>
 			<trans-unit id="settings.tools_pdfinfo">
 				<source>pdfinfo: Absolute path to external program "pdfinfo". Leave empty if not available.</source>

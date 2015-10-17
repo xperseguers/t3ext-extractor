@@ -16,20 +16,17 @@ debug = 0
 # cat=tika//10; type=options[LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_mode.jar=jar,LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_mode.server=server]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_mode
 tika_mode = jar
 
-# cat=tika//20; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_jar_path
+# cat=tika//20; type=user[Causal\Extractor\Em\ConfigurationHelper->createTikaJarPath]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_jar_path
 tika_jar_path =
 
-# cat=tika//30; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_server_host
-tika_server_host = localhost
+# cat=tika//30; type=user[Causal\Extractor\Em\ConfigurationHelper->createTikaServerHost]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_server_host
+tika_server_host =
 
 # cat=tika//40; type=int+; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_server_port
 tika_server_port = 9998
 
-# cat=tools//10; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_exiftags
-tools_exiftags =
+# cat=tools//20; type=user[Causal\Extractor\Em\ConfigurationHelper->createToolInput]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_exiv2
+tools_exiv2 =
 
-# cat=tools//20; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_exiftool
-tools_exiftool =
-
-# cat=tools//30; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_pdfinfo
+# cat=tools//30; type=user[Causal\Extractor\Em\ConfigurationHelper->createToolInput]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_pdfinfo
 tools_pdfinfo =
