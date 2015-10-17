@@ -1,5 +1,35 @@
-# cat=basic//10; type=boolean; label=Extract metadata after upload: If ticked, the metadata extraction will be invoked after uploading a file. You will not have to wait until the corresponding FAL scheduler task is run. BEWARE! Upload workflow will be slown-down and may put additional stress to your server.
+# customcategory=tika=Apache Tika
+# customcategory=tools=External Tools
+
+# cat=basic/enable/10; type=boolean; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.enable_tika
+enable_tika = 0
+
+# cat=basic/enable/20; type=boolean; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.enable_tools
+enable_tools = 0
+
+# cat=basic/enable/30; type=boolean; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.auto_extract
 auto_extract = 0
 
-# cat=basic//20; type=boolean; label=Debug output of invoked services: If ticked, raw output of the metadata extraction services will be logged to directory typo3temp/tx_extractor/ and let you figure out if some mapping needs rework.
+# cat=basic/enable/40; type=boolean; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.debug
 debug = 0
+
+# cat=tika//10; type=options[LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_mode.jar=jar,LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_mode.server=server]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_mode
+tika_mode = jar
+
+# cat=tika//20; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_jar_path
+tika_jar_path =
+
+# cat=tika//30; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_server_host
+tika_server_host = localhost
+
+# cat=tika//40; type=int+; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_server_port
+tika_server_port = 9998
+
+# cat=tools//10; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_exiftags
+tools_exiftags =
+
+# cat=tools//20; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_exiftool
+tools_exiftool =
+
+# cat=tools//30; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_pdfinfo
+tools_pdfinfo =

@@ -1,5 +1,5 @@
-Bridge between Metadata Services and FAL Extractors
-===================================================
+Metadata and content analysis service
+=====================================
 
 This extension provides a bridge between TYPO3 metadata extraction services and FAL extractors. As an interesting
 feature, it allows you to extract metadata during upload, instead of waiting for the FAL scheduler task to run.

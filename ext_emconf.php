@@ -11,8 +11,8 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
-    'title' => 'Metadata and content analysis service for TYPO3 FAL',
-    'description' => 'This extension detects and extracts metadata and text from potentially thousand different file types (such as MS Word/Powerpoint/Excel documents and PDF) and bring them automatically and natively to TYPO3 when uploading assets.',
+    'title' => 'Metadata and content analysis service',
+    'description' => 'This extension detects and extracts metadata and text (EXIF / IPTC / XMP / ...) from potentially thousand different file types (such as MS Word/Powerpoint/Excel documents and PDF) and bring them automatically and natively to TYPO3 when uploading assets.',
     'category' => 'services',
     'author' => 'Xavier Perseguers (Causal)',
     'author_company' => 'Causal Sàrl',
