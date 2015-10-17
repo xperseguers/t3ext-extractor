@@ -16,6 +16,7 @@ namespace Causal\Extractor\Em;
 
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Causal\Extractor\Service\Tika\TikaServiceFactory;
 
 /**
  * Class providing configuration checks for EXT:extractor.
@@ -28,19 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ConfigurationHelper
 {
-
-    /**
-     * @var array
-     */
-    protected $settings;
-
-    /**
-     * ConfigurationHelper constructor.
-     */
-    public function __construct()
-    {
-        $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor']);
-    }
 
     /**
      * Creates an input field for the Tika Jar path and checks its validity.
@@ -60,9 +48,12 @@ class ConfigurationHelper
         ));
 
         $info = array();
-        $tikaService = $this->getTikaService();
-        $javaRuntimeInfo = $tikaService->getJavaRuntimeInfo();
-        if (!empty($javaRuntimeInfo)) {
+
+        try {
+            /** @var \Causal\Extractor\Service\Tika\AppService $tikaService */
+            $tikaService = TikaServiceFactory::getTika('jar');
+            $javaRuntimeInfo = $tikaService->getJavaRuntimeInfo();
+
             $info['Java'] = $javaRuntimeInfo['path'];
             if (!empty($javaRuntimeInfo['description'])) {
                 $info['Java Runtime'] = $javaRuntimeInfo['description'];
@@ -73,7 +64,10 @@ class ConfigurationHelper
                 $tikaVersion = $tikaService->getTikaVersion();
                 $info['Tika'] = $tikaVersion ?: 'n/a';
             }
+        } catch (\RuntimeException $e) {
+            // Nothing to do
         }
+
         $html .= $this->createInfoBlock($info);
 
         return $html;
@@ -96,7 +90,33 @@ class ConfigurationHelper
             'value' => $params['fieldValue'],
         ));
 
-        // TODO: check configuration
+        if (!empty($params['fieldValue'])) {
+            $info = array();
+            $success = false;
+
+            try {
+                /** @var \Causal\Extractor\Service\Tika\ServerService $tikaService */
+                $tikaService = TikaServiceFactory::getTika('server');
+
+                $ping = $tikaService->ping();
+                if ($ping !== -1) {
+                    $success = true;
+                    $info['Ping'] = $ping . ' ms';
+                    $tikaVersion = $tikaService->getTikaVersion();
+                    $info['Tika'] = $tikaVersion ?: 'n/a';
+                }
+
+                $html .= $this->createInfoBlock($info);
+            } catch (\RuntimeException $e) {
+                // Nothing to do
+            }
+
+            $html .= '<div style="margin-top:1em">';
+            $html .= '<img src="../../typo3conf/ext/extractor/Documentation/Images/' . (
+                    $success ? 'animation_ok.gif' : 'animation_ko.gif'
+                ) . '" alt="" />';
+            $html .= '</div>';
+        }
 
         return $html;
     }
@@ -184,47 +204,6 @@ class ConfigurationHelper
             $html .= '</ul>';
         }
         return $html;
-    }
-
-    /**
-     * Translates a label.
-     *
-     * @param string $id
-     * @param array $arguments
-     * @return string
-     */
-    protected function translate($id, array $arguments = null)
-    {
-        $value = $this->getLanguageService()->sL('LLL:EXT:ig_ldap_sso_auth/Resources/Private/Language/locallang_db.xlf:' . $id);
-        $value = empty($value) ? $id : $value;
-
-        if (is_array($arguments) && $value !== null) {
-            return vsprintf($value, $arguments);
-        } else {
-            return $value;
-        }
-    }
-
-    /**
-     * Returns the Apache Tika service.
-     *
-     * @return \Causal\Extractor\Service\Tika
-     */
-    protected function getTikaService()
-    {
-        /** @var \Causal\Extractor\Service\Tika $tikaService */
-        $tikaService = GeneralUtility::makeInstance('Causal\\Extractor\\Service\\Tika', $this->settings);
-        return $tikaService;
-    }
-
-    /**
-     * Returns the LanguageService.
-     *
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
     }
 
 }

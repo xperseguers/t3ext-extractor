@@ -6,7 +6,8 @@
     "TYPO3 CMS",
     "Metadata",
     "Content Analysis",
-    "tika"
+    "Tika",
+    "FAL"
   ],
   "homepage": "https://forge.typo3.org/projects/extension-extractor",
   "support": {
