@@ -164,8 +164,8 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 		unset($service);
 
 		if (GeneralUtility::inList('jpg,jpeg,tif,tiff', $extension)) {
-			$alternativeServiceSubType = array('image:iptc', 'image:exif');
-			foreach ($alternativeServiceSubType as $alternativeServiceSubType) {
+			$alternativeServiceSubTypes = array('image:iptc', 'image:exif');
+			foreach ($alternativeServiceSubTypes as $alternativeServiceSubType) {
 				$service = GeneralUtility::makeInstanceService('metaExtract', $alternativeServiceSubType);
 				if (is_object($service)) {
 					$serviceSubTypes[] = $alternativeServiceSubType;
@@ -262,6 +262,7 @@ class Bridge implements \TYPO3\CMS\Core\Resource\Index\ExtractorInterface {
 	 * @param string $serviceKey
 	 * @param string $serviceSubType
 	 * @return array|NULL
+	 * @throws \Exception
 	 */
 	protected function getDataMapping($serviceKey, $serviceSubType = '') {
 		$pathConfiguration = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Configuration/Services/';

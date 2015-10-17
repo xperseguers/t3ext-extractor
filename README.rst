@@ -24,7 +24,7 @@ XMP metadata extension.
 You may check that the extraction service is properly configured by opening module System > Reports > Installed Services
 and check section "Service type: metaExtract". Every service you want to work should be "green".
 
-Additional information: http://typo3.org/extensions/repository/view/svmetaextract
+Additional information: https://typo3.org/extensions/repository/view/svmetaextract
 
 
 Implemented
@@ -48,7 +48,7 @@ server.
 Make sure to "Clear all caches" when installing this extension as the activation of the various Apache Tika services is
 triggered by this TYPO3 mechanism.
 
-Additional information: http://typo3.org/extensions/repository/view/tika
+Additional information: https://typo3.org/extensions/repository/view/tika
 
 
 Implemented
