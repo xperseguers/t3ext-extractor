@@ -28,6 +28,11 @@ abstract class AbstractExtractionService implements ExtractorInterface
 {
 
     /**
+     * @var array
+     */
+    protected $supportedFileTypes = array();
+
+    /**
      * Priority in handling extraction.
      *
      * @var int
@@ -41,7 +46,10 @@ abstract class AbstractExtractionService implements ExtractorInterface
      *
      * @return array
      */
-    abstract public function getFileTypeRestrictions();
+    public function getFileTypeRestrictions()
+    {
+        return $this->supportedFileTypes;
+    }
 
     /**
      * Returns all supported DriverTypes.
@@ -202,6 +210,10 @@ abstract class AbstractExtractionService implements ExtractorInterface
             if ($value !== null && $value !== '') {
                 $output[$falKey] = $value;
             }
+        }
+
+        if (is_array($output['keywords'])) {
+            $output['keywords'] = implode(', ', $output['keywords']);
         }
 
         return $output;

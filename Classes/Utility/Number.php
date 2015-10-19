@@ -20,19 +20,21 @@ namespace Causal\Extractor\Utility;
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Number {
+class Number
+{
 
-	/**
-	 * Extracts an integer at the end of a string.
-	 *
-	 * @param string $str
-	 * @return string
-	 */
-	public function extractIntegerAtEnd($str) {
-		if (preg_match('/(\d+)$/', $str, $matches)) {
-			return (int)$matches[1];
-		}
-		return null;
-	}
+    /**
+     * Extracts an integer at the end of a string.
+     *
+     * @param string $str
+     * @return string
+     */
+    public function extractIntegerAtEnd($str)
+    {
+        if (preg_match('/(\d+)$/', $str, $matches)) {
+            return (int)$matches[1];
+        }
+        return null;
+    }
 
 }

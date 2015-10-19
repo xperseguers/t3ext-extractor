@@ -66,27 +66,14 @@
     "DATA": "Width"
   },
   {
-    "FAL": "location_city",
-    "DATA": [
-      "fields|meta|City",
-      "Sub-location"
-    ]
-  },
-  {
-    "FAL": "location_country",
-    "DATA": [
-      "fields|meta|Country/Primary Location Name",
-      "fields|meta|Country/Primary Location Code"
-    ]
-  },
-  {
     "FAL": "location_region",
     "DATA": "Province/State"
   },
   {
     "FAL": "note",
     "DATA": [
-      "Copyright"
+      "Copyright",
+      "Copyright Notice"
     ]
   },
   {
@@ -96,6 +83,10 @@
   {
     "FAL": "longitude",
     "DATA": "GPS Longitude->\\Causal\\Extractor\\Utility\\Gps::toDecimal(GPS Longitude Ref)"
+  },
+  {
+    "FAL": "ranking",
+    "DATA": "Rating"
   },
   {
     "FAL": "pages",

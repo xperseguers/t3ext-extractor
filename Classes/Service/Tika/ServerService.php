@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Service\Tika;
 
+use Causal\Extractor\Service\AbstractService;
 use Causal\Extractor\Utility\MimeType;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -25,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class ServerService extends AbstractTikaService
+class ServerService extends AbstractService implements TikaServiceInterface
 {
 
     /**

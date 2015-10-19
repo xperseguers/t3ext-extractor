@@ -1,0 +1,122 @@
+[
+  {
+    "FAL": "caption",
+    "DATA": "CaptionAbstract"
+  },
+  {
+    "FAL": "color_space",
+    "DATA": [
+      "ColorMode",
+      "ColorSpaceData",
+      "ColorSpace->\\Causal\\Extractor\\Utility\\ColorSpace::normalize"
+    ]
+  },
+  {
+    "FAL": "content_creation_date",
+    "DATA": [
+      "CreateDate->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+    ]
+  },
+  {
+    "FAL": "content_modification_date",
+    "DATA": [
+      "ModifyDate->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+    ]
+  },
+  {
+    "FAL": "creator",
+    "DATA": [
+      "Creator"
+    ]
+  },
+  {
+    "FAL": "creator_tool",
+    "DATA": [
+      "Model",
+      "Software",
+      "CreatorTool",
+      "Producer"
+    ]
+  },
+  {
+    "FAL": "description",
+    "DATA": [
+      "Description",
+      "ImageDescription"
+    ]
+  },
+  {
+    "FAL": "alternative",
+    "DATA": "Subject"
+  },
+  {
+    "FAL": "keywords",
+    "DATA": "Keywords"
+  },
+  {
+    "FAL": "height",
+    "DATA": "ImageHeight"
+  },
+  {
+    "FAL": "width",
+    "DATA": "ImageWidth"
+  },
+  {
+    "FAL": "location_city",
+    "DATA": [
+      "LocationCreatedCity",
+      "LocationCreatedSublocation"
+    ]
+  },
+  {
+    "FAL": "location_country",
+    "DATA": "LocationCreatedCountryName"
+  },
+  {
+    "FAL": "location_region",
+    "DATA": "LocationCreatedProvinceState"
+  },
+  {
+    "FAL": "note",
+    "DATA": [
+      "Copyright",
+      "CopyrightNotice",
+      "Rights"
+    ]
+  },
+  {
+    "FAL": "latitude",
+    "DATA": "GPSLatitude->\\Causal\\Extractor\\Utility\\Gps::toDecimal()"
+  },
+  {
+    "FAL": "longitude",
+    "DATA": "GPSLongitude->\\Causal\\Extractor\\Utility\\Gps::toDecimal()"
+  },
+  {
+    "FAL": "ranking",
+    "DATA": "Rating"
+  },
+  {
+    "FAL": "pages",
+    "DATA": [
+      "PageCount"
+    ]
+  },
+  {
+    "FAL": "publisher",
+    "DATA": "Publisher"
+  },
+  {
+    "FAL": "source",
+    "DATA": [
+      "FileSource",
+      "Company"
+    ]
+  },
+  {
+    "FAL": "title",
+    "DATA": [
+      "Title"
+    ]
+  }
+]

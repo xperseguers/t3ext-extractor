@@ -18,12 +18,12 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * A service to extract metadata from files using Apache Tika.
+ * A service to extract metadata from files using exiftool.
  *
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class TikaMetadataExtraction extends AbstractExtractionService
+class ExifToolMetadataExtraction extends AbstractExtractionService
 {
 
     /**
@@ -34,25 +34,20 @@ class TikaMetadataExtraction extends AbstractExtractionService
     /**
      * @var integer
      */
-    protected $priority = 100;
+    protected $priority = 80;
 
     /**
-     * @var bool
-     */
-    protected $tikaAvailable;
-
-    /**
-     * TikaMetadataExtraction constructor.
+     * ExifToolMetadataExtraction constructor.
      */
     public function __construct()
     {
         /** @var \TYPO3\CMS\Core\Registry $registry */
         $registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
-        $this->supportedFileTypes = $registry->get('tx_extractor', 'tika.extensions.metadata');
+        $this->supportedFileTypes = $registry->get('tx_extractor', 'exiftool.extensions');
         if (empty($this->supportedFileTypes)) {
-            if (($tikaService = $this->getTikaService()) !== null) {
-                $this->supportedFileTypes = $tikaService->getSupportedFileTypes();
-                $registry->set('tx_extractor', 'tika.extensions.metadata', $this->supportedFileTypes);
+            if (($exifToolService = $this->getExifToolService()) !== null) {
+                $this->supportedFileTypes = $exifToolService->getSupportedFileTypes();
+                $registry->set('tx_extractor', 'exiftool.extensions', $this->supportedFileTypes);
             } else {
                 $this->supportedFileTypes = array('___INVALID___');
             }
@@ -67,9 +62,9 @@ class TikaMetadataExtraction extends AbstractExtractionService
      */
     public function canProcess(File $file)
     {
-        $tikaService = $this->getTikaService();
+        $exifToolService = $this->getExifToolService();
         $fileExtension = strtolower($file->getProperty('extension'));
-        return ($tikaService !== null && in_array($fileExtension, $this->supportedFileTypes));
+        return ($exifToolService !== null && in_array($fileExtension, $this->supportedFileTypes));
     }
 
     /**
@@ -85,9 +80,9 @@ class TikaMetadataExtraction extends AbstractExtractionService
     {
         $metadata = array();
 
-        $extractedMetadata = $this->getTikaService()->extractMetadata($file);
+        $extractedMetadata = $this->getExifToolService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {
-            $dataMapping = $this->getDataMapping('Tika', 'metadata');
+            $dataMapping = $this->getDataMapping('ExifTool', 'metadata');
             $metadata = $this->remapServiceOutput($extractedMetadata, $dataMapping);
         }
 
@@ -95,24 +90,24 @@ class TikaMetadataExtraction extends AbstractExtractionService
     }
 
     /**
-     * Returns a Tika service.
+     * Returns an ExifTool service.
      *
-     * @return \Causal\Extractor\Service\Tika\TikaServiceInterface
+     * @return \Causal\Extractor\Service\ExifTool\ExifToolService
      */
-    protected function getTikaService()
+    protected function getExifToolService()
     {
-        /** @var \Causal\Extractor\Service\Tika\TikaServiceInterface $tikaService */
-        static $tikaService = null;
+        /** @var \Causal\Extractor\Service\ExifTool\ExifToolService $exifToolService */
+        static $exifToolService = null;
 
-        if ($tikaService === null) {
+        if ($exifToolService === null) {
             try {
-                $tikaService = \Causal\Extractor\Service\Tika\TikaServiceFactory::getTika();
+                $exifToolService = GeneralUtility::makeInstance('Causal\\Extractor\\Service\\ExifTool\\ExifToolService');
             } catch (\RuntimeException $e) {
                 // Nothing to do
             }
         }
 
-        return $tikaService;
+        return $exifToolService;
     }
 
 }

@@ -58,10 +58,15 @@ you easily double check that provided parameters are correct:
         :alt: Broken connection
 
 
+.. hint::
+    If you are able to run Tika as a server, you will be able to extract metadata nearly instantaneously, whereas the
+    same with the standalone application jar will typically result in a delay of a few seconds per file.
+
+
 External Tools
 ^^^^^^^^^^^^^^
 
 This extension is capable of using external tools to extract metadata:
 
-- `exiv2 <http://www.exiv2.org/>`__ for image files;
+- `exiftool <http://www.sno.phy.queensu.ca/~phil/exiftool/>`__ for files containing EXIF, IPTC / XMP metadata;
 - `pdfinfo <http://linuxcommand.org/man_pages/pdfinfo1.html>`__ for PDF.

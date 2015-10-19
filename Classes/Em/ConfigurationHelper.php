@@ -149,8 +149,8 @@ class ConfigurationHelper
         if (!empty($params['fieldValue']) && file_exists($params['fieldValue'])) {
             $cmd = $params['fieldValue'];
             switch ($externalTool) {
-                case 'exiv2':
-                    $cmd .= ' -V';
+                case 'exiftool':
+                    $cmd .= ' -ver';
                     break;
                 case 'pdfinfo':
                     $cmd .= ' -v 2>&1';

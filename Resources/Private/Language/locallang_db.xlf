@@ -20,11 +20,6 @@
                     BEWARE! Upload workflow will be slown-down and may put additional stress to your server.
                 </source>
             </trans-unit>
-            <trans-unit id="settings.debug">
-                <source>Debug output of invoked services: If ticked, raw output of the metadata extraction services will
-                    be logged to directory typo3temp/tx_extractor/ and let you figure out if some mapping needs rework.
-                </source>
-            </trans-unit>
             <trans-unit id="settings.tika_mode">
                 <source>Mode</source>
             </trans-unit>
@@ -46,8 +41,8 @@
             <trans-unit id="settings.tika_server_port">
                 <source>Tika Server Port: Port on the Apache Tika server.</source>
             </trans-unit>
-            <trans-unit id="settings.tools_exiv2">
-                <source>exiftags: Absolute path to external program "exiv2". Leave empty if not available.</source>
+            <trans-unit id="settings.tools_exiftool">
+                <source>exiftool: Absolute path to external program "exiftool". Leave empty if not available.</source>
             </trans-unit>
             <trans-unit id="settings.tools_pdfinfo">
                 <source>pdfinfo: Absolute path to external program "pdfinfo". Leave empty if not available.</source>

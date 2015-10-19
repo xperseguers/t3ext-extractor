@@ -12,7 +12,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Causal\Extractor\Service\Tika;
+namespace Causal\Extractor\Service;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-abstract class AbstractTikaService implements TikaServiceInterface
+abstract class AbstractService
 {
 
     /**
@@ -33,7 +33,7 @@ abstract class AbstractTikaService implements TikaServiceInterface
     protected $settings;
 
     /**
-     * AbstractTikaService constructor.
+     * AbstractService constructor.
      */
     public function __construct()
     {

@@ -33,5 +33,5 @@ Optional requirements
 These tools are optional but recommenced for best extraction results:
 
 - Apache Tika
-- exiv2
+- exiftool
 - pdfinfo

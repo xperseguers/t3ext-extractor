@@ -14,9 +14,8 @@
 
 namespace Causal\Extractor\Service\Extraction;
 
-use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A service to detect language from files using Apache Tika.
@@ -44,18 +43,6 @@ class TikaLanguageDetector extends AbstractExtractionService
      * @var bool
      */
     protected $tikaAvailable;
-
-    /**
-     * Returns an array of supported file types.
-     *
-     * An empty array indicates all file types.
-     *
-     * @return array
-     */
-    public function getFileTypeRestrictions()
-    {
-        return $this->supportedFileTypes;
-    }
 
     /**
      * Checks if the given file can be processed by this extractor.
@@ -93,7 +80,9 @@ class TikaLanguageDetector extends AbstractExtractionService
      */
     protected function getTikaService()
     {
+        /** @var \Causal\Extractor\Service\Tika\TikaServiceInterface $tikaService */
         static $tikaService = null;
+
         if ($tikaService === null) {
             try {
                 $tikaService = \Causal\Extractor\Service\Tika\TikaServiceFactory::getTika();
@@ -101,6 +90,7 @@ class TikaLanguageDetector extends AbstractExtractionService
                 // Nothing to do
             }
         }
+
         return $tikaService;
     }
 

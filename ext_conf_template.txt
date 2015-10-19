@@ -10,9 +10,6 @@ enable_tools = 0
 # cat=basic/enable/30; type=boolean; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.auto_extract
 auto_extract = 0
 
-# cat=basic/enable/40; type=boolean; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.debug
-debug = 0
-
 # cat=tika//10; type=options[LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_mode.jar=jar,LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_mode.server=server]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_mode
 tika_mode = jar
 
@@ -25,8 +22,8 @@ tika_server_host =
 # cat=tika//40; type=int+; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_server_port
 tika_server_port = 9998
 
-# cat=tools//20; type=user[Causal\Extractor\Em\ConfigurationHelper->createToolInput]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_exiv2
-tools_exiv2 =
+# cat=tools//20; type=user[Causal\Extractor\Em\ConfigurationHelper->createToolInput]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_exiftool
+tools_exiftool =
 
 # cat=tools//30; type=user[Causal\Extractor\Em\ConfigurationHelper->createToolInput]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_pdfinfo
 tools_pdfinfo =

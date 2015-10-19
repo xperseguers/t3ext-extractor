@@ -9,9 +9,10 @@ if (is_array($settings)) {
         $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\TikaMetadataExtraction');
         $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\TikaLanguageDetector');
     }
+    if (isset($settings['enable_tools']) && (bool)$settings['enable_tools']) {
+        $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\ExifToolMetadataExtraction');
+    }
 }
-
-//$extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Bridge');
 
 if (isset($settings['auto_extract']) && (bool)$settings['auto_extract']) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'][] = 'Causal\\Extractor\\Hook\\FileUploadHook';
