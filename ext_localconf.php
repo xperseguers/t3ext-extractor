@@ -11,6 +11,7 @@ if (is_array($settings)) {
     }
     if (isset($settings['enable_tools']) && (bool)$settings['enable_tools']) {
         $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\ExifToolMetadataExtraction');
+        $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\PdfinfoMetadataExtraction');
     }
 }
 
