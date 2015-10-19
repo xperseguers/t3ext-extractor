@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Extractor\Utility;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace Causal\Extractor\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+namespace Causal\Extractor\Utility;
+
 /**
  * Date/Time utility class.
  *
@@ -23,16 +23,18 @@ namespace Causal\Extractor\Utility;
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class DateTime {
+class DateTime
+{
 
-	/**
-	 * Converts a date/time into its Unix timestamp.
-	 *
-	 * @param string $str
-	 * @return integer
-	 */
-	static public function timestamp($str) {
-		return strtotime($str);
-	}
+    /**
+     * Converts a date/time into its Unix timestamp.
+     *
+     * @param string $str
+     * @return integer
+     */
+    public static function timestamp($str)
+    {
+        return strtotime($str);
+    }
 
 }

@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Extractor\Utility;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Extractor\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Extractor\Utility;
 
 /**
  * GPS utility class.
@@ -33,8 +33,8 @@ class Gps {
 	 * @param string $reference ('N', 'S', 'E', 'W')
 	 * @return string DDD.DDDD
 	 */
-	static public function toDecimal($str, $reference = '') {
-		$decimal = NULL;
+	public static function toDecimal($str, $reference = '') {
+		$decimal = null;
 		if ($reference !== '') {
 			$str = $reference . ' ' . $str;
 		}

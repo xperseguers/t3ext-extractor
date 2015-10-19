@@ -1,105 +1,105 @@
 [
-	{
-		"FAL":  "caption",
-		"DATA": "fields|caption"
-	},
-	{
-		"FAL":  "color_space",
-		"DATA": [
-			"fields|meta|XMP|ColorMode",
-			"fields|meta|EXIF|PhotometricInterpretation",
-			"fields|meta|EXIF|ColorSpace->\\Causal\\Extractor\\Utility\\ColorSpace::normalize"
-		]
-	},
-	{
-		"FAL":  "content_creation_date",
-		"DATA": "fields|date_cr"
-	},
-	{
-		"FAL":  "content_modification_date",
-		"DATA": "fields|date_mod"
-	},
-	{
-		"FAL":  "creator",
-		"DATA": "fields|creator"
-	},
-	{
-		"FAL":  "creator_tool",
-		"DATA": "fields|file_creator"
-	},
-	{
-		"FAL":  "description",
-		"DATA": [
-			"fields|meta|XMP|Description",
-			"fields|meta|IPTC|CaptionAbstract"
-		]
-	},
-	{
-		"FAL":  "alternative",
-		"DATA": "fields|meta|IPTC|SpecialInstructions"
-	},
-	{
-		"FAL":  "keywords",
-		"DATA": "fields|keywords"
-	},
-	{
-		"FAL":  "height",
-		"DATA": [
-			"fields|meta|EXIF|ExifImageHeight",
-			"fields|meta|MPEG|ImageHeight"
-		]
-	},
-	{
-		"FAL":  "width",
-		"DATA": [
-			"fields|meta|EXIF|ExifImageWidth",
-			"fields|meta|MPEG|ImageWidth"
-		]
-	},
-	{
-		"FAL":  "location_city",
-		"DATA": [
-			"fields|meta|XMP|City",
-			"fields|meta|XMP|Location"
-		]
-	},
-	{
-		"FAL":  "location_country",
-		"DATA": [
-			"fields|meta|XMP|Country",
-			"fields|meta|IPTC|CountryPrimaryLocationName",
-			"fields|meta|XMP|CountryCode",
-			"fields|meta|IPTC|CountryPrimaryLocationCode"
-		]
-	},
-	{
-		"FAL":  "location_region",
-		"DATA": "fields|meta|IPTC|ProvinceState"
-	},
-	{
-		"FAL":  "note",
-		"DATA": [
-			"fields|meta|XMP|Rights",
-			"fields|meta|IPTC|CopyrightNotice"
-		]
-	},
-	{
-		"FAL":  "publisher",
-		"DATA": "fields|meta|XMP|ImageSupplierName"
-	},
-	{
-		"FAL":  "ranking",
-		"DATA": "fields|meta|XMP|Ratings"
-	},
-	{
-		"FAL":  "source",
-		"DATA": [
-			"fields|meta|XMP|Source",
-			"fields|meta|ID3|Album"
-		]
-	},
-	{
-		"FAL":  "title",
-		"DATA": "fields|title"
-	}
+  {
+    "FAL": "caption",
+    "DATA": "fields|caption"
+  },
+  {
+    "FAL": "color_space",
+    "DATA": [
+      "fields|meta|XMP|ColorMode",
+      "fields|meta|EXIF|PhotometricInterpretation",
+      "fields|meta|EXIF|ColorSpace->\\Causal\\Extractor\\Utility\\ColorSpace::normalize"
+    ]
+  },
+  {
+    "FAL": "content_creation_date",
+    "DATA": "fields|date_cr"
+  },
+  {
+    "FAL": "content_modification_date",
+    "DATA": "fields|date_mod"
+  },
+  {
+    "FAL": "creator",
+    "DATA": "fields|creator"
+  },
+  {
+    "FAL": "creator_tool",
+    "DATA": "fields|file_creator"
+  },
+  {
+    "FAL": "description",
+    "DATA": [
+      "fields|meta|XMP|Description",
+      "fields|meta|IPTC|CaptionAbstract"
+    ]
+  },
+  {
+    "FAL": "alternative",
+    "DATA": "fields|meta|IPTC|SpecialInstructions"
+  },
+  {
+    "FAL": "keywords",
+    "DATA": "fields|keywords"
+  },
+  {
+    "FAL": "height",
+    "DATA": [
+      "fields|meta|EXIF|ExifImageHeight",
+      "fields|meta|MPEG|ImageHeight"
+    ]
+  },
+  {
+    "FAL": "width",
+    "DATA": [
+      "fields|meta|EXIF|ExifImageWidth",
+      "fields|meta|MPEG|ImageWidth"
+    ]
+  },
+  {
+    "FAL": "location_city",
+    "DATA": [
+      "fields|meta|XMP|City",
+      "fields|meta|XMP|Location"
+    ]
+  },
+  {
+    "FAL": "location_country",
+    "DATA": [
+      "fields|meta|XMP|Country",
+      "fields|meta|IPTC|CountryPrimaryLocationName",
+      "fields|meta|XMP|CountryCode",
+      "fields|meta|IPTC|CountryPrimaryLocationCode"
+    ]
+  },
+  {
+    "FAL": "location_region",
+    "DATA": "fields|meta|IPTC|ProvinceState"
+  },
+  {
+    "FAL": "note",
+    "DATA": [
+      "fields|meta|XMP|Rights",
+      "fields|meta|IPTC|CopyrightNotice"
+    ]
+  },
+  {
+    "FAL": "publisher",
+    "DATA": "fields|meta|XMP|ImageSupplierName"
+  },
+  {
+    "FAL": "ranking",
+    "DATA": "fields|meta|XMP|Ratings"
+  },
+  {
+    "FAL": "source",
+    "DATA": [
+      "fields|meta|XMP|Source",
+      "fields|meta|ID3|Album"
+    ]
+  },
+  {
+    "FAL": "title",
+    "DATA": "fields|title"
+  }
 ]

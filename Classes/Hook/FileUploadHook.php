@@ -27,66 +27,69 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class FileUploadHook implements \TYPO3\CMS\Core\Utility\File\ExtendedFileUtilityProcessDataHookInterface {
+class FileUploadHook implements \TYPO3\CMS\Core\Utility\File\ExtendedFileUtilityProcessDataHookInterface
+{
 
-	/**
-	 * @var \TYPO3\CMS\Core\Resource\Index\ExtractorInterface[]
-	 */
-	static protected $extractionServices = NULL;
+    /**
+     * @var \TYPO3\CMS\Core\Resource\Index\ExtractorInterface[]
+     */
+    protected static $extractionServices = null;
 
-	/**
-	 * @param string $action The action
-	 * @param array $cmdArr The parameter sent to the action handler
-	 * @param array $result The results of all calls to the action handler
-	 * @param \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $pObj The parent object
-	 * @return void
-	 */
-	public function processData_postProcessAction($action, array $cmdArr, array $result, \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $pObj) {
-		if ($action === 'upload') {
-			/** @var \TYPO3\CMS\Core\Resource\File[] $fileObjects */
-			$fileObjects = array_pop($result);
-			if (!is_array($fileObjects)) {
-				return;
-			}
+    /**
+     * @param string $action The action
+     * @param array $cmdArr The parameter sent to the action handler
+     * @param array $result The results of all calls to the action handler
+     * @param \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $pObj The parent object
+     * @return void
+     */
+    public function processData_postProcessAction($action, array $cmdArr, array $result, \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $pObj)
+    {
+        if ($action === 'upload') {
+            /** @var \TYPO3\CMS\Core\Resource\File[] $fileObjects */
+            $fileObjects = array_pop($result);
+            if (!is_array($fileObjects)) {
+                return;
+            }
 
-			foreach ($fileObjects as $fileObject) {
-				$storageRecord = $fileObject->getStorage()->getStorageRecord();
-				if ($storageRecord['driver'] === 'Local') {
-					$this->runMetaDataExtraction($fileObject);
-				}
-			}
-		}
-	}
+            foreach ($fileObjects as $fileObject) {
+                $storageRecord = $fileObject->getStorage()->getStorageRecord();
+                if ($storageRecord['driver'] === 'Local') {
+                    $this->runMetaDataExtraction($fileObject);
+                }
+            }
+        }
+    }
 
-	/**
-	 * Runs the metadata extraction for a given file.
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\File $fileObject
-	 * @return void
-	 * @see \TYPO3\CMS\Core\Resource\Index\Indexer::runMetaDataExtraction
-	 */
-	protected function runMetaDataExtraction(\TYPO3\CMS\Core\Resource\File $fileObject) {
-		if (static::$extractionServices === NULL) {
-			$extractorRegistry = \TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance();
-			static::$extractionServices = $extractorRegistry->getExtractorsWithDriverSupport('Local');
-		}
+    /**
+     * Runs the metadata extraction for a given file.
+     *
+     * @param \TYPO3\CMS\Core\Resource\File $fileObject
+     * @return void
+     * @see \TYPO3\CMS\Core\Resource\Index\Indexer::runMetaDataExtraction
+     */
+    protected function runMetaDataExtraction(\TYPO3\CMS\Core\Resource\File $fileObject)
+    {
+        if (static::$extractionServices === null) {
+            $extractorRegistry = \TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance();
+            static::$extractionServices = $extractorRegistry->getExtractorsWithDriverSupport('Local');
+        }
 
-		$newMetaData = array(
-			0 => $fileObject->_getMetaData()
-		);
-		foreach (static::$extractionServices as $service) {
-			if ($service->canProcess($fileObject)) {
-				$newMetaData[$service->getPriority()] = $service->extractMetaData($fileObject, $newMetaData);
-			}
-		}
-		ksort($newMetaData);
-		$metaData = array();
-		foreach ($newMetaData as $data) {
-			$metaData = array_merge($metaData, $data);
-		}
-		$fileObject->_updateMetaDataProperties($metaData);
-		$metaDataRepository = \TYPO3\CMS\Core\Resource\Index\MetaDataRepository::getInstance();
-		$metaDataRepository->update($fileObject->getUid(), $metaData);
-	}
+        $newMetaData = array(
+            0 => $fileObject->_getMetaData()
+        );
+        foreach (static::$extractionServices as $service) {
+            if ($service->canProcess($fileObject)) {
+                $newMetaData[$service->getPriority()] = $service->extractMetaData($fileObject, $newMetaData);
+            }
+        }
+        ksort($newMetaData);
+        $metaData = array();
+        foreach ($newMetaData as $data) {
+            $metaData = array_merge($metaData, $data);
+        }
+        $fileObject->_updateMetaDataProperties($metaData);
+        $metaDataRepository = \TYPO3\CMS\Core\Resource\Index\MetaDataRepository::getInstance();
+        $metaDataRepository->update($fileObject->getUid(), $metaData);
+    }
 
 }

@@ -1,116 +1,116 @@
 [
-	{
-		"FAL":  "caption",
-		"DATA": "Caption/Abstract"
-	},
-	{
-		"FAL":  "color_space",
-		"DATA": [
-			"Color space",
-			"Color Space->\\Causal\\Extractor\\Utility\\ColorSpace::normalize"
-		]
-	},
-	{
-		"FAL":  "content_creation_date",
-		"DATA": "Creation-Date->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
-	},
-	{
-		"FAL":  "content_modification_date",
-		"DATA": [
-			"Date/Time->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
-			"Last-Modified->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
-			"Last-Save-Date->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
-		]
-	},
-	{
-		"FAL":  "creator",
-		"DATA": "creator"
-	},
-	{
-		"FAL":  "creator_tool",
-		"DATA": [
-			"fields|file_creator",
-			"producer"
-		]
-	},
-	{
-		"FAL":  "description",
-		"DATA": [
-			"Image Description",
-			"subject"
-		]
-	},
-	{
-		"FAL":  "alternative",
-		"DATA": "Headline"
-	},
-	{
-		"FAL":  "keywords",
-		"DATA": "Keywords"
-	},
-	{
-		"FAL":  "height",
-		"DATA": "Height"
-	},
-	{
-		"FAL":  "width",
-		"DATA": "Width"
-	},
-	{
-		"FAL":  "location_city",
-		"DATA": [
-			"fields|meta|City",
-			"Sub-location"
-		]
-	},
-	{
-		"FAL":  "location_country",
-		"DATA": [
-			"fields|meta|Country/Primary Location Name",
-			"fields|meta|Country/Primary Location Code"
-		]
-	},
-	{
-		"FAL":  "location_region",
-		"DATA": "Province/State"
-	},
-	{
-		"FAL":  "note",
-		"DATA": [
-			"fields|meta|Copyright Notice",
-			"fields|meta|Credit",
-			"Comments"
-		]
-	},
-	{
-		"FAL":  "latitude",
-		"DATA": "GPS Latitude->\\Causal\\Extractor\\Utility\\Gps::toDecimal(GPS Latitude Ref)"
-	},
-	{
-		"FAL":  "longitude",
-		"DATA": "GPS Longitude->\\Causal\\Extractor\\Utility\\Gps::toDecimal(GPS Longitude Ref)"
-	},
-	{
-		"FAL":  "pages",
-		"DATA": "xmpTPg->\\Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd"
-	},
-	{
-		"FAL":  "publisher",
-		"DATA": [
-			"fields|meta|Artist",
-			"fields|meta|Author"
-		]
-	},
-	{
-		"FAL":  "source",
-		"DATA": [
-			"Source",
-			"Manager",
-			"Company"
-		]
-	},
-	{
-		"FAL":  "title",
-		"DATA": "title"
-	}
+  {
+    "FAL": "caption",
+    "DATA": "Caption/Abstract"
+  },
+  {
+    "FAL": "color_space",
+    "DATA": [
+      "Color space",
+      "Color Space->\\Causal\\Extractor\\Utility\\ColorSpace::normalize"
+    ]
+  },
+  {
+    "FAL": "content_creation_date",
+    "DATA": "Creation-Date->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+  },
+  {
+    "FAL": "content_modification_date",
+    "DATA": [
+      "Date/Time->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "Last-Modified->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "Last-Save-Date->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+    ]
+  },
+  {
+    "FAL": "creator",
+    "DATA": "creator"
+  },
+  {
+    "FAL": "creator_tool",
+    "DATA": [
+      "fields|file_creator",
+      "producer"
+    ]
+  },
+  {
+    "FAL": "description",
+    "DATA": [
+      "Image Description",
+      "subject"
+    ]
+  },
+  {
+    "FAL": "alternative",
+    "DATA": "Headline"
+  },
+  {
+    "FAL": "keywords",
+    "DATA": "Keywords"
+  },
+  {
+    "FAL": "height",
+    "DATA": "Height"
+  },
+  {
+    "FAL": "width",
+    "DATA": "Width"
+  },
+  {
+    "FAL": "location_city",
+    "DATA": [
+      "fields|meta|City",
+      "Sub-location"
+    ]
+  },
+  {
+    "FAL": "location_country",
+    "DATA": [
+      "fields|meta|Country/Primary Location Name",
+      "fields|meta|Country/Primary Location Code"
+    ]
+  },
+  {
+    "FAL": "location_region",
+    "DATA": "Province/State"
+  },
+  {
+    "FAL": "note",
+    "DATA": [
+      "fields|meta|Copyright Notice",
+      "fields|meta|Credit",
+      "Comments"
+    ]
+  },
+  {
+    "FAL": "latitude",
+    "DATA": "GPS Latitude->\\Causal\\Extractor\\Utility\\Gps::toDecimal(GPS Latitude Ref)"
+  },
+  {
+    "FAL": "longitude",
+    "DATA": "GPS Longitude->\\Causal\\Extractor\\Utility\\Gps::toDecimal(GPS Longitude Ref)"
+  },
+  {
+    "FAL": "pages",
+    "DATA": "xmpTPg->\\Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd"
+  },
+  {
+    "FAL": "publisher",
+    "DATA": [
+      "fields|meta|Artist",
+      "fields|meta|Author"
+    ]
+  },
+  {
+    "FAL": "source",
+    "DATA": [
+      "Source",
+      "Manager",
+      "Company"
+    ]
+  },
+  {
+    "FAL": "title",
+    "DATA": "title"
+  }
 ]

@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Extractor\Utility;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Extractor\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Extractor\Utility;
 
 /**
  * Number utility class.
@@ -35,7 +35,7 @@ class Number {
 		if (preg_match('/(\d+)$/', $str, $matches)) {
 			return (int)$matches[1];
 		}
-		return NULL;
+		return null;
 	}
 
 }

@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Extractor\Utility;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,6 +12,8 @@ namespace Causal\Extractor\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+namespace Causal\Extractor\Utility;
+
 /**
  * Color space utility class.
  *
@@ -23,19 +23,21 @@ namespace Causal\Extractor\Utility;
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class ColorSpace {
+class ColorSpace
+{
 
-	/**
-	 * Normalizes a color space for use in FAL.
-	 *
-	 * @param string $str
-	 * @return string
-	 */
-	public function normalize($str) {
-		if ($str === 'sRGB') {
-			$str = 'RGB';
-		}
-		return $str;
-	}
+    /**
+     * Normalizes a color space for use in FAL.
+     *
+     * @param string $str
+     * @return string
+     */
+    public function normalize($str)
+    {
+        if ($str === 'sRGB') {
+            $str = 'RGB';
+        }
+        return $str;
+    }
 
 }
