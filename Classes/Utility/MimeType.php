@@ -32,6 +32,11 @@ class MimeType
     protected static $mimeTypesMapping = array();
 
     /**
+     * @var array
+     */
+    protected static $extensionsMapping = array();
+
+    /**
      * Returns an array of file extensions associated to a given mime type.
      *
      * @param string $mimeType
@@ -52,6 +57,26 @@ class MimeType
     }
 
     /**
+     * Returns the mime type associated to a given file extension.
+     *
+     * @param string $fileExtension
+     * @return string
+     */
+    public static function getMimeType($fileExtension)
+    {
+        if (empty(static::$extensionsMapping)) {
+            static::initialize();
+        }
+
+        $mimeType = '';
+        if (isset(static::$extensionsMapping[strtolower($fileExtension)])) {
+            $mimeType = static::$extensionsMapping[strtolower($fileExtension)];
+        }
+
+        return $mimeType;
+    }
+
+    /**
      * Initializes the mapping between mime types and extensions.
      *
      * @return void
@@ -66,7 +91,11 @@ class MimeType
                     continue;
                 }
                 list($mimeType, $extensions) = GeneralUtility::trimExplode(TAB, $buffer, true);
-                static::$mimeTypesMapping[$mimeType] = GeneralUtility::trimExplode(' ', $extensions, true);
+                $extensions = GeneralUtility::trimExplode(' ', $extensions, true);
+                static::$mimeTypesMapping[$mimeType] = $extensions;
+                foreach ($extensions as $extension) {
+                    static::$extensionsMapping[$extension] = $mimeType;
+                }
             }
             fclose($fh);
         }

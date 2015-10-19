@@ -26,7 +26,7 @@ Metadata and Content Analysis Service
     :Description:
         This extension detects and extracts metadata and text (EXIF / IPTC / XMP / ...) from potentially thousand
         different file types (such as MS Word/Powerpoint/Excel documents and PDF) and bring them automatically and
-        natively to TYPO3 when uploading assets.
+        natively to TYPO3 when uploading assets. Can take advantage of Apache Tika and other external tools.
 
     :Keywords:
         Metadata, Content Analysis, Tika, FAL

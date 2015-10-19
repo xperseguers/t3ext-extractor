@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Service\Tika;
 
+use Causal\Extractor\Utility\MimeType;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -64,7 +65,19 @@ class ServerService extends AbstractTikaService
      */
     public function getSupportedFileTypes()
     {
-        throw new \RuntimeException('Not yet implemented');
+        $content = $this->send('GET', '/mime-types', 'application/json');
+        $mimeTypes = json_decode($content, true);
+
+        $fileTypes = array();
+        foreach ($mimeTypes as $mimeType => $_) {
+            $extensions = \Causal\Extractor\Utility\MimeType::getFileExtensions($mimeType);
+            if (!empty($extensions)) {
+                $fileTypes = array_merge($fileTypes, $extensions);
+            }
+        }
+
+        $fileTypes = array_unique($fileTypes);
+        return $fileTypes;
     }
 
     /**
@@ -97,14 +110,48 @@ class ServerService extends AbstractTikaService
     }
 
     /**
+     * Takes a file reference and extracts its metadata.
+     *
+     * @param \TYPO3\CMS\Core\Resource\File $file
+     * @return array
+     */
+    public function extractMetaData(File $file)
+    {
+        $localTempFilePath = $file->getForLocalProcessing(false);
+        $content = $this->send('PUT', '/meta', 'application/json', $localTempFilePath);
+        $metadata = json_decode($content, true);
+        $this->cleanupTempFile($localTempFilePath, $file);
+
+        return $metadata;
+    }
+
+    /**
+     * Takes a file reference and detects its content's language.
+     *
+     * @param \TYPO3\CMS\Core\Resource\File $file
+     * @return string Language ISO code
+     */
+    public function detectLanguage(File $file)
+    {
+        $localTempFilePath = $file->getForLocalProcessing(false);
+        $language = $this->send('PUT', '/language/stream', '', $localTempFilePath);
+        $this->cleanupTempFile($localTempFilePath, $file);
+
+        return $language;
+    }
+
+    /**
      * Sends a command to the Tika server.
      *
      * @param string $method HTTP method ("GET", "POST", ...)
      * @param string $resource
+     * @param string $accept
+     * @param string $fileName
      * @return string
      */
-    protected function send($method, $resource)
+    protected function send($method, $resource, $accept = '', $fileName = '')
     {
+        // Initiate the connection
         $fh = @fsockopen(
             $this->settings['tika_server_host'],
             $this->settings['tika_server_port'],
@@ -119,50 +166,40 @@ class ServerService extends AbstractTikaService
 
         $out = strtoupper($method) . ' ' . $resource . ' HTTP/1.1' . CRLF;
         $out .= 'Host: ' . $this->settings['tika_server_host'] . CRLF;
+        if (!empty($accept)) {
+            $out .= 'Accept: ' . $accept . CRLF;
+        }
+        if (!empty($fileName)) {
+            $extension = '';
+            if (($pos = strrpos($fileName, '.')) !== false) {
+                $extension = strtolower(substr($fileName, $pos + 1));
+            }
+            $out .= 'Content-Type: ' . ($extension ? MimeType::getMimeType($extension) : 'octet/stream') . CRLF;
+            $out .= 'Content-Length: ' . filesize($fileName) . CRLF;
+        }
+
+        // Automatically close the connection afterwards
         $out .= 'Connection: Close' . CRLF . CRLF;
+
+        if (!empty($fileName)) {
+            $out .= file_get_contents($fileName);
+        }
+
+        // Send the request
         fwrite($fh, $out);
+
+        // Read the response
         $buffer = '';
         while (!feof($fh)) {
             $buffer .= fgets($fh, 1024);
         }
+
+        // Close the connection
         fclose($fh);
 
         list($header, $payload) = explode(CRLF . CRLF, $buffer);
 
         return $payload;
-    }
-
-    /**
-     * Takes a file reference and extracts the text from it.
-     *
-     * @param \TYPO3\CMS\Core\Resource\File $file
-     * @return string
-     */
-    public function extractText(File $file)
-    {
-        // TODO: Implement extractText() method.
-    }
-
-    /**
-     * Takes a file reference and extracts its metadata.
-     *
-     * @param \TYPO3\CMS\Core\Resource\File $file
-     * @return array
-     */
-    public function extractMetaData(File $file)
-    {
-        // TODO: Implement extractMetaData() method.
-    }
-
-    /**
-     * Takes a file reference and detects its content's language.
-     *
-     * @param \TYPO3\CMS\Core\Resource\File $file
-     * @return string Language ISO code
-     */
-    public function detectLanguage(File $file)
-    {
-        // TODO: Implement detectLanguageFromFile() method.
     }
 
 }

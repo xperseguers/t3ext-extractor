@@ -23,15 +23,15 @@ class MimeTypeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
 
     /**
-     * @test
      * @param string $mimeType
-     * @param array $expected
+     * @param array $expectedExtensions
      * @dataProvider mimeTypeProvider
+     * @test
      */
-    public function fetchExtensionByMimeType($mimeType, array $expected)
+    public function fetchExtensionByMimeType($mimeType, array $expectedExtensions)
     {
         $extensions = MimeType::getFileExtensions($mimeType);
-        $this->assertSame($expected, $extensions);
+        $this->assertSame($expectedExtensions, $extensions);
     }
 
     /**
@@ -55,6 +55,30 @@ class MimeTypeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             // Invalid and empty mime type
             array('INVALID-MIME-TYPE', array()),
             array('', array()),
+        );
+    }
+
+    /**
+     * @param string $extension
+     * @param string $expectedMimeType
+     * @dataProvider extensionProvider
+     * @test
+     */
+    public function fetchMimeTypeByExtension($extension, $expectedMimeType)
+    {
+        $mimeType = MimeType::getMimeType($extension);
+        $this->assertSame($expectedMimeType, $mimeType);
+    }
+
+    /**
+     * @return array
+     */
+    public function extensionProvider()
+    {
+        return array(
+            array('mp3', 'audio/mpeg'),
+            array('pdf', 'application/pdf'),
+            array('jpg', 'image/jpeg'),
         );
     }
 

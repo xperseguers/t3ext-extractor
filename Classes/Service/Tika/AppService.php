@@ -81,11 +81,11 @@ class AppService extends AbstractTikaService
         CommandUtility::exec($tikaCommand, $shellOutput);
 
         $fileTypes = array();
-        foreach ($shellOutput as $line) {
-            if ($line{0} === ' ') {
+        foreach ($shellOutput as $mimeType) {
+            if ($mimeType{0} === ' ') {
                 continue;
             }
-            $extensions = \Causal\Extractor\Utility\MimeType::getFileExtensions($line);
+            $extensions = \Causal\Extractor\Utility\MimeType::getFileExtensions($mimeType);
             if (!empty($extensions)) {
                 $fileTypes = array_merge($fileTypes, $extensions);
             }
@@ -119,27 +119,6 @@ class AppService extends AbstractTikaService
         }
 
         return $info;
-    }
-
-    /**
-     * Takes a file reference and extracts the text from it.
-     *
-     * @param \TYPO3\CMS\Core\Resource\File $file
-     * @return string
-     */
-    public function extractText(File $file)
-    {
-        $localTempFilePath = $file->getForLocalProcessing(false);
-        $tikaCommand = CommandUtility::getCommand('java')
-            . ' -Dfile.encoding=UTF8' // forces UTF8 output
-            . ' -jar ' . escapeshellarg(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
-            . ' -t'
-            . ' ' . escapeshellarg($localTempFilePath);
-
-        $extractedText = CommandUtility::exec($tikaCommand);
-        $this->cleanupTempFile($localTempFilePath, $file);
-
-        return $extractedText;
     }
 
     /**

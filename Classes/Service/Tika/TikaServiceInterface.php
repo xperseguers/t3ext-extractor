@@ -42,14 +42,6 @@ interface TikaServiceInterface
     public function getSupportedFileTypes();
 
     /**
-     * Takes a file reference and extracts the text from it.
-     *
-     * @param \TYPO3\CMS\Core\Resource\File $file
-     * @return string
-     */
-    public function extractText(File $file);
-
-    /**
      * Takes a file reference and extracts its metadata.
      *
      * @param \TYPO3\CMS\Core\Resource\File $file
