@@ -31,6 +31,11 @@ class DateTime
      */
     public static function timestamp($str)
     {
+        if (preg_match('/^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}$/', $str)) {
+            // PHP built-in format when reading EXIF
+            list($date, $time) = explode(' ', $str, 2);
+            $str = str_replace(':', '/', $date) . ' ' . $time;
+        }
         return strtotime($str);
     }
 

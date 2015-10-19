@@ -13,6 +13,7 @@ if (is_array($settings)) {
         $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\ExifToolMetadataExtraction');
         $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\PdfinfoMetadataExtraction');
     }
+    $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\PhpMetadataExtraction');
 }
 
 if (isset($settings['auto_extract']) && (bool)$settings['auto_extract']) {

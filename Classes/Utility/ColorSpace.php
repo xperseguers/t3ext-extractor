@@ -33,6 +33,8 @@ class ColorSpace
     {
         if ($str === 'sRGB') {
             $str = 'RGB';
+        } elseif ($str == 1) {
+            $str = 'RGB';
         }
         return $str;
     }

@@ -18,23 +18,23 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * A service to extract metadata from files using Pdfinfo.
+ * A service to extract metadata from files using PHP's built-in methods.
  *
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class PdfinfoMetadataExtraction extends AbstractExtractionService
+class PhpMetadataExtraction extends AbstractExtractionService
 {
 
     /**
      * @var array
      */
-    protected $supportedFileTypes = array('pdf');
+    protected $supportedFileTypes = array('jpg', 'jpeg', 'tif', 'tiff');
 
     /**
      * @var integer
      */
-    protected $priority = 60;
+    protected $priority = 50;
 
     /**
      * Checks if the given file can be processed by this extractor.
@@ -44,9 +44,8 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
      */
     public function canProcess(File $file)
     {
-        $pdfinfoService = $this->getPdfinfoService();
         $fileExtension = strtolower($file->getProperty('extension'));
-        return ($pdfinfoService !== null && in_array($fileExtension, $this->supportedFileTypes));
+        return in_array($fileExtension, $this->supportedFileTypes);
     }
 
     /**
@@ -62,9 +61,9 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
     {
         $metadata = array();
 
-        $extractedMetadata = $this->getPdfinfoService()->extractMetadata($file);
+        $extractedMetadata = $this->getPhpService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {
-            $dataMapping = $this->getDataMapping('Pdfinfo', 'metadata');
+            $dataMapping = $this->getDataMapping('Php', 'metadata');
             $metadata = $this->remapServiceOutput($extractedMetadata, $dataMapping);
         }
 
@@ -72,24 +71,20 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
     }
 
     /**
-     * Returns a Pdfinfo service.
+     * Returns a PHP service.
      *
-     * @return \Causal\Extractor\Service\Pdfinfo\PdfinfoService
+     * @return \Causal\Extractor\Service\Php\PhpService
      */
-    protected function getPdfinfoService()
+    protected function getPhpService()
     {
-        /** @var \Causal\Extractor\Service\Pdfinfo\PdfinfoService $pdfinfoService */
-        static $pdfinfoService = null;
+        /** @var \Causal\Extractor\Service\Php\PhpService $phpService */
+        static $phpService = null;
 
-        if ($pdfinfoService === null) {
-            try {
-                $pdfinfoService = GeneralUtility::makeInstance('Causal\\Extractor\\Service\\Pdfinfo\\PdfinfoService');
-            } catch (\RuntimeException $e) {
-                // Nothing to do
-            }
+        if ($phpService === null) {
+            $phpService = GeneralUtility::makeInstance('Causal\\Extractor\\Service\\Php\\PhpService');
         }
 
-        return $pdfinfoService;
+        return $phpService;
     }
 
 }

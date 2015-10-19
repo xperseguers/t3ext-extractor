@@ -1,0 +1,77 @@
+[
+  {
+    "FAL": "caption",
+    "DATA": "IPTCCaption"
+  },
+  {
+    "FAL": "color_space",
+    "DATA": [
+      "ColorSpace->\\Causal\\Extractor\\Utility\\ColorSpace::normalize"
+    ]
+  },
+  {
+    "FAL": "content_creation_date",
+    "DATA": "DateTime->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+  },
+  {
+    "FAL": "creator",
+    "DATA": "IPTCCreator"
+  },
+  {
+    "FAL": "creator_tool",
+    "DATA": [
+      "Model",
+      "Software"
+    ]
+  },
+  {
+    "FAL": "description",
+    "DATA": [
+      "ImageDescription",
+      "IPTCDescription"
+    ]
+  },
+  {
+    "FAL": "keywords",
+    "DATA": "IPTCKeywords"
+  },
+  {
+    "FAL": "height",
+    "DATA": [
+      "ImageHeight",
+      "COMPUTED|Height"
+    ]
+  },
+  {
+    "FAL": "width",
+    "DATA": [
+      "ImageWidth",
+      "COMPUTED|Width"
+    ]
+  },
+  {
+    "FAL": "note",
+    "DATA": [
+      "IPTCCopyright",
+      "COMPUTED|Copyright"
+    ]
+  },
+  {
+    "FAL": "latitude",
+    "DATA": "GPSLatitudeDecimal"
+  },
+  {
+    "FAL": "longitude",
+    "DATA": "GPSLongitudeDecimal"
+  },
+  {
+    "FAL": "source",
+    "DATA": [
+      "FileSource"
+    ]
+  },
+  {
+    "FAL": "title",
+    "DATA": "IPTCTitle"
+  }
+]
