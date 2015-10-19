@@ -63,14 +63,6 @@ interface TikaServiceInterface
      * @param \TYPO3\CMS\Core\Resource\File $file
      * @return string Language ISO code
      */
-    public function detectLanguageFromFile(File $file);
-
-    /**
-     * Takes a string as input and detects its language.
-     *
-     * @param string $input
-     * @return string Language ISO code
-     */
-    public function detectLanguageFromString($input);
+    public function detectLanguage(File $file);
 
 }

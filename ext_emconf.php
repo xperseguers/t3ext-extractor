@@ -18,8 +18,6 @@ $EM_CONF[$_EXTKEY] = array(
     'author_company' => 'Causal Sàrl',
     'author_email' => 'xavier@causal.ch',
     'shy' => '',
-    'dependencies' => '',
-    'conflicts' => '',
     'priority' => '',
     'module' => '',
     'state' => 'stable',
@@ -36,10 +34,9 @@ $EM_CONF[$_EXTKEY] = array(
             'typo3' => '6.2.0-7.99.99',
         ),
         'conflicts' => array(),
-        'suggests' => array(),
+        'suggests' => array(
+            'filemetadata' => '',
+        ),
     ),
     '_md5_values_when_last_written' => '',
-    'suggests' => array(
-        'filemetadata' => '',
-    ),
 );

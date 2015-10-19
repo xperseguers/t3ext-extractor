@@ -160,20 +160,9 @@ class ServerService extends AbstractTikaService
      * @param \TYPO3\CMS\Core\Resource\File $file
      * @return string Language ISO code
      */
-    public function detectLanguageFromFile(File $file)
+    public function detectLanguage(File $file)
     {
         // TODO: Implement detectLanguageFromFile() method.
-    }
-
-    /**
-     * Takes a string as input and detects its language.
-     *
-     * @param string $input
-     * @return string Language ISO code
-     */
-    public function detectLanguageFromString($input)
-    {
-        // TODO: Implement detectLanguageFromString() method.
     }
 
 }

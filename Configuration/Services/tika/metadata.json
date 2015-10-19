@@ -11,14 +11,18 @@
   },
   {
     "FAL": "content_creation_date",
-    "DATA": "Creation-Date->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+    "DATA": [
+      "Creation-Date->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "date->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+    ]
   },
   {
     "FAL": "content_modification_date",
     "DATA": [
       "Date/Time->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
       "Last-Modified->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
-      "Last-Save-Date->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+      "Last-Save-Date->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "modified->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
     ]
   },
   {
@@ -32,7 +36,10 @@
     "FAL": "creator_tool",
     "DATA": [
       "Model",
-      "Software"
+      "Software",
+      "extended-properties:Application",
+      "xmp:CreatorTool",
+      "producer"
     ]
   },
   {
@@ -100,8 +107,8 @@
   {
     "FAL": "publisher",
     "DATA": [
-      "fields|meta|Artist",
-      "fields|meta|Author"
+      "dc:publisher",
+      "publisher"
     ]
   },
   {
@@ -110,11 +117,15 @@
       "File Source",
       "Source",
       "Manager",
-      "Company"
+      "Company",
+      "extended-properties:Company"
     ]
   },
   {
     "FAL": "title",
-    "DATA": "title"
+    "DATA": [
+      "title",
+      "resourceName"
+    ]
   }
 ]

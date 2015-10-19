@@ -19,46 +19,31 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\File;
 
 /**
- * A service to extract metadata from files using Apache Tika.
+ * A service to detect language from files using Apache Tika.
  *
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class TikaMetadataExtraction extends AbstractExtractionService
+class TikaLanguageDetector extends AbstractExtractionService
 {
 
     /**
      * @var array
      */
-    protected $supportedFileTypes;
+    protected $supportedFileTypes = array(
+        'doc','docx','epub','htm','html','msg','odf','odt','pdf','ppt','pptx',
+        'rtf','sxw','txt','xls','xlsx'
+    );
 
     /**
      * @var integer
      */
-    protected $priority = 100;
+    protected $priority = 98;
 
     /**
      * @var bool
      */
     protected $tikaAvailable;
-
-    /**
-     * TikaMetadataExtraction constructor.
-     */
-    public function __construct()
-    {
-        /** @var \TYPO3\CMS\Core\Registry $registry */
-        $registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
-        $this->supportedFileTypes = $registry->get('tx_extractor', 'tika.extensions.metadata');
-        if (empty($this->supportedFileTypes)) {
-            if (($tikaService = $this->getTikaService()) !== null) {
-                $this->supportedFileTypes = $tikaService->getSupportedFileTypes();
-                $registry->set('tx_extractor', 'tika.extensions.metadata', $this->supportedFileTypes);
-            } else {
-                $this->supportedFileTypes = array('___INVALID___');
-            }
-        }
-    }
 
     /**
      * Returns an array of supported file types.
@@ -96,13 +81,7 @@ class TikaMetadataExtraction extends AbstractExtractionService
      */
     public function extractMetaData(File $file, array $previousExtractedData = array())
     {
-        $metadata = array();
-
-        $extractedMetadata = $this->getTikaService()->extractMetadata($file);
-        if (!empty($extractedMetadata)) {
-            $dataMapping = $this->getDataMapping('tika', 'metadata');
-            $metadata = $this->remapServiceOutput($extractedMetadata, $dataMapping);
-        }
+        $metadata['language'] = $this->getTikaService()->detectLanguage($file);
 
         return $metadata;
     }

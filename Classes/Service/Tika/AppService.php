@@ -171,51 +171,17 @@ class AppService extends AbstractTikaService
      * @param \TYPO3\CMS\Core\Resource\File $file
      * @return string Language ISO code
      */
-    public function detectLanguageFromFile(File $file)
+    public function detectLanguage(File $file)
     {
         $localTempFilePath = $file->getForLocalProcessing(false);
-        $language = $this->detectLanguageFromLocalFile($localTempFilePath);
-
-        $this->cleanupTempFile($localTempFilePath, $file);
-
-        return $language;
-    }
-
-    /**
-     * Takes a string as input and detects its language.
-     *
-     * @param string $input
-     * @return string Language ISO code
-     */
-    public function detectLanguageFromString($input)
-    {
-        $tempFilePath = GeneralUtility::tempnam('Tx_Extractor_Tika_AppService_DetectLanguage');
-        GeneralUtility::writeFile($tempFilePath, $input);
-
-        // Detect language
-        $language = $this->detectLanguageFromLocalFile($tempFilePath);
-
-        // Cleanup
-        unlink($tempFilePath);
-
-        return $language;
-    }
-
-    /**
-     * The actual language detection
-     *
-     * @param string $localFilePath Path to a local file
-     * @return string The file content's language
-     */
-    protected function detectLanguageFromLocalFile($localFilePath)
-    {
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -Dfile.encoding=UTF8'
-            . ' -jar ' . escapeshellarg(GeneralUtility::getFileAbsFileName($this->settings['tikaPath'], false))
+            . ' -jar ' . escapeshellarg(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
             . ' -l'
-            . ' ' . escapeshellarg($localFilePath);
+            . ' ' . escapeshellarg($localTempFilePath);
 
         $language = trim(CommandUtility::exec($tikaCommand));
+        $this->cleanupTempFile($localTempFilePath, $file);
 
         return $language;
     }

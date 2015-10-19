@@ -7,6 +7,7 @@ $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY])
 if (is_array($settings)) {
     if (isset($settings['enable_tika']) && (bool)$settings['enable_tika']) {
         $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\TikaMetadataExtraction');
+        $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\TikaLanguageDetector');
     }
 }
 
