@@ -66,7 +66,7 @@ class MimeType
                     continue;
                 }
                 list($mimeType, $extensions) = GeneralUtility::trimExplode(TAB, $buffer, true);
-                static::$mimeTypesMapping[strtolower($mimeType)] = GeneralUtility::trimExplode(' ', $extensions, true);
+                static::$mimeTypesMapping[$mimeType] = GeneralUtility::trimExplode(' ', $extensions, true);
             }
             fclose($fh);
         }

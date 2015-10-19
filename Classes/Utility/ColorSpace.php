@@ -17,9 +17,6 @@ namespace Causal\Extractor\Utility;
 /**
  * Color space utility class.
  *
- * @category    Utility
- * @package     TYPO3
- * @subpackage  tx_extractor
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */

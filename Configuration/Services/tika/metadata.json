@@ -6,7 +6,6 @@
   {
     "FAL": "color_space",
     "DATA": [
-      "Color space",
       "Color Space->\\Causal\\Extractor\\Utility\\ColorSpace::normalize"
     ]
   },
@@ -24,20 +23,23 @@
   },
   {
     "FAL": "creator",
-    "DATA": "creator"
+    "DATA": [
+      "dc:creator",
+      "creator"
+    ]
   },
   {
     "FAL": "creator_tool",
     "DATA": [
-      "fields|file_creator",
-      "producer"
+      "Model",
+      "Software"
     ]
   },
   {
     "FAL": "description",
     "DATA": [
       "Image Description",
-      "subject"
+      "dc:description"
     ]
   },
   {
@@ -77,9 +79,7 @@
   {
     "FAL": "note",
     "DATA": [
-      "fields|meta|Copyright Notice",
-      "fields|meta|Credit",
-      "Comments"
+      "Copyright"
     ]
   },
   {
@@ -92,7 +92,10 @@
   },
   {
     "FAL": "pages",
-    "DATA": "xmpTPg->\\Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd"
+    "DATA": [
+      "xmpTPg:NPages->\\Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd",
+      "Page-Count->\\Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd"
+    ]
   },
   {
     "FAL": "publisher",
@@ -104,6 +107,7 @@
   {
     "FAL": "source",
     "DATA": [
+      "File Source",
       "Source",
       "Manager",
       "Company"

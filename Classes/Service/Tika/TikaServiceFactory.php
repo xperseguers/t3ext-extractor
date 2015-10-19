@@ -20,9 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Provides a Tika service based on configuration.
  *
- * @category    Service/Tika
- * @package     TYPO3
- * @subpackage  tx_extractor
  * @author      Ingo Renner <ingo@typo3.org>
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html

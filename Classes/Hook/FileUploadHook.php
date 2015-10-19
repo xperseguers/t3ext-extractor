@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * This class allows metadata to be extracted automatically after
  * uploading a file.
  *
- * @category    Hook
- * @package     TYPO3
- * @subpackage  tx_extractor
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */

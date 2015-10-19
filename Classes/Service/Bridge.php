@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Resource;
  * This is a bridge service between TYPO3 metadata extraction services
  * and FAL extractors for Local Driver.
  *
- * @category    Service
- * @package     TYPO3
- * @subpackage  tx_extractor
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */

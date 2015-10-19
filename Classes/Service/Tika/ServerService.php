@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * A Tika service implementation using the tika-server-x.x.jar.
  *
- * @category    Service/Tika
- * @package     TYPO3
- * @subpackage  tx_extractor
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
@@ -58,6 +55,16 @@ class ServerService extends AbstractTikaService
     {
         $tikaVersion = $this->send('GET', '/version');
         return $tikaVersion;
+    }
+
+    /**
+     * Returns a list of supported file types.
+     *
+     * @return array
+     */
+    public function getSupportedFileTypes()
+    {
+        throw new \RuntimeException('Not yet implemented');
     }
 
     /**

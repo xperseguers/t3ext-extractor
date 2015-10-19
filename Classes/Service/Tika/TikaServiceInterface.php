@@ -20,9 +20,6 @@ use TYPO3\CMS\Core\Resource\File;
  * A common interface for the different ways of accessing Tika,
  * e.g., standalone application or server.
  *
- * @category    Service/Tika
- * @package     TYPO3
- * @subpackage  tx_extractor
  * @author      Ingo Renner <ingo@typo3.org>
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
@@ -36,6 +33,13 @@ interface TikaServiceInterface
      * @return string
      */
     public function getTikaVersion();
+
+    /**
+     * Returns a list of supported file types.
+     *
+     * @return array
+     */
+    public function getSupportedFileTypes();
 
     /**
      * Takes a file reference and extracts the text from it.

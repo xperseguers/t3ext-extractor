@@ -15,13 +15,11 @@
 namespace Causal\Extractor\Service\Tika;
 
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Abstract Tika service.
  *
- * @category    Service/Tika
- * @package     TYPO3
- * @subpackage  tx_extractor
  * @author      Ingo Renner <ingo@typo3.org>
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html

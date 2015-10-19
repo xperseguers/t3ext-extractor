@@ -21,9 +21,6 @@ use Causal\Extractor\Service\Tika\TikaServiceFactory;
 /**
  * Class providing configuration checks for EXT:extractor.
  *
- * @category    Em
- * @package     TYPO3
- * @subpackage  tx_extractor
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */

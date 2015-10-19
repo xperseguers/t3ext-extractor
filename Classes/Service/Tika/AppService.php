@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * A Tika service implementation using the tika-app-x.x.jar.
  *
- * @category    Service/Tika
- * @package     TYPO3
- * @subpackage  tx_extractor
  * @author      Ingo Renner <ingo@typo3.org>
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
@@ -70,6 +67,35 @@ class AppService extends AbstractTikaService
     }
 
     /**
+     * Returns a list of supported file types.
+     *
+     * @return array
+     */
+    public function getSupportedFileTypes()
+    {
+        $tikaCommand = CommandUtility::getCommand('java')
+            . ' -jar ' . escapeshellarg(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
+            . ' --list-supported-types';
+
+        $shellOutput = array();
+        CommandUtility::exec($tikaCommand, $shellOutput);
+
+        $fileTypes = array();
+        foreach ($shellOutput as $line) {
+            if ($line{0} === ' ') {
+                continue;
+            }
+            $extensions = \Causal\Extractor\Utility\MimeType::getFileExtensions($line);
+            if (!empty($extensions)) {
+                $fileTypes = array_merge($fileTypes, $extensions);
+            }
+        }
+
+        $fileTypes = array_unique($fileTypes);
+        return $fileTypes;
+    }
+
+    /**
      * Returns Java runtime information.
      *
      * @return array
@@ -113,12 +139,6 @@ class AppService extends AbstractTikaService
         $extractedText = CommandUtility::exec($tikaCommand);
         $this->cleanupTempFile($localTempFilePath, $file);
 
-        //$this->log('Text Extraction using local Tika', array(
-        //    'file' => $file,
-        //    'tika command' => $tikaCommand,
-        //    'shell output' => $extractedText
-        //));
-
         return $extractedText;
     }
 
@@ -134,22 +154,15 @@ class AppService extends AbstractTikaService
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -Dfile.encoding=UTF8'
             . ' -jar ' . escapeshellarg(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
-            . ' -m'
+            . ' -m --json'
             . ' ' . escapeshellarg($localTempFilePath);
 
         $shellOutput = array();
         CommandUtility::exec($tikaCommand, $shellOutput);
-        $metaData = $this->shellOutputToArray($shellOutput);
+        $metadata = json_decode($shellOutput[0], true);
         $this->cleanupTempFile($localTempFilePath, $file);
 
-        //$this->log('Meta Data Extraction using local Tika', array(
-        //    'file' => $file,
-        //    'tika command' => $tikaCommand,
-        //    'shell output' => $shellOutput,
-        //    'meta data' => $metaData
-        //));
-
-        return $metaData;
+        return $metadata;
     }
 
     /**
@@ -204,60 +217,7 @@ class AppService extends AbstractTikaService
 
         $language = trim(CommandUtility::exec($tikaCommand));
 
-        //$this->log('Language Detection using local Tika', array(
-        //    'file' => $localFilePath,
-        //    'tika command' => $tikaCommand,
-        //    'shell output' => $language
-        //));
-
         return $language;
-    }
-
-    /**
-     * Takes shell output from exec() and turns it into an array of key => value
-     * pairs.
-     *
-     * @param array $shellOutput An array containing shell output from exec() with one line per entry
-     * @return array key => value pairs
-     */
-    protected function shellOutputToArray(array $shellOutput)
-    {
-        $metadata = array();
-
-        foreach ($shellOutput as $line) {
-            list($key, $value) = explode(':', $line, 2);
-            $value = trim($value);
-
-            if (in_array($key, array('dc', 'dcterms', 'meta', 'tiff', 'xmp', 'xmpTPg'))) {
-                // Dublin Core metadata and co
-                $keyPrefix = $key;
-                list($key, $value) = explode(':', $value, 2);
-
-                $key = $keyPrefix . ':' . $key;
-                $value = trim($value);
-            }
-
-            if (array_key_exists($key, $metadata)) {
-                if ($metadata[$key] == $value) {
-                    // first duplicate key hit, but also duplicate value
-                    continue;
-                }
-
-                // Allow a meta data key to appear multiple times
-                if (!is_array($metadata[$key])) {
-                    $metadata[$key] = array($metadata[$key]);
-                }
-
-                // But do not allow duplicate values
-                if (!in_array($value, $metadata[$key])) {
-                    $metadata[$key][] = $value;
-                }
-            } else {
-                $metadata[$key] = $value;
-            }
-        }
-
-        return $metadata;
     }
 
 }
