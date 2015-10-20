@@ -20,6 +20,11 @@
                     BEWARE! Upload workflow will be slown-down and may put additional stress to your server.
                 </source>
             </trans-unit>
+            <trans-unit id="settings.disabled">
+                <source>Option is not available: This option is not available with this version of TYPO3 since it
+                    is natively supported.
+                </source>
+            </trans-unit>
             <trans-unit id="settings.tika_mode">
                 <source>Mode</source>
             </trans-unit>

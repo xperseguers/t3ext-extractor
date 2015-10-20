@@ -16,7 +16,7 @@ if (is_array($settings)) {
     $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\PhpMetadataExtraction');
 }
 
-if (isset($settings['auto_extract']) && (bool)$settings['auto_extract']) {
+if (version_compare(TYPO3_version, '7.5.0', '<') && isset($settings['auto_extract']) && (bool)$settings['auto_extract']) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'][] = 'Causal\\Extractor\\Hook\\FileUploadHook';
 }
 

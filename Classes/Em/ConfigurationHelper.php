@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Em;
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Extractor\Service\Tika\TikaServiceFactory;
@@ -169,14 +170,46 @@ class ConfigurationHelper
     }
 
     /**
+     * Creates a checkbox when running TYPO3 6.2 (actually less than 7.5.0).
+     *
+     * @param array $params
+     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
+     * @return string
+     */
+    public function createCheckboxFor62(array $params, $pObj)
+    {
+        if (version_compare(TYPO3_version, '7.5.0', '>=')) {
+            list($title, $message) = GeneralUtility::trimExplode(':', $this->translate('settings.disabled'), true, 2);
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+            $flashMessage = GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                $message,
+                $title,
+                FlashMessage::INFO
+            );
+
+            $html = $flashMessage->render();
+        } else {
+            $html = $this->createFormInputField(array(
+                'name' => $params['fieldName'],
+                'id' => 'em-' . $params['propertyName'],
+                'value' => '1',
+            ), 'checkbox');
+        }
+
+        return $html;
+    }
+
+    /**
      * Creates a HTML form input field.
      *
      * @param array $attributes
+     * @param string $type
      * @return string
      */
-    protected function createFormInputField(array $attributes)
+    protected function createFormInputField(array $attributes, $type = 'text')
     {
-        $html = '<input type="text"';
+        $html = '<input type="' . $type . '"';
         foreach ($attributes as $key => $value) {
             $html .= ' ' . $key . '="' . htmlspecialchars($value) . '"';
         }
@@ -201,6 +234,35 @@ class ConfigurationHelper
             $html .= '</ul>';
         }
         return $html;
+    }
+
+    /**
+     * Translates a label.
+     *
+     * @param string $id
+     * @param array $arguments
+     * @return string
+     */
+    protected function translate($id, array $arguments = null)
+    {
+        $value = $this->getLanguageService()->sL('LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:' . $id);
+        $value = empty($value) ? $id : $value;
+
+        if (is_array($arguments) && $value !== null) {
+            return vsprintf($value, $arguments);
+        } else {
+            return $value;
+        }
+    }
+
+    /**
+     * Returns the LanguageService.
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 
 }
