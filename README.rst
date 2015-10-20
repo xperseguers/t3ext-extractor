@@ -1,9 +1,10 @@
 Metadata and content analysis service
 =====================================
 
-This extension detects and extracts metadata and text (EXIF / IPTC / XMP / ...) from potentially thousand different file
-types (such as MS Word/Powerpoint/Excel documents and PDF) and bring them automatically and natively to TYPO3 when
-uploading assets.
+This extension detects and extracts metadata (EXIF / IPTC / XMP / ...) from potentially thousand different file types
+(such as MS Word/Powerpoint/Excel documents, PDF and images) and bring them automatically and natively to TYPO3 when
+uploading assets. Works with built-in PHP functions but takes advantage of Apache Tika and other external tools for
+enhanced metadata extraction.
 
 .. image:: Documentation/Images/metadata.png
     :alt: Metadata for a document
