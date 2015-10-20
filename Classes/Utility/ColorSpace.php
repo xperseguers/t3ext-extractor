@@ -14,6 +14,8 @@
 
 namespace Causal\Extractor\Utility;
 
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * Color space utility class.
  *
@@ -33,10 +35,29 @@ class ColorSpace
     {
         if ($str === 'sRGB') {
             $str = 'RGB';
-        } elseif ($str == 1) {
-            $str = 'RGB';
+        } elseif (MathUtility::canBeInterpretedAsInteger($str)) {
+            // See http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html
+            switch ((int)$str) {
+                case 1:
+                case 2:
+                case 0xfffd:
+                    $str = 'RGB';
+                    break;
+            }
         }
         return $str;
+    }
+
+    /**
+     * Extracts the color space of a given image.
+     *
+     * @param string $fileName
+     * @return string|null
+     */
+    public static function detect($fileName)
+    {
+        // Not yet implemented
+        return null;
     }
 
 }

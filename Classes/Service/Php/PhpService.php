@@ -15,6 +15,7 @@
 namespace Causal\Extractor\Service\Php;
 
 use Causal\Extractor\Service\AbstractService;
+use Causal\Extractor\Utility\ColorSpace;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -33,7 +34,18 @@ class PhpService extends AbstractService
      */
     public function getSupportedFileTypes()
     {
-        return array('jpg', 'jpeg', 'tif', 'tiff');
+        return array(
+            'gif',      // IMAGETYPE_GIF
+            'jpg',      // IMAGETYPE_JPEG
+            'jpeg',     // IMAGETYPE_JPEG
+            'png',      // IMAGETYPE_PNG
+            'bmp',      // IMAGETYPE_BMP
+            'tif',      // IMAGETYPE_TIFF_II / IMAGETYPE_TIFF_MM
+            'tiff',     // IMAGETYPE_TIFF_II / IMAGETYPE_TIFF_MM
+            'wbmp',     // IMAGETYPE_WBMP
+            'xbm',      // IMAGETYPE_XBM
+            'ico',      // IMAGETYPE_ICO
+        );
     }
 
     /**
@@ -44,6 +56,56 @@ class PhpService extends AbstractService
      * @see \Causal\ImageAutoresize\Utility\ImageUtility::getMetadata()
      */
     public function extractMetadataFromLocalFile($fileName)
+    {
+        $metadata = $this->getMetadata($fileName);
+        $metadata['Unit'] = 'px';
+
+        // Try to extract additional metadata
+        if (($imageSize = getimagesize($fileName)) !== false) {
+            $colorSpace = null;
+            $accurate = false;
+            switch ($imageSize['bits']) {
+                case 1:
+                    $colorSpace = 'grey';
+                    $accurate = true;
+                    break;
+                case 2:
+                    $colorSpace = 'indx';   // More general than 'grey'
+                    $accurate = false;
+                    break;
+                case 8:
+                    if ($imageSize['mime'] === 'image/jpeg' && $imageSize['channels'] == 4) {
+                        $colorSpace = 'CMYK';
+                        $accurate = true;
+                    } else {
+                        $colorSpace = 'RGB';
+                        $accurate = false;  // Could be 'YUV'
+                    }
+                    break;
+            }
+
+            if ($colorSpace !== null) {
+                if (!$accurate) {
+                    $actualColorSpace = ColorSpace::detect($fileName);
+                    if ($actualColorSpace !== null) {
+                        $colorSpace = $actualColorSpace;
+                    }
+                }
+                $metadata['ColorSpace'] = $colorSpace;
+            }
+        }
+
+        return $metadata;
+    }
+
+    /**
+     * Returns metadata from a given file.
+     *
+     * @param string $fileName
+     * @return array
+     * @see \Causal\ImageAutoresize\Utility\ImageUtility::getMetadata()
+     */
+    protected function getMetadata($fileName)
     {
         $extension = strtolower(substr($fileName, strrpos($fileName, '.') + 1));
         $metadata = array();

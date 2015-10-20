@@ -73,5 +73,9 @@
   {
     "FAL": "title",
     "DATA": "IPTCTitle"
+  },
+  {
+    "FAL": "unit",
+    "DATA": "Unit"
   }
 ]
