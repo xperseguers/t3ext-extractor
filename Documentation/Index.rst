@@ -66,4 +66,5 @@ Metadata and Content Analysis Service
 
     Introduction/Index
     AdministratorManual/Index
+    DeveloperManual/Index
     Links

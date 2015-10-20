@@ -112,7 +112,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
         if (empty($type) || $type === '*') {
             $type = 'default';
         }
-        $mappingFileName = $pathConfiguration . $service . '/' . str_replace(':', '_', $type) . '.json';
+        $mappingFileName = $pathConfiguration . $service . '/' . $type . '.json';
         if (!is_file($mappingFileName) && $type !== 'default') {
             // Try a default mapping
             $mappingFileName = $pathConfiguration . $service . '/default.json';
