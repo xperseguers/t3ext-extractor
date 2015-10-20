@@ -40,21 +40,27 @@ class MimeTypeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function mimeTypeProvider()
     {
         return array(
-            array(
+            'MPEG file' => array(
                 'audio/mpeg',
                 array('mpga', 'mp2', 'mp2a', 'mp3', 'm2a', 'm3a'),
             ),
-            array(
+            'MS Word Document (docx)' => array(
                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 array('docx'),
             ),
-            array(
+            'PDF file' => array(
                 'application/pdf',
                 array('pdf'),
             ),
             // Invalid and empty mime type
-            array('INVALID-MIME-TYPE', array()),
-            array('', array()),
+            'Invalid mime type' => array(
+                'INVALID-MIME-TYPE',
+                array()
+            ),
+            'Empty mime type' => array(
+                '',
+                array()
+            ),
         );
     }
 
@@ -76,9 +82,9 @@ class MimeTypeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function extensionProvider()
     {
         return array(
-            array('mp3', 'audio/mpeg'),
-            array('pdf', 'application/pdf'),
-            array('jpg', 'image/jpeg'),
+            'mp3' => array('mp3', 'audio/mpeg'),
+            'pdf' => array('pdf', 'application/pdf'),
+            'jpg' => array('jpg', 'image/jpeg'),
         );
     }
 
