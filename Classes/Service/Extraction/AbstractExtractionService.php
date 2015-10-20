@@ -30,7 +30,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
     /**
      * @var array
      */
-    protected $supportedFileTypes = array();
+    protected $supportedFileTypes = array('__INVALID__');
 
     /**
      * Priority in handling extraction.

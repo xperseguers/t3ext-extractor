@@ -27,11 +27,6 @@ class TikaMetadataExtraction extends AbstractExtractionService
 {
 
     /**
-     * @var array
-     */
-    protected $supportedFileTypes;
-
-    /**
      * @var integer
      */
     protected $priority = 100;
@@ -53,8 +48,6 @@ class TikaMetadataExtraction extends AbstractExtractionService
             if (($tikaService = $this->getTikaService()) !== null) {
                 $this->supportedFileTypes = $tikaService->getSupportedFileTypes();
                 $registry->set('tx_extractor', 'tika.extensions.metadata', $this->supportedFileTypes);
-            } else {
-                $this->supportedFileTypes = array('___INVALID___');
             }
         }
     }

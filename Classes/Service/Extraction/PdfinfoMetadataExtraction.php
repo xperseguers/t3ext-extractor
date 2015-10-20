@@ -27,14 +27,19 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
 {
 
     /**
-     * @var array
-     */
-    protected $supportedFileTypes = array('pdf');
-
-    /**
      * @var integer
      */
     protected $priority = 60;
+
+    /**
+     * PdfinfoMetadataExtraction constructor.
+     */
+    public function __construct()
+    {
+        if (($pdfinfoService = $this->getPdfinfoService()) !== null) {
+            $this->supportedFileTypes = $pdfinfoService->getSupportedFileTypes();
+        }
+    }
 
     /**
      * Checks if the given file can be processed by this extractor.

@@ -14,17 +14,17 @@
 
 namespace Causal\Extractor\Service;
 
+use Causal\Extractor\Service\ServiceInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Abstract Tika service.
+ * Abstract service.
  *
- * @author      Ingo Renner <ingo@typo3.org>
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-abstract class AbstractService
+abstract class AbstractService implements ServiceInterface
 {
 
     /**
@@ -38,6 +38,21 @@ abstract class AbstractService
     public function __construct()
     {
         $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor']);
+    }
+
+    /**
+     * Takes a file reference and extracts its metadata.
+     *
+     * @param \TYPO3\CMS\Core\Resource\File $file
+     * @return array
+     */
+    public function extractMetadata(File $file)
+    {
+        $localTempFilePath = $file->getForLocalProcessing(false);
+        $metadata = $this->extractMetadataFromLocalFile($localTempFilePath);
+        $this->cleanupTempFile($localTempFilePath, $file);
+
+        return $metadata;
     }
 
     /**

@@ -125,22 +125,20 @@ class AppService extends AbstractService implements TikaServiceInterface
     /**
      * Takes a file reference and extracts its metadata.
      *
-     * @param \TYPO3\CMS\Core\Resource\File $file
+     * @param \TYPO3\CMS\Core\Resource\File $fileName
      * @return array
      */
-    public function extractMetaData(File $file)
+    public function extractMetadataFromLocalFile($fileName)
     {
-        $localTempFilePath = $file->getForLocalProcessing(false);
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -Dfile.encoding=UTF8'
             . ' -jar ' . escapeshellarg(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
             . ' -m --json'
-            . ' ' . escapeshellarg($localTempFilePath);
+            . ' ' . escapeshellarg($fileName);
 
         $shellOutput = array();
         CommandUtility::exec($tikaCommand, $shellOutput);
         $metadata = json_decode($shellOutput[0], true);
-        $this->cleanupTempFile($localTempFilePath, $file);
 
         return $metadata;
     }
@@ -154,14 +152,27 @@ class AppService extends AbstractService implements TikaServiceInterface
     public function detectLanguage(File $file)
     {
         $localTempFilePath = $file->getForLocalProcessing(false);
+        $language = $this->detectLanguageFromLocalFile($$localTempFilePath);
+        $this->cleanupTempFile($localTempFilePath, $file);
+
+        return $language;
+    }
+
+    /**
+     * Takes a file reference and detects its content's language.
+     *
+     * @param string $fileName Path to the file
+     * @return string
+     */
+    public function detectLanguageFromLocalFile($fileName)
+    {
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -Dfile.encoding=UTF8'
             . ' -jar ' . escapeshellarg(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
             . ' -l'
-            . ' ' . escapeshellarg($localTempFilePath);
+            . ' ' . escapeshellarg($fileName);
 
         $language = trim(CommandUtility::exec($tikaCommand));
-        $this->cleanupTempFile($localTempFilePath, $file);
 
         return $language;
     }

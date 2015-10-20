@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Service\Tika;
 
+use Causal\Extractor\Service\ServiceInterface;
 use TYPO3\CMS\Core\Resource\File;
 
 /**
@@ -24,7 +25,7 @@ use TYPO3\CMS\Core\Resource\File;
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-interface TikaServiceInterface
+interface TikaServiceInterface extends ServiceInterface
 {
 
     /**
@@ -35,26 +36,19 @@ interface TikaServiceInterface
     public function getTikaVersion();
 
     /**
-     * Returns a list of supported file types.
-     *
-     * @return array
-     */
-    public function getSupportedFileTypes();
-
-    /**
-     * Takes a file reference and extracts its metadata.
-     *
-     * @param \TYPO3\CMS\Core\Resource\File $file
-     * @return array
-     */
-    public function extractMetadata(File $file);
-
-    /**
      * Takes a file reference and detects its content's language.
      *
      * @param \TYPO3\CMS\Core\Resource\File $file
      * @return string Language ISO code
      */
     public function detectLanguage(File $file);
+
+    /**
+     * Takes a file reference and detects its content's language.
+     *
+     * @param string $file Path to the file
+     * @return string Language ISO code
+     */
+    public function detectLanguageFromLocalFile($file);
 
 }

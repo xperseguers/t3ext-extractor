@@ -15,7 +15,6 @@
 namespace Causal\Extractor\Service\Php;
 
 use Causal\Extractor\Service\AbstractService;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -28,28 +27,23 @@ class PhpService extends AbstractService
 {
 
     /**
-     * Takes a file reference and extracts its metadata.
+     * Returns a list of supported file types.
      *
-     * @param \TYPO3\CMS\Core\Resource\File $file
      * @return array
      */
-    public function extractMetaData(File $file)
+    public function getSupportedFileTypes()
     {
-        $localTempFilePath = $file->getForLocalProcessing(false);
-        $metadata = $this->getMetadata($localTempFilePath);
-        $this->cleanupTempFile($localTempFilePath, $file);
-
-        return $metadata;
+        return array('jpg', 'jpeg', 'tif', 'tiff');
     }
 
     /**
-     * Returns metadata from a given file.
+     * Takes a file reference and extracts its metadata.
      *
-     * @param string $fileName
+     * @param string $fileName Path to the file
      * @return array
      * @see \Causal\ImageAutoresize\Utility\ImageUtility::getMetadata()
      */
-    protected function getMetadata($fileName)
+    public function extractMetadataFromLocalFile($fileName)
     {
         $extension = strtolower(substr($fileName, strrpos($fileName, '.') + 1));
         $metadata = array();
@@ -120,7 +114,7 @@ class PhpService extends AbstractService
      * @return string
      * @see \Causal\ImageAutoresize\Utility\ImageUtility::safeUtf8Encode()
      */
-    protected function safeUtf8Encode($text)
+    protected static function safeUtf8Encode($text)
     {
         if (function_exists('mb_detect_encoding')) {
             if (mb_detect_encoding($text, 'UTF-8', true) !== 'UTF-8') {
@@ -144,7 +138,7 @@ class PhpService extends AbstractService
      * @return float
      * @see \Causal\ImageAutoresize\Utility\ImageUtility::rationaleToDecimal()
      */
-    protected function rationalToDecimal(array $components)
+    protected static function rationalToDecimal(array $components)
     {
         foreach ($components as $key => $value) {
             $rationalParts = explode('/', $value);

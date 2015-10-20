@@ -15,7 +15,6 @@
 namespace Causal\Extractor\Service\ExifTool;
 
 use Causal\Extractor\Service\AbstractService;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -78,20 +77,18 @@ class ExifToolService extends AbstractService
     /**
      * Takes a file reference and extracts its metadata.
      *
-     * @param \TYPO3\CMS\Core\Resource\File $file
+     * @param string $fileName Path to the file
      * @return array
      */
-    public function extractMetaData(File $file)
+    public function extractMetadataFromLocalFile($fileName)
     {
-        $localTempFilePath = $file->getForLocalProcessing(false);
         $exifToolCommand = GeneralUtility::getFileAbsFileName($this->settings['tools_exiftool'], false)
             . ' -j'
-            . ' ' . escapeshellarg($localTempFilePath);
+            . ' ' . escapeshellarg($fileName);
 
         $shellOutput = array();
         CommandUtility::exec($exifToolCommand, $shellOutput);
         $metadata = json_decode(implode('', $shellOutput), true);
-        $this->cleanupTempFile($localTempFilePath, $file);
 
         return $metadata[0];
     }

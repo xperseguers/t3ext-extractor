@@ -27,14 +27,18 @@ class PhpMetadataExtraction extends AbstractExtractionService
 {
 
     /**
-     * @var array
-     */
-    protected $supportedFileTypes = array('jpg', 'jpeg', 'tif', 'tiff');
-
-    /**
      * @var integer
      */
     protected $priority = 50;
+
+    /**
+     * PhpMetadataExtraction constructor.
+     */
+    public function __construct()
+    {
+        $phpService = $this->getPhpService();
+        $this->supportedFileTypes = $phpService->getSupportedFileTypes();
+    }
 
     /**
      * Checks if the given file can be processed by this extractor.

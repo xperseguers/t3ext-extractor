@@ -27,11 +27,6 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
 {
 
     /**
-     * @var array
-     */
-    protected $supportedFileTypes;
-
-    /**
      * @var integer
      */
     protected $priority = 80;
@@ -48,8 +43,6 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
             if (($exifToolService = $this->getExifToolService()) !== null) {
                 $this->supportedFileTypes = $exifToolService->getSupportedFileTypes();
                 $registry->set('tx_extractor', 'exiftool.extensions', $this->supportedFileTypes);
-            } else {
-                $this->supportedFileTypes = array('___INVALID___');
             }
         }
     }

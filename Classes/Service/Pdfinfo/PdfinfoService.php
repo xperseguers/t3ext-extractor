@@ -15,7 +15,6 @@
 namespace Causal\Extractor\Service\Pdfinfo;
 
 use Causal\Extractor\Service\AbstractService;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -45,16 +44,25 @@ class PdfinfoService extends AbstractService
     }
 
     /**
-     * Takes a file reference and extracts its metadata.
+     * Returns a list of supported file types.
      *
-     * @param \TYPO3\CMS\Core\Resource\File $file
      * @return array
      */
-    public function extractMetaData(File $file)
+    public function getSupportedFileTypes()
     {
-        $localTempFilePath = $file->getForLocalProcessing(false);
+        return array('pdf');
+    }
+
+    /**
+     * Takes a file reference and extracts its metadata.
+     *
+     * @param string $fileName Path to the file
+     * @return array
+     */
+    public function extractMetadataFromLocalFile($fileName)
+    {
         $pdfinfoCommand = GeneralUtility::getFileAbsFileName($this->settings['tools_pdfinfo'], false)
-            . ' ' . escapeshellarg($localTempFilePath);
+            . ' ' . escapeshellarg($fileName);
 
         $shellOutput = array();
         CommandUtility::exec($pdfinfoCommand, $shellOutput);
@@ -63,7 +71,6 @@ class PdfinfoService extends AbstractService
             list($key, $value) = GeneralUtility::trimExplode(':', $line, true, 2);
             $metadata[$key] = $value;
         }
-        $this->cleanupTempFile($localTempFilePath, $file);
 
         return $metadata;
     }

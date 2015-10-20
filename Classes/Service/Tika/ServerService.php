@@ -113,15 +113,13 @@ class ServerService extends AbstractService implements TikaServiceInterface
     /**
      * Takes a file reference and extracts its metadata.
      *
-     * @param \TYPO3\CMS\Core\Resource\File $file
+     * @param string $file
      * @return array
      */
-    public function extractMetaData(File $file)
+    public function extractMetadataFromLocalFile($fileName)
     {
-        $localTempFilePath = $file->getForLocalProcessing(false);
-        $content = $this->send('PUT', '/meta', 'application/json', $localTempFilePath);
+        $content = $this->send('PUT', '/meta', 'application/json', $fileName);
         $metadata = json_decode($content, true);
-        $this->cleanupTempFile($localTempFilePath, $file);
 
         return $metadata;
     }
@@ -135,8 +133,21 @@ class ServerService extends AbstractService implements TikaServiceInterface
     public function detectLanguage(File $file)
     {
         $localTempFilePath = $file->getForLocalProcessing(false);
-        $language = $this->send('PUT', '/language/stream', '', $localTempFilePath);
+        $language = $this->detectLanguageFromLocalFile($localTempFilePath);
         $this->cleanupTempFile($localTempFilePath, $file);
+
+        return $language;
+    }
+
+    /**
+     * Takes a file reference and detects its content's language.
+     *
+     * @param string $fileName Path to the file
+     * @return string
+     */
+    public function detectLanguageFromLocalFile($fileName)
+    {
+        $language = $this->send('PUT', '/language/stream', '', $fileName);
 
         return $language;
     }
