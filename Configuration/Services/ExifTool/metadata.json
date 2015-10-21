@@ -1,7 +1,10 @@
 [
   {
     "FAL": "caption",
-    "DATA": "CaptionAbstract"
+    "DATA": [
+      "CaptionAbstract",
+      "Album"
+    ]
   },
   {
     "FAL": "color_space",
@@ -35,7 +38,8 @@
       "Model",
       "Software",
       "CreatorTool",
-      "Producer"
+      "Producer",
+      "Encoder"
     ]
   },
   {
@@ -44,6 +48,10 @@
       "Description",
       "ImageDescription"
     ]
+  },
+  {
+    "FAL": "duration",
+    "DATA": "Duration->Causal\\Extractor\\Utility\\Duration::normalize"
   },
   {
     "FAL": "alternative",
