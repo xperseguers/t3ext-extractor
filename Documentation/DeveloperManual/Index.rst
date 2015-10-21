@@ -52,7 +52,7 @@ A mapping configuration file is of the form:
         "DATA": [
           "ColorMode",
           "ColorSpaceData",
-          "ColorSpace->\\Causal\\Extractor\\Utility\\ColorSpace::normalize"
+          "ColorSpace->Causal\\Extractor\\Utility\\ColorSpace::normalize"
         ]
       }
     ]

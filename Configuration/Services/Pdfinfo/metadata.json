@@ -5,11 +5,11 @@
   },
   {
     "FAL": "content_creation_date",
-    "DATA": "CreationDate->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+    "DATA": "CreationDate->Causal\\Extractor\\Utility\\DateTime::timestamp"
   },
   {
     "FAL": "content_modification_date",
-    "DATA": "ModDate->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+    "DATA": "ModDate->Causal\\Extractor\\Utility\\DateTime::timestamp"
   },
   {
     "FAL": "creator",

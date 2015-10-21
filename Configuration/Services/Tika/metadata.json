@@ -6,23 +6,23 @@
   {
     "FAL": "color_space",
     "DATA": [
-      "Color Space->\\Causal\\Extractor\\Utility\\ColorSpace::normalize"
+      "Color Space->Causal\\Extractor\\Utility\\ColorSpace::normalize"
     ]
   },
   {
     "FAL": "content_creation_date",
     "DATA": [
-      "Creation-Date->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
-      "date->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+      "Creation-Date->Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "date->Causal\\Extractor\\Utility\\DateTime::timestamp"
     ]
   },
   {
     "FAL": "content_modification_date",
     "DATA": [
-      "Date/Time->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
-      "Last-Modified->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
-      "Last-Save-Date->\\Causal\\Extractor\\Utility\\DateTime::timestamp",
-      "modified->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+      "Date/Time->Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "Last-Modified->Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "Last-Save-Date->Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "modified->Causal\\Extractor\\Utility\\DateTime::timestamp"
     ]
   },
   {
@@ -78,11 +78,11 @@
   },
   {
     "FAL": "latitude",
-    "DATA": "GPS Latitude->\\Causal\\Extractor\\Utility\\Gps::toDecimal(GPS Latitude Ref)"
+    "DATA": "GPS Latitude->Causal\\Extractor\\Utility\\Gps::toDecimal(GPS Latitude Ref)"
   },
   {
     "FAL": "longitude",
-    "DATA": "GPS Longitude->\\Causal\\Extractor\\Utility\\Gps::toDecimal(GPS Longitude Ref)"
+    "DATA": "GPS Longitude->Causal\\Extractor\\Utility\\Gps::toDecimal(GPS Longitude Ref)"
   },
   {
     "FAL": "ranking",
@@ -91,8 +91,8 @@
   {
     "FAL": "pages",
     "DATA": [
-      "xmpTPg:NPages->\\Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd",
-      "Page-Count->\\Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd"
+      "xmpTPg:NPages->Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd",
+      "Page-Count->Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd"
     ]
   },
   {

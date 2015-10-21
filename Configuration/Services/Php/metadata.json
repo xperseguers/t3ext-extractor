@@ -6,12 +6,12 @@
   {
     "FAL": "color_space",
     "DATA": [
-      "ColorSpace->\\Causal\\Extractor\\Utility\\ColorSpace::normalize"
+      "ColorSpace->Causal\\Extractor\\Utility\\ColorSpace::normalize"
     ]
   },
   {
     "FAL": "content_creation_date",
-    "DATA": "DateTime->\\Causal\\Extractor\\Utility\\DateTime::timestamp"
+    "DATA": "DateTime->Causal\\Extractor\\Utility\\DateTime::timestamp"
   },
   {
     "FAL": "creator",
