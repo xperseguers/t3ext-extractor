@@ -30,14 +30,14 @@ Available fields
     title                    Title                                   string
     width                    Width                                   integer
     height                   Height                                  integer
-    description              Description                             string
-    alternative              Alternative text                        string
+    `alternative`_           Alternative text or headline            string
+    `description`_           Description                             string
     visible                  Visible                                 0 or 1
     status                   Status                                  - 1 (OK)
                                                                      - 2 (Pending)
                                                                      - 3 (Under review)
-    keywords                 Keywords                                comma-separated list of strings
-    caption                    Caption                               string
+    `keywords`_              Keywords                                comma-separated list of strings
+    caption                  Caption                                 string
     creator_tool             Creator tool                            string
     download_name            Download name                           string
     creator                  Creator                                 string
@@ -57,7 +57,7 @@ Available fields
                                                                      - "cm" - centimeters
                                                                      - "m" - meters
                                                                      - "p" - pica (12 points, about 1/6 inch or 4.2 mm)
-    duration                 Duration of a movie/sound               integer (number of seconds)
+    duration                 Duration of the movie/sound             integer (number of seconds)
     color_space              Color space                             - "RGB"
                                                                      - "CMYK"
                                                                      - "CMY"
@@ -79,8 +79,47 @@ Field details
 		:depth: 2
 
 
-Geographic fields
-"""""""""""""""""
+Standard fields
+"""""""""""""""
+
+.. _users-manual-fields-alternative:
+
+alternative
+```````````
+
+A headline is a brief publishable synopsis or summary of the contents of the photograph. Like a news story, the Headline
+should grab attention, and telegraph the content of the image to the audience. Headlines need to be succinct. leave the
+supporting narrative for the `Description <description>`_ field. Do not, however, confuse the Headline term with the
+Title term.
+
+
+.. _users-manual-fields-description:
+
+description
+```````````
+
+The Description field, often referred to as a "caption" is used to describe the who, what (and possibly where and when)
+and why of what is happening in the photograph. If there is a person or people in the image, this caption might include
+their names, and/or their role in the action that is taking place. If the image is of a location, then it should give
+information regarding the location. Don't forget to also include this same "geographical" information in the
+`Geographical fields`_. The amount of detail you include will depend on the image and whether the image is documentary
+or conceptual. Typically, editorial images come with complete caption text, while advertising images may not.
+
+
+.. _users-manual-fields-keywords:
+
+keywords
+````````
+
+Enter keywords (terms or phrases) used to express the subject of the content seen in the photograph. Keywords may be
+free text (i.e. they are not required to be taken from a controlled vocabulary). You may enter any number of keywords,
+terms or phrases into this field, simply separate them with a comma or semi-colon.
+
+
+.. _users-manual-fields-geo:
+
+Geographical fields
+"""""""""""""""""""
 
 According to the `IPTC standards <https://www.iptc.org/std/photometadata/documentation/IPTC-CS5-FileInfo-UserGuide_6.pdf>`__,
 the descriptions of geographic fields contained within the IPTC Core Image section did not clearly distinguish wether
