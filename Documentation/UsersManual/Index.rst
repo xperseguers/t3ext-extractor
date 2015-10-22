@@ -74,9 +74,9 @@ Field details
 
 .. only:: html
 
-	.. contents::
-		:local:
-		:depth: 2
+    .. contents::
+        :local:
+        :depth: 2
 
 
 Standard fields
