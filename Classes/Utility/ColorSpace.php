@@ -31,7 +31,7 @@ class ColorSpace
      * @param string $str
      * @return string
      */
-    public function normalize($str)
+    public static function normalize($str)
     {
         if (MathUtility::canBeInterpretedAsInteger($str)) {
             // See http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html

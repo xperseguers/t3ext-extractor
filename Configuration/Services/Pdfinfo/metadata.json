@@ -32,6 +32,18 @@
     "DATA": "Keywords"
   },
   {
+    "FAL": "height",
+    "DATA": "Page size->Causal\\Extractor\\Utility\\Dimension::extractHeight"
+  },
+  {
+    "FAL": "width",
+    "DATA": "Page size->Causal\\Extractor\\Utility\\Dimension::extractWidth"
+  },
+  {
+    "FAL": "unit",
+    "DATA": "Page size->Causal\\Extractor\\Utility\\Dimension::extractUnit"
+  },
+  {
     "FAL": "pages",
     "DATA": [
       "Pages"
