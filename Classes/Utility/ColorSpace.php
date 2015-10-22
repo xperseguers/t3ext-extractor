@@ -33,15 +33,22 @@ class ColorSpace
      */
     public function normalize($str)
     {
-        if ($str === 'sRGB') {
-            $str = 'RGB';
-        } elseif (MathUtility::canBeInterpretedAsInteger($str)) {
+        if (MathUtility::canBeInterpretedAsInteger($str)) {
             // See http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html
             switch ((int)$str) {
                 case 1:
                 case 2:
                 case 0xfffd:
                     $str = 'RGB';
+                    break;
+                case 3:
+                    $str = 'indx';
+                    break;
+                case 5:
+                    $str = 'CMYK';
+                    break;
+                case 6:
+                    $str = 'YUV';
                     break;
             }
         }
