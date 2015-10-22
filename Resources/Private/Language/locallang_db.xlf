@@ -52,6 +52,70 @@
             <trans-unit id="settings.tools_pdfinfo">
                 <source>pdfinfo: Absolute path to external program "pdfinfo". Leave empty if not available.</source>
             </trans-unit>
+
+            <!-- Labels backported from TYPO3 v7 LTS -->
+            <trans-unit id="sys_file_metadata.unit.px">
+                <source>Pixels</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.unit.cm">
+                <source>Centimeters</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.unit.in">
+                <source>Inches</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.unit.mm">
+                <source>Millimeters</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.unit.m">
+                <source>Meters</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.unit.p">
+                <source>Picas</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.unit.pt">
+                <source>Points</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.color_space.RGB">
+                <source>RGB</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.color_space.sRGB">
+                <source>sRGB</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.color_space.CMYK">
+                <source>CMYK</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.color_space.CMY">
+                <source>CMY</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.color_space.YUV">
+                <source>YUV</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.color_space.grey">
+                <source>Grey</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.color_space.indx">
+                <source>Indexed</source>
+            </trans-unit>
+
+            <trans-unit id="tabs.camera">
+                <source>Camera Data</source>
+            </trans-unit>
+            <trans-unit id="tabs.camera">
+                <source>Camera Data</source>
+            </trans-unit>
+            <trans-unit id="tabs.audio">
+                <source>Audio</source>
+            </trans-unit>
+            <trans-unit id="tabs.video">
+                <source>Video</source>
+            </trans-unit>
+
+            <trans-unit id="palette.accessibility">
+                <source>Accessibility</source>
+            </trans-unit>
+            <trans-unit id="palette.gps">
+                <source>GPS</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
