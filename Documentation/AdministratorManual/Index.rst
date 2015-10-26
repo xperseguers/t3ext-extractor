@@ -68,21 +68,21 @@ you easily double check that provided parameters are correct:
 .. only:: html or json
 
     Successful connection
-        .. image:: ../Images/animation_ok.gif
+        .. image:: ../Images/animation-ok.gif
             :alt: Successful connection
 
     Broken connection
-        .. image:: ../Images/animation_ko.gif
+        .. image:: ../Images/animation-ko.gif
             :alt: Broken connection
 
 .. only:: latex
 
     Successful connection
-        .. image:: ../Images/connection_success.png
+        .. image:: ../Images/connection-success.png
             :alt: Successful connection
 
     Broken connection
-        .. image:: ../Images/connection_broken.png
+        .. image:: ../Images/connection-broken.png
             :alt: Broken connection
 
 
