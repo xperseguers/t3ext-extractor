@@ -45,6 +45,10 @@ class PhpService extends AbstractService
             'wbmp',     // IMAGETYPE_WBMP
             'xbm',      // IMAGETYPE_XBM
             'ico',      // IMAGETYPE_ICO
+            'docx',
+            'xlsx',
+            'pptx',
+            'ppsx',
         );
     }
 
@@ -56,6 +60,56 @@ class PhpService extends AbstractService
      * @see \Causal\ImageAutoresize\Utility\ImageUtility::getMetadata()
      */
     public function extractMetadataFromLocalFile($fileName)
+    {
+        $extension = strtolower(substr($fileName, strrpos($fileName, '.') + 1));
+        switch ($extension) {
+            case 'docx':
+            case 'xlsx':
+            case 'pptx':
+            case 'ppsx':
+                $metadata = $this->extractMetadataFromOfficeDocument($fileName);
+                break;
+            default:
+                $metadata = $this->extractMetadataFromImage($fileName);
+                break;
+        }
+
+        return $metadata;
+    }
+
+    /**
+     * Extracts metadata from a Microsoft Office document.
+     *
+     * @param string $fileName Path to the file
+     * @return array
+     */
+    protected function extractMetadataFromOfficeDocument($fileName)
+    {
+        $metadata = array();
+
+        $zip = zip_open($fileName);
+        if (is_resource($zip)) {
+            while (($zipEntry = zip_read($zip)) !== false) {
+                $entryName = zip_entry_name($zipEntry);
+                if ($entryName === 'docProps/core.xml' || $entryName === 'docProps/app.xml') {
+                    $contents = zip_entry_read($zipEntry, zip_entry_filesize($zipEntry));
+                    $data = GeneralUtility::xml2array($contents);
+                    $metadata = array_merge_recursive($metadata, $data);
+                }
+            }
+            zip_close($zip);
+        }
+
+        return $metadata;
+    }
+
+    /**
+     * Extracts metadata from an image file.
+     *
+     * @param string $fileName Path to the file
+     * @return array
+     */
+    protected function extractMetadataFromImage($fileName)
     {
         $metadata = $this->getMetadata($fileName);
         $metadata['Unit'] = 'px';

@@ -1,7 +1,10 @@
 [
   {
     "FAL": "caption",
-    "DATA": "IPTCCaption"
+    "DATA": [
+      "IPTCCaption",
+      "dc:subject"
+    ]
   },
   {
     "FAL": "color_space",
@@ -11,29 +14,44 @@
   },
   {
     "FAL": "content_creation_date",
-    "DATA": "DateTime->Causal\\Extractor\\Utility\\DateTime::timestamp"
+    "DATA": [
+      "DateTime->Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "dcterms:created->Causal\\Extractor\\Utility\\DateTime::timestamp"
+    ]
+  },
+  {
+    "FAL": "content_modification_date",
+    "DATA": "dcterms:modified->Causal\\Extractor\\Utility\\DateTime::timestamp"
   },
   {
     "FAL": "creator",
-    "DATA": "IPTCCreator"
+    "DATA": [
+      "IPTCCreator",
+      "dc:creator"
+    ]
   },
   {
     "FAL": "creator_tool",
     "DATA": [
       "Model",
-      "Software"
+      "Software",
+      "Application"
     ]
   },
   {
     "FAL": "description",
     "DATA": [
       "ImageDescription",
-      "IPTCDescription"
+      "IPTCDescription",
+      "dc:description"
     ]
   },
   {
     "FAL": "keywords",
-    "DATA": "IPTCKeywords"
+    "DATA": [
+      "IPTCKeywords",
+      "cp:keywords"
+    ]
   },
   {
     "FAL": "height",
@@ -67,12 +85,20 @@
   {
     "FAL": "source",
     "DATA": [
-      "FileSource"
+      "FileSource",
+      "Company"
     ]
   },
   {
+    "FAL": "pages",
+    "DATA": "Pages"
+  },
+  {
     "FAL": "title",
-    "DATA": "IPTCTitle"
+    "DATA": [
+      "IPTCTitle",
+      "dc:title"
+    ]
   },
   {
     "FAL": "unit",

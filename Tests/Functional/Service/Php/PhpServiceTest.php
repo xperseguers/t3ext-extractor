@@ -38,6 +38,8 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
     }
 
     /**
+     * @param string $fileName
+     * @param string $expectedColorSpace
      * @dataProvider colorSpaceProvider
      * @test
      */
@@ -53,7 +55,7 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
         }
 
         $metadata = $this->service->extractMetadataFromLocalFile($fileName);
-        $this->assertSame(strtolower($metadata['ColorSpace']), $expectedColorSpace);
+        $this->assertSame($expectedColorSpace, strtolower($metadata['ColorSpace']));
     }
 
     /**
@@ -64,14 +66,65 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
         $assets = $this->getFixtureAssets('colorspace');
 
         $provider = array();
-        foreach ($assets as $fileName) {
-            $file = PathUtility::basename($fileName);
+        foreach ($assets as $file => $fileName) {
             if (preg_match('/^colorspace-([a-z]+)/', $file, $matches)) {
                 $provider[$file] = array(
                     $fileName,
                     $matches[1]
                 );
             }
+        }
+
+        return $provider;
+    }
+
+    /**
+     * @param string $fileName
+     * @param array $expectedMetadata
+     * @dataProvider officeDocumentProvider
+     * @test
+     */
+    public function extractMetadataFromOfficeDocument($fileName, array $expectedMetadata)
+    {
+        $keys = array(
+            'dc:title',
+            'dc:subject',
+            'dc:creator',
+            'Manager',
+            'Company',
+            'cp:category',
+            'cp:keywords',
+            'dc:description',
+        );
+
+        $metadata = $this->service->extractMetadataFromLocalFile($fileName);
+        foreach ($keys as $key) {
+            $this->assertSame($expectedMetadata[$key], $metadata[$key], $key . ' is not the same.');
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function officeDocumentProvider()
+    {
+        $assets = $this->getFixtureAssets('msoffice');
+
+        $provider = array();
+        foreach ($assets as $file => $fileName) {
+            $provider[$file] = array(
+                $fileName,
+                array(
+                    'dc:title' => 'The Title',
+                    'dc:subject' => 'The Subject',
+                    'dc:creator' => 'The Author',
+                    'Manager' => 'The Manager',
+                    'Company' => 'The Company',
+                    'cp:category' => 'The Category',
+                    'cp:keywords' => 'The Keywords',
+                    'dc:description' => 'The Comments',
+                ),
+            );
         }
 
         return $provider;

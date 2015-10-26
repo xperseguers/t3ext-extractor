@@ -27,7 +27,7 @@ class DateTime
      * Converts a date/time into its Unix timestamp.
      *
      * @param string $str
-     * @return integer
+     * @return integer|null
      */
     public static function timestamp($str)
     {
@@ -36,7 +36,8 @@ class DateTime
             list($date, $time) = explode(' ', $str, 2);
             $str = str_replace(':', '/', $date) . ' ' . $time;
         }
-        return strtotime($str);
+        $timestamp = strtotime($str);
+        return $timestamp !== false ? $timestamp : null;
     }
 
 }

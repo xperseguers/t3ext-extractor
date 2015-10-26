@@ -16,6 +16,7 @@ namespace Causal\Extractor\Tests\Functional;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Abtract functional test class.
@@ -36,7 +37,11 @@ class AbstractFunctionalTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $assets = array();
         foreach ($files as $file) {
-            $assets[] = $fixturesPath . $file;
+            $fileName = $fixturesPath . $file;
+            $baseName = PathUtility::basename($fileName);
+            if ($baseName{0} !== '.') {
+                $assets[$baseName] = $fileName;
+            }
         }
 
         return $assets;

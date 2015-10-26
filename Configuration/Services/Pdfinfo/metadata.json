@@ -45,9 +45,7 @@
   },
   {
     "FAL": "pages",
-    "DATA": [
-      "Pages"
-    ]
+    "DATA": "Pages"
   },
   {
     "FAL": "publisher",
