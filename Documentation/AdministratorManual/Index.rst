@@ -56,7 +56,7 @@ Apache Tika
 ^^^^^^^^^^^
 
 Using Apache Tika is highly recommended for best extraction results. You may use either the standalone application jar
-or connect to an Apache Tika server. The latest should probably be quicker to answer since it run as a daemon.
+or connect to an Apache Tika server. The latter should probably be quicker to answer since it runs as a daemon.
 
 Apache Tika may be downloaded from https://tika.apache.org/download.html.
 

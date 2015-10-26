@@ -53,12 +53,15 @@ Available fields
     content_modification     Content modification date               integer (timestamp)
     note                     Note                                    string
     unit                     Unit (for width/height)                 - "px" - pixels
-                                                                     - "mm" - millimeters
                                                                      - "cm" - centimeters
+                                                                     - "in" - inches
+                                                                     - "mm" - millimeters
                                                                      - "m" - meters
-                                                                     - "p" - pica (12 points, about 1/6 inch or 4.2 mm)
+                                                                     - "p" - pica (1 pica = 12 points)
+                                                                     - "pt" - points (1 inch = 72 points)
     duration                 Duration of the movie/sound             integer (number of seconds)
     color_space              Color space                             - "RGB"
+                                                                     - "sRGB"
                                                                      - "CMYK"
                                                                      - "CMY"
                                                                      - "YUV"
