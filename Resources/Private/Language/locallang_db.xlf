@@ -69,7 +69,7 @@
                 <source>Shutter Speed</source>
             </trans-unit>
             <trans-unit id="sys_file_metadata.focal_length">
-                <source>Focal Length</source>
+                <source>Focal Length (mm)</source>
             </trans-unit>
             <trans-unit id="sys_file_metadata.exposure_bias">
                 <source>Exposure Bias</source>
@@ -81,7 +81,7 @@
                 <source>ISO Speed</source>
             </trans-unit>
             <trans-unit id="sys_file_metadata.aperture">
-                <source>Aperture</source>
+                <source>Aperture (f/)</source>
             </trans-unit>
 
             <!-- Labels backported from TYPO3 v7 LTS -->

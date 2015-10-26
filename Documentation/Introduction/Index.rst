@@ -24,8 +24,10 @@ uploading assets.
 It works with built-in PHP functions but takes advantage of Apache Tika and other external tools for enhanced metadata
 extraction.
 
-.. image:: ../Images/camera-data.png
+.. figure:: ../Images/camera-data.png
     :alt: Metadata for an image
+
+    Metadata extracted from a digital camera image.
 
 
 .. _requirements:

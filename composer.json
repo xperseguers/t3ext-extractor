@@ -7,7 +7,10 @@
     "Metadata",
     "Content Analysis",
     "Tika",
-    "FAL"
+    "FAL",
+    "EXIF",
+    "IPTC",
+    "XMP"
   ],
   "homepage": "https://forge.typo3.org/projects/extension-extractor",
   "support": {
