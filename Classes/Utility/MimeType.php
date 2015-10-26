@@ -85,7 +85,7 @@ class MimeType
     {
         $fileName = ExtensionManagementUtility::extPath('extractor') . 'Resources/Private/mime.types';
         $fh = fopen($fileName, 'r');
-        if ($fh) {
+        if (is_resource($fh)) {
             while (($buffer = fgets($fh, 1024)) !== false) {
                 if ($buffer{0} === '#') {
                     continue;

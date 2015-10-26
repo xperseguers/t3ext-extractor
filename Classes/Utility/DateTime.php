@@ -35,6 +35,10 @@ class DateTime
             // PHP built-in format when reading EXIF
             list($date, $time) = explode(' ', $str, 2);
             $str = str_replace(':', '/', $date) . ' ' . $time;
+        } elseif (preg_match('/D:(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/', $str, $matches)) {
+            // Native PDF format
+            array_shift($matches);
+            $str = vsprintf('%s/%s/%s %s:%s:%s', $matches);
         }
         $timestamp = strtotime($str);
         return $timestamp !== false ? $timestamp : null;

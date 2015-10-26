@@ -49,6 +49,7 @@ class PhpService extends AbstractService
             'xlsx',
             'pptx',
             'ppsx',
+            'pdf',
         );
     }
 
@@ -68,6 +69,9 @@ class PhpService extends AbstractService
             case 'pptx':
             case 'ppsx':
                 $metadata = $this->extractMetadataFromOfficeDocument($fileName);
+                break;
+            case 'pdf':
+                $metadata = $this->extractMetadataFromPdf($fileName);
                 break;
             default:
                 $metadata = $this->extractMetadataFromImage($fileName);
@@ -98,6 +102,84 @@ class PhpService extends AbstractService
                 }
             }
             zip_close($zip);
+        }
+
+        return $metadata;
+    }
+
+    /**
+     * Extracts metadata from a PDF document.
+     *
+     * @param string $fileName Path to the file
+     * @return array
+     */
+    protected function extractMetadataFromPdf($fileName)
+    {
+        $metadata = array();
+
+        $fh = fopen($fileName, 'r');
+        if (is_resource($fh)) {
+            $xmpPointer = 0;
+            $objects = array();
+            while (($buffer = fgets($fh, 1024000)) !== false) {
+                if (preg_match('/^(\d+) \d+ obj(.*)/', $buffer, $matches)) {
+                    $object = trim($matches[2]);
+                    while (($b = fgets($fh, 1024000)) !== false) {
+                        if (trim($b) === 'endobj') {
+                            break;
+                        }
+                        $object .= $b;
+                    }
+                    // TODO: check if $object is worth keeping (to lower memory usage)
+                    $objects[$matches[1]] = $object;
+                    if (strpos($object, '<x:xmpmeta ') !== false) {
+                        $xmpPointer = $matches[1];
+                    }
+                }
+            }
+            fclose($fh);
+
+            // Native PDF metadata are referenced in position 1
+            if (isset($objects[1])) {
+                if (preg_match_all('#/([A-Za-z]+) (\d+) 0 R#', $objects[1], $matches)) {
+                    foreach ($matches[1] as $index => $key) {
+                        $referencedObject = $matches[2][$index];
+                        $value = trim($objects[$referencedObject]);
+                        if (preg_match('/^\((.+)\)$/', $value, $m)) {
+                            $metadata[$key] = $m[1];
+                        }
+                    }
+                }
+            }
+            if (isset($objects[3])) {
+                if (preg_match('#<< /Type /Pages .* /Count (\d+)#', $objects[3], $matches)) {
+                    $metadata['Pages'] = (int)$matches[1];
+                }
+            }
+
+            // XMP block
+            if ($xmpPointer > 0) {
+                $contents = $objects[$xmpPointer];
+                $start = strpos($contents, '<x:xmpmeta ');
+                $end = strpos($contents, '</x:xmpmeta>');
+                $contents = substr($contents, $start, $end - $start + 12);
+                // Remove namespaces
+                $contents = preg_replace('#(</?)([a-z]+):([A-Za-z]+)#', '\1\3', $contents);
+                $xml = simplexml_load_string($contents);
+                $data = @json_decode(@json_encode($xml), true);
+                foreach ($data['RDF']['Description'] as $index => $values) {
+                    foreach ($values as $key => $value) {
+                        if (isset($value['Seq'])) {
+                            $value = implode(', ', $value['Seq']);
+                        } elseif (isset($value['Alt'])) {
+                            $value = implode(', ', $value['Alt']);
+                        } elseif (isset($value['Bag'])) {
+                            $value = implode(', ', $value['Bag']);
+                        }
+                        $metadata['xmp:' . $key] = $value;
+                    }
+                }
+            }
         }
 
         return $metadata;

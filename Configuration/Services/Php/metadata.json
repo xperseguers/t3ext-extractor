@@ -3,7 +3,8 @@
     "FAL": "caption",
     "DATA": [
       "IPTCCaption",
-      "dc:subject"
+      "dc:subject",
+      "Subject"
     ]
   },
   {
@@ -16,18 +17,27 @@
     "FAL": "content_creation_date",
     "DATA": [
       "DateTime->Causal\\Extractor\\Utility\\DateTime::timestamp",
-      "dcterms:created->Causal\\Extractor\\Utility\\DateTime::timestamp"
+      "dcterms:created->Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "CreationDate->Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "xmp:CreateDate->Causal\\Extractor\\Utility\\DateTime::timestamp"
+
     ]
   },
   {
     "FAL": "content_modification_date",
-    "DATA": "dcterms:modified->Causal\\Extractor\\Utility\\DateTime::timestamp"
+    "DATA": [
+      "dcterms:modified->Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "ModDate->Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "xmp:ModifyDate->Causal\\Extractor\\Utility\\DateTime::timestamp"
+    ]
   },
   {
     "FAL": "creator",
     "DATA": [
       "IPTCCreator",
-      "dc:creator"
+      "dc:creator",
+      "xmp:creator",
+      "Author"
     ]
   },
   {
@@ -35,7 +45,9 @@
     "DATA": [
       "Model",
       "Software",
-      "Application"
+      "Application",
+      "xmp:CreatorTool",
+      "Producer"
     ]
   },
   {
@@ -43,14 +55,17 @@
     "DATA": [
       "ImageDescription",
       "IPTCDescription",
-      "dc:description"
+      "dc:description",
+      "xmp:description"
     ]
   },
   {
     "FAL": "keywords",
     "DATA": [
       "IPTCKeywords",
-      "cp:keywords"
+      "cp:keywords",
+      "xmp:Keywords",
+      "Keywords"
     ]
   },
   {
@@ -90,6 +105,10 @@
     ]
   },
   {
+    "FAL": "note",
+    "DATA": "xmp:rights"
+  },
+  {
     "FAL": "pages",
     "DATA": "Pages"
   },
@@ -97,7 +116,9 @@
     "FAL": "title",
     "DATA": [
       "IPTCTitle",
-      "dc:title"
+      "dc:title",
+      "xmp:title",
+      "Title"
     ]
   },
   {

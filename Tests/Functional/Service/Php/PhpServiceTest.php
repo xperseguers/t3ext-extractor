@@ -130,4 +130,58 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
         return $provider;
     }
 
+    /**
+     * @param string $fileName
+     * @param array $expectedMetadata
+     * @dataProvider pdfProvider
+     * @test
+     */
+    public function extractMetadataFromPdf($fileName, array $expectedMetadata)
+    {
+        $keys = array(
+            'Author',
+            'Title',
+            'Subject',
+            'Keywords',
+            'Pages',
+            'xmp:creator',
+            'xmp:CreatorTool',
+            'xmp:rights',
+            'xmp:title',
+        );
+
+        $metadata = $this->service->extractMetadataFromLocalFile($fileName);
+        foreach ($keys as $key) {
+            $this->assertSame($expectedMetadata[$key], $metadata[$key], $key . ' is not the same.');
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function pdfProvider()
+    {
+        $assets = $this->getFixtureAssets('pdf');
+
+        $provider = array();
+        foreach ($assets as $file => $fileName) {
+            $provider[$file] = array(
+                $fileName,
+                array(
+                    'Author' => 'The Author',
+                    'Title' => 'The Title',
+                    'Subject' => 'The Subject',
+                    'Keywords' => 'The Keywords',
+                    'Pages' => 1,
+                    'xmp:creator' => 'The Author',
+                    'xmp:CreatorTool' => 'Word',
+                    'xmp:rights' => 'The Copyright',
+                    'xmp:title' => 'The Title',
+                ),
+            );
+        }
+
+        return $provider;
+    }
+
 }
