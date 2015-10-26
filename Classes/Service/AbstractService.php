@@ -16,6 +16,7 @@ namespace Causal\Extractor\Service;
 
 use Causal\Extractor\Service\ServiceInterface;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -71,6 +72,32 @@ abstract class AbstractService implements ServiceInterface
         if (PathUtility::basename($localTempFilePath) !== $sourceFile->getName()) {
             unlink($localTempFilePath);
         }
+    }
+
+    /**
+     * Escapes a shell argument (for example a filename) to be used on the local system.
+     *
+     * The setting UTF8filesystem will be taken into account.
+     *
+     * @param string $input Input-argument to be escaped
+     * @return string Escaped shell argument
+     * @internal This is an internal method which will be removed onced TYPO3 6.2 is not supported anymore
+     */
+    protected function escapeShellArgument($input)
+    {
+        if (version_compare(TYPO3_version, '7.1.0', '>=')) {
+            $escapedInput = CommandUtility::escapeShellArgument($input);
+        } else {
+            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+                $currentLocale = setlocale(LC_CTYPE, 0);
+                setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+            }
+            $escapedInput = escapeshellarg($input);
+            if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
+                setlocale(LC_CTYPE, $currentLocale);
+            }
+        }
+        return $escapedInput;
     }
 
 }

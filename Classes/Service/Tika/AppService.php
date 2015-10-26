@@ -57,7 +57,7 @@ class AppService extends AbstractService implements TikaServiceInterface
     {
         $version = '';
         $tikaCommand = CommandUtility::getCommand('java')
-            . ' -jar ' . escapeshellarg(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
+            . ' -jar ' . $this->escapeShellArgument(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
             . ' --version';
 
         $shellOutput = array();
@@ -75,7 +75,7 @@ class AppService extends AbstractService implements TikaServiceInterface
     public function getSupportedFileTypes()
     {
         $tikaCommand = CommandUtility::getCommand('java')
-            . ' -jar ' . escapeshellarg(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
+            . ' -jar ' . $this->escapeShellArgument(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
             . ' --list-supported-types';
 
         $shellOutput = array();
@@ -132,9 +132,9 @@ class AppService extends AbstractService implements TikaServiceInterface
     {
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -Dfile.encoding=UTF8'
-            . ' -jar ' . escapeshellarg(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
+            . ' -jar ' . $this->escapeShellArgument(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
             . ' -m --json'
-            . ' ' . escapeshellarg($fileName);
+            . ' ' . $this->escapeShellArgument($fileName);
 
         $shellOutput = array();
         CommandUtility::exec($tikaCommand, $shellOutput);
@@ -168,9 +168,9 @@ class AppService extends AbstractService implements TikaServiceInterface
     {
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -Dfile.encoding=UTF8'
-            . ' -jar ' . escapeshellarg(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
+            . ' -jar ' . $this->escapeShellArgument(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
             . ' -l'
-            . ' ' . escapeshellarg($fileName);
+            . ' ' . $this->escapeShellArgument($fileName);
 
         $language = trim(CommandUtility::exec($tikaCommand));
 

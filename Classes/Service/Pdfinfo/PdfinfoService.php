@@ -62,7 +62,7 @@ class PdfinfoService extends AbstractService
     public function extractMetadataFromLocalFile($fileName)
     {
         $pdfinfoCommand = GeneralUtility::getFileAbsFileName($this->settings['tools_pdfinfo'], false)
-            . ' ' . escapeshellarg($fileName);
+            . ' ' . $this->escapeShellArgument($fileName);
 
         $shellOutput = array();
         CommandUtility::exec($pdfinfoCommand, $shellOutput);

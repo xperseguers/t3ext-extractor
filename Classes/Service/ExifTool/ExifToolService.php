@@ -84,7 +84,7 @@ class ExifToolService extends AbstractService
     {
         $exifToolCommand = GeneralUtility::getFileAbsFileName($this->settings['tools_exiftool'], false)
             . ' -j'
-            . ' ' . escapeshellarg($fileName);
+            . ' ' . $this->escapeShellArgument($fileName);
 
         $shellOutput = array();
         CommandUtility::exec($exifToolCommand, $shellOutput);
