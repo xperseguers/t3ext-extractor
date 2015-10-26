@@ -35,7 +35,6 @@
   {
     "FAL": "creator_tool",
     "DATA": [
-      "Model",
       "Software",
       "CreatorTool",
       "Producer",
@@ -126,5 +125,48 @@
     "DATA": [
       "Title"
     ]
+  },
+  {
+    "FAL": "camera_make",
+    "DATA": "Make"
+  },
+  {
+    "FAL": "camera_model",
+    "DATA": "Model"
+  },
+  {
+    "FAL": "camera_lens",
+    "DATA": [
+      "LensID",
+      "LensType",
+      "Lens"
+    ]
+  },
+  {
+    "FAL": "shutter_speed",
+    "DATA": "ShutterSpeed"
+  },
+  {
+    "FAL": "focal_length",
+    "DATA": [
+      "FocalLength35efl->Causal\\Extractor\\Utility\\Number::extractFloat",
+      "FocalLength->Causal\\Extractor\\Utility\\Number::extractFloat"
+    ]
+  },
+  {
+    "FAL": "exposure_bias",
+    "DATA": "ExposureCompensation"
+  },
+  {
+    "FAL": "white_balance_mode",
+    "DATA": "WhiteBalance"
+  },
+  {
+    "FAL": "iso_speed",
+    "DATA": "BaseISO"
+  },
+  {
+    "FAL": "aperture",
+    "DATA": "Aperture"
   }
 ]

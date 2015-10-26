@@ -29,12 +29,30 @@ class Number
      * @param string $str
      * @return string
      */
-    public function extractIntegerAtEnd($str)
+    public static function extractIntegerAtEnd($str)
     {
         if (preg_match('/(\d+)$/', $str, $matches)) {
             return (int)$matches[1];
         }
         return null;
+    }
+
+    /**
+     * Extract a float from a string.
+     *
+     * @param string $str
+     * @return float
+     */
+    public static function extractFloat($str)
+    {
+        if (preg_match('#^(\d+)/(\d+)$#', $str, $matches)) {
+            $value = (int)$matches[1] / (float)$matches[2];
+        } elseif (preg_match('/35 mm equivalent: (\d+\.\d+) mm/', $str, $matches)) {
+            $value = (float)$matches[1];
+        } else {
+            $value = (float)$str;
+        }
+        return $value;
     }
 
 }

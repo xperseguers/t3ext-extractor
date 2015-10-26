@@ -90,6 +90,10 @@ class ExifToolService extends AbstractService
         CommandUtility::exec($exifToolCommand, $shellOutput);
         $metadata = json_decode(implode('', $shellOutput), true);
 
+        if (is_array($metadata[0]['Creator'])) {
+            $metadata[0]['Creator'] = end($metadata[0]['Creator']);
+        }
+
         return $metadata[0];
     }
 

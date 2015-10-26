@@ -53,6 +53,37 @@
                 <source>pdfinfo: Absolute path to external program "pdfinfo". Leave empty if not available.</source>
             </trans-unit>
 
+            <trans-unit id="sys_file_metadata.copyright">
+                <source>Copyright</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.camera_make">
+                <source>Make</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.camera_model">
+                <source>Model</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.camera_lens">
+                <source>Lens</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.shutter_speed">
+                <source>Shutter Speed</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.focal_length">
+                <source>Focal Length</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.exposure_bias">
+                <source>Exposure Bias</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.white_balance_mode">
+                <source>White Balance Mode</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.iso_speed">
+                <source>ISO Speed</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.aperture">
+                <source>Aperture</source>
+            </trans-unit>
+
             <!-- Labels backported from TYPO3 v7 LTS -->
             <trans-unit id="sys_file_metadata.unit.px">
                 <source>Pixels</source>

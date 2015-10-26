@@ -37,7 +37,7 @@ class TikaLanguageDetector extends AbstractExtractionService
     /**
      * @var integer
      */
-    protected $priority = 98;
+    protected $priority = 90;
 
     /**
      * @var bool

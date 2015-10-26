@@ -2,9 +2,8 @@
 defined('TYPO3_MODE') || die();
 
 // This file is a backport of EXT:filemetadata in TYPO3 v7
-
 if (version_compare(TYPO3_version, '7.6.0', '<')) {
-    $tca = array(
+    $tcaV7 = array(
         'ctrl' => array(
             'type' => 'file:type',
         ),
@@ -226,7 +225,7 @@ if (version_compare(TYPO3_version, '7.6.0', '<')) {
             ),
             'copyright' => array(
                 'exclude' => 1,
-                'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.copyright',
+                'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.copyright',
                 'config' => array(
                     'type' => 'input',
                     'size' => 20,
@@ -495,21 +494,7 @@ if (version_compare(TYPO3_version, '7.6.0', '<')) {
         ),
     );
 
-    if (version_compare(TYPO3_version, '6.99.99', '<=')) {
-        // Field "copyright" is not yet available
-        unset($tca['columns']['copyright']);
-
-        // EXT:frontend does not exist
-        foreach ($tca['types'] as $type => $configuration) {
-            $tca['types'][$type]['showitem'] = str_replace('LLL:EXT:frontend/Resources/Private/Language/', 'LLL:EXT:cms/', $tca['types'][$type]['showitem']);
-        }
-
-        foreach ($tca['palettes'] as $palette => $configuration) {
-            $tca['palettes'][$palette]['canNotCollapse'] = 1;
-        }
-    }
-
-    $GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['sys_file_metadata'], $tca);
+    $GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['sys_file_metadata'], $tcaV7);
 
     // Add category tab if categories column is present
     if (isset($GLOBALS['TCA']['sys_file_metadata']['columns']['categories'])) {
@@ -519,4 +504,152 @@ if (version_compare(TYPO3_version, '7.6.0', '<')) {
         );
     }
 
+}
+
+// Additional metadata
+$tca = array(
+    'types' => array(
+        TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+            'showitem' => '
+                    fileinfo, title, description, ranking, keywords,
+                        --palette--;LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:palette.accessibility;20,
+                    --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
+                        --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
+                        fe_groups,
+                    --div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
+                        creator, creator_tool, publisher, source, copyright,
+                        --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
+                        --palette--;LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:palette.gps;30,
+                    --div--;LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:tabs.camera,
+                        --palette--;;camera,
+                        shutter_speed, aperture, exposure_bias_value,
+                        iso_speed,
+                        focal_length, camera_lens,
+                        color_space, white_balance_mode,
+                        --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.metrics;50
+                ',
+        ),
+    ),
+    'palettes' => array(
+        'camera' => array(
+            'showitem' => 'camera_make, camera_model',
+        ),
+    ),
+    'columns' => array(
+        'camera_make' => array(
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
+            'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.camera_make',
+            'config' => array(
+                'type' => 'input',
+                'size' => '30',
+                'readOnly' => true,
+            ),
+        ),
+        'camera_model' => array(
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
+            'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.camera_model',
+            'config' => array(
+                'type' => 'input',
+                'size' => '30',
+                'readOnly' => true,
+            ),
+        ),
+        'camera_lens' => array(
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
+            'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.camera_lens',
+            'config' => array(
+                'type' => 'input',
+                'size' => '30',
+                'readOnly' => true,
+            ),
+        ),
+        'shutter_speed' => array(
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
+            'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.shutter_speed',
+            'config' => array(
+                'type' => 'input',
+                'size' => '10',
+                'readOnly' => true,
+            ),
+        ),
+        'focal_length' => array(
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
+            'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.focal_length',
+            'config' => array(
+                'type' => 'input',
+                'size' => '10',
+                'eval' => 'float',
+                'readOnly' => true,
+            ),
+        ),
+        'exposure_bias' => array(
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
+            'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.exposure_bias',
+            'config' => array(
+                'type' => 'input',
+                'size' => '20',
+                'readOnly' => true,
+            ),
+        ),
+        'white_balance_mode' => array(
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
+            'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.white_balance_mode',
+            'config' => array(
+                'type' => 'input',
+                'size' => '20',
+                'readOnly' => true,
+            ),
+        ),
+        'iso_speed' => array(
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
+            'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.iso_speed',
+            'config' => array(
+                'type' => 'input',
+                'size' => '10',
+                'eval' => 'int',
+                'readOnly' => true,
+            ),
+        ),
+        'aperture' => array(
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
+            'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.aperture',
+            'config' => array(
+                'type' => 'input',
+                'size' => '10',
+                'eval' => 'float',
+                'readOnly' => true,
+            ),
+        ),
+    ),
+);
+
+$GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['sys_file_metadata'], $tca);
+
+if (version_compare(TYPO3_version, '6.99.99', '<=')) {
+    // EXT:frontend does not exist
+    foreach ($GLOBALS['TCA']['sys_file_metadata']['types'] as $type => $configuration) {
+        $GLOBALS['TCA']['sys_file_metadata']['types'][$type]['showitem'] = str_replace('LLL:EXT:frontend/Resources/Private/Language/', 'LLL:EXT:cms/', $GLOBALS['TCA']['sys_file_metadata']['types'][$type]['showitem']);
+    }
+
+    foreach ($GLOBALS['TCA']['sys_file_metadata']['palettes'] as $palette => $configuration) {
+        $GLOBALS['TCA']['sys_file_metadata']['palettes'][$palette]['canNotCollapse'] = 1;
+    }
 }

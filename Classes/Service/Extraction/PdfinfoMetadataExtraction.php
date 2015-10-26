@@ -29,7 +29,7 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
     /**
      * @var integer
      */
-    protected $priority = 60;
+    protected $priority = 70;
 
     /**
      * PdfinfoMetadataExtraction constructor.

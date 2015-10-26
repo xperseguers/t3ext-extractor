@@ -29,7 +29,7 @@ class TikaMetadataExtraction extends AbstractExtractionService
     /**
      * @var integer
      */
-    protected $priority = 100;
+    protected $priority = 80;
 
     /**
      * @var bool

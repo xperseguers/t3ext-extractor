@@ -43,7 +43,6 @@
   {
     "FAL": "creator_tool",
     "DATA": [
-      "Model",
       "Software",
       "Application",
       "xmp:CreatorTool",
@@ -86,7 +85,7 @@
     "FAL": "note",
     "DATA": [
       "IPTCCopyright",
-      "COMPUTED|Copyright"
+      "Copyright"
     ]
   },
   {
@@ -124,5 +123,37 @@
   {
     "FAL": "unit",
     "DATA": "Unit"
+  },
+  {
+    "FAL": "camera_make",
+    "DATA": "Make"
+  },
+  {
+    "FAL": "camera_model",
+    "DATA": "Model"
+  },
+  {
+    "FAL": "camera_lens",
+    "DATA": "UndefinedTag:0x0095"
+  },
+  {
+    "FAL": "shutter_speed",
+    "DATA": "ExposureTime"
+  },
+  {
+    "FAL": "focal_length",
+    "DATA": "FocalLength->Causal\\Extractor\\Utility\\Number::extractFloat"
+  },
+  {
+    "FAL": "exposure_bias",
+    "DATA": "ExposureBiasValue"
+  },
+  {
+    "FAL": "iso_speed",
+    "DATA": "ISOSpeedRatings"
+  },
+  {
+    "FAL": "aperture",
+    "DATA": "FNumber->Causal\\Extractor\\Utility\\Number::extractFloat"
   }
 ]

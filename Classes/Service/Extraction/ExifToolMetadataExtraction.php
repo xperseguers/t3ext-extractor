@@ -29,7 +29,7 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
     /**
      * @var integer
      */
-    protected $priority = 80;
+    protected $priority = 90;
 
     /**
      * ExifToolMetadataExtraction constructor.
