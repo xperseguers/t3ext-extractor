@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2015-10-17T11:37:21Z"
+    <file source-language="en" datatype="plaintext" original="messages" date="2015-10-27T14:02:21Z"
           product-name="extractor">
         <header/>
         <body>
@@ -18,6 +18,12 @@
                 <source>Extract metadata after upload: If ticked, the metadata extraction will be invoked after
                     uploading a file. You will not have to wait until the corresponding FAL scheduler task is run.
                     BEWARE! Upload workflow will be slown-down and may put additional stress to your server.
+                </source>
+            </trans-unit>
+            <trans-unit id="settings.mapping_base_directory">
+                <source>Base directory for mapping: The metadata extraction requires mapping configuration files.
+                    By default these are provided in the Configuration/Services directory. If you wish to use a different
+                    mapping configuration, you can provide a different mapping configuration base directory.
                 </source>
             </trans-unit>
             <trans-unit id="settings.disabled">

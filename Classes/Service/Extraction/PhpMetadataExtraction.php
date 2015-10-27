@@ -36,6 +36,8 @@ class PhpMetadataExtraction extends AbstractExtractionService
      */
     public function __construct()
     {
+        parent::__construct();
+
         $phpService = $this->getPhpService();
         $this->supportedFileTypes = $phpService->getSupportedFileTypes();
     }

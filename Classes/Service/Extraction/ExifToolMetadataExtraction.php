@@ -36,6 +36,8 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
      */
     public function __construct()
     {
+        parent::__construct();
+
         /** @var \TYPO3\CMS\Core\Registry $registry */
         $registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
         $this->supportedFileTypes = $registry->get('tx_extractor', 'exiftool.extensions');

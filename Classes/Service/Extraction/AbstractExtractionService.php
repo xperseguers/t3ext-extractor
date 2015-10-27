@@ -30,6 +30,19 @@ abstract class AbstractExtractionService implements ExtractorInterface
     /**
      * @var array
      */
+    protected $settings;
+
+    /**
+     * AbstractService constructor.
+     */
+    public function __construct()
+    {
+        $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor']);
+    }
+
+    /**
+     * @var array
+     */
     protected $supportedFileTypes = array('__INVALID__');
 
     /**
@@ -107,7 +120,11 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     protected function getDataMapping($service, $type = '')
     {
-        $pathConfiguration = ExtensionManagementUtility::extPath('extractor') . 'Configuration/Services/';
+        $pathConfiguration = GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory'], false);
+        if ($pathConfiguration === '') {
+            $pathConfiguration = ExtensionManagementUtility::extPath('extractor') . 'Configuration/Services/';
+        }
+        $pathConfiguration = rtrim($pathConfiguration, '/') . '/';
 
         if (empty($type) || $type === '*') {
             $type = 'default';
@@ -161,7 +178,13 @@ abstract class AbstractExtractionService implements ExtractorInterface
         $output = array();
 
         if (!is_array($mapping)) {
-            return $data;
+            // Make sure unprocessed arrays will never have a risk to find their way to the database
+            foreach ($data as $key => $value) {
+                if (!is_array($value)) {
+                    $output[$key] = $value;
+                }
+            }
+            return $output;
         }
 
         foreach ($mapping as $m) {

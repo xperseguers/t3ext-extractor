@@ -36,6 +36,8 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
      */
     public function __construct()
     {
+        parent::__construct();
+
         if (($pdfinfoService = $this->getPdfinfoService()) !== null) {
             $this->supportedFileTypes = $pdfinfoService->getSupportedFileTypes();
         }
