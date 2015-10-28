@@ -37,7 +37,7 @@ Requirements
 
 - PHP methods: ``exif_read_data``, ``iptcparse``
 
-Following tools are *optional* but **recommenced** for best extraction results:
+Following tools are **optional** but *recommended* for best extraction results:
 
 Apache Tika
     The Apache Tika\ |TM| toolkit detects and extracts metadata and text from over a thousand different file types (such
@@ -56,5 +56,5 @@ ExifTool
     package.
 
 Pdfinfo
-    Pdfinfo prints the content of the "Info" dictonary (plus some other useful information) from a Portable Document
+    Pdfinfo prints the content of the "Info" dictionary (plus some other useful information) from a Portable Document
     Format (PDF) file.
