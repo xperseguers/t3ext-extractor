@@ -126,8 +126,11 @@ abstract class AbstractExtractionService implements ExtractorInterface
         }
         $pathConfiguration = rtrim($pathConfiguration, '/') . '/';
 
-        // Always fall back to 'default'
+        // Always fall back to 'default'...
         $types[] = 'default';
+
+        // ... and even keep compatibility with v1.0 and v1.1
+        $types[] = 'metadata';
 
         foreach ($types as $type) {
             $mappingFileName = $pathConfiguration . $service . '/' . $type . '.json';
