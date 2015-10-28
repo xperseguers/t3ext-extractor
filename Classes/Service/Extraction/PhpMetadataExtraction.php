@@ -69,7 +69,8 @@ class PhpMetadataExtraction extends AbstractExtractionService
 
         $extractedMetadata = $this->getPhpService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {
-            $dataMapping = $this->getDataMapping('Php', 'metadata');
+            $serviceTypes = $this->extensionToServiceTypes($file->getExtension());
+            $dataMapping = $this->getDataMapping('Php', $serviceTypes);
             $metadata = $this->remapServiceOutput($extractedMetadata, $dataMapping);
         }
 

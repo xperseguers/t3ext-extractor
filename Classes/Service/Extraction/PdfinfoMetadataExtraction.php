@@ -71,7 +71,8 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
 
         $extractedMetadata = $this->getPdfinfoService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {
-            $dataMapping = $this->getDataMapping('Pdfinfo', 'metadata');
+            $serviceTypes = $this->extensionToServiceTypes($file->getExtension());
+            $dataMapping = $this->getDataMapping('Pdfinfo', $serviceTypes);
             $metadata = $this->remapServiceOutput($extractedMetadata, $dataMapping);
         }
 

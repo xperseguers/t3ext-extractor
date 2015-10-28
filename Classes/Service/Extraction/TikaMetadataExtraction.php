@@ -82,7 +82,8 @@ class TikaMetadataExtraction extends AbstractExtractionService
 
         $extractedMetadata = $this->getTikaService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {
-            $dataMapping = $this->getDataMapping('Tika', 'metadata');
+            $serviceTypes = $this->extensionToServiceTypes($file->getExtension());
+            $dataMapping = $this->getDataMapping('Tika', $serviceTypes);
             $metadata = $this->remapServiceOutput($extractedMetadata, $dataMapping);
         }
 

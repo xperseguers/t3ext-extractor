@@ -114,11 +114,11 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * Returns the data mapping for a given service key/subtype.
      *
      * @param string $service
-     * @param string $type
+     * @param array $types
      * @return array|null
      * @throws \Exception
      */
-    protected function getDataMapping($service, $type = '')
+    protected function getDataMapping($service, array $types = array())
     {
         $pathConfiguration = GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory'], false);
         if ($pathConfiguration === '') {
@@ -126,13 +126,14 @@ abstract class AbstractExtractionService implements ExtractorInterface
         }
         $pathConfiguration = rtrim($pathConfiguration, '/') . '/';
 
-        if (empty($type) || $type === '*') {
-            $type = 'default';
-        }
-        $mappingFileName = $pathConfiguration . $service . '/' . $type . '.json';
-        if (!is_file($mappingFileName) && $type !== 'default') {
-            // Try a default mapping
-            $mappingFileName = $pathConfiguration . $service . '/default.json';
+        // Always fall back to 'default'
+        $types[] = 'default';
+
+        foreach ($types as $type) {
+            $mappingFileName = $pathConfiguration . $service . '/' . $type . '.json';
+            if (is_file($mappingFileName)) {
+                break;
+            }
         }
 
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'])) {
@@ -143,7 +144,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
                 }
                 $hookData = array(
                     'service' => $service,
-                    'type' => $type,
+                    'types' => $types,
                     'mappingFileName' => $mappingFileName,
                 );
                 $newMappingFileName = $hookObject->postProcessDataMapping($hookData, $this);
@@ -243,6 +244,153 @@ abstract class AbstractExtractionService implements ExtractorInterface
         }
 
         return $output;
+    }
+
+    /**
+     * Maps a file extension to possible service types.
+     *
+     * @param string $extension
+     * @return string[]
+     */
+    protected function extensionToServiceTypes($extension)
+    {
+        // Normalize the extension
+        $extension = strtolower($extension);
+        switch ($extension) {
+            case 'aif':
+                $extension = 'aiff';
+                break;
+            case 'htm':
+            case 'phtml':
+                $extension = 'html';
+                break;
+            case 'jpeg':
+                $extension = 'jpg';
+                break;
+            case 'midi':
+                $extension = 'mid';
+                break;
+            case 'mpeg':
+                $extension = 'mpg';
+                break;
+            case 'tiff':
+                $extension = 'tif';
+                break;
+        }
+
+        $types = array();
+
+        // Most-specific service type first
+        $types[] = $extension;
+
+        // Then category of file
+        $category = $this->getExtensionCategory($extension);
+        if (!empty($category)) {
+            $types[] = $category;
+        }
+
+        return $types;
+    }
+
+    /**
+     * Returns the category of a given file extension.
+     *
+     * @param string $extension
+     * @return string|null
+     */
+    protected function getExtensionCategory($extension)
+    {
+        switch ($extension) {
+            case 'ai':
+            case 'bmp':
+            case 'draw':
+            case 'gif':
+            case 'jpg':
+            case 'mng':
+            case 'png':
+            case 'psd':
+            case 'tif':
+            case 'wmf':
+                return 'image';
+
+            case 'doc':
+            case 'docx':
+            case 'pdf':
+            case 'pps':
+            case 'ppt':
+            case 'pptx':
+            case 'xls':
+            case 'xlsx':
+                return 'document';
+
+            case 'bz2':
+            case 'gz':
+            case 'rar':
+            case 'tar':
+            case 'zip':
+                return 'archive';
+
+            case '3gp':
+            case 'aac':
+            case 'act':
+            case 'aiff':
+            case 'amr':
+            case 'ape':
+            case 'au':
+            case 'awb':
+            case 'dct':
+            case 'dss':
+            case 'dvf':
+            case 'flac':
+            case 'gsm':
+            case 'm4a':
+            case 'm4p':
+            case 'mid':
+            case 'mmf':
+            case 'mp3':
+            case 'mpc':
+            case 'msv':
+            case 'oga':
+            case 'ogg':
+            case 'ra':
+            case 'rm':
+            case 'sln':
+            case 'tta':
+            case 'vox':
+            case 'wav':
+            case 'wma':
+            case 'wv':
+                return 'audio';
+
+            case '3g2':
+            case 'avi':
+            case 'f4a':
+            case 'f4b':
+            case 'f4p':
+            case 'f4v':
+            case 'flv':
+            case 'm2v':
+            case 'm4p':
+            case 'm4v':
+            case 'mkv':
+            case 'mov':
+            case 'mp2':
+            case 'mp4':
+            case 'mpe':
+            case 'mpg':
+            case 'mpv':
+            case 'mxf':
+            case 'nsv':
+            case 'ogv':
+            case 'qt':
+            case 'vob':
+            case 'webm':
+            case 'wmv':
+            case 'yuv':
+                return 'video';
+        }
+
+        return null;
     }
 
 }
