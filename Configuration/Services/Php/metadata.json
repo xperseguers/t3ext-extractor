@@ -34,10 +34,11 @@
   {
     "FAL": "creator",
     "DATA": [
-      "IPTCCreator",
+      "Artist",
+      "Author",
       "dc:creator",
       "xmp:creator",
-      "Author"
+      "IPTCCreator"
     ]
   },
   {

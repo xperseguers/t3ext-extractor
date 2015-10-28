@@ -235,8 +235,11 @@ abstract class AbstractExtractionService implements ExtractorInterface
             }
         }
 
-        if (is_array($output['keywords'])) {
-            $output['keywords'] = implode(', ', $output['keywords']);
+        foreach ($output as $key => $value) {
+            // Known cases: "keywords", "alternative"
+            if (is_array($value)) {
+                $output[$key] = implode(', ', $value);
+            }
         }
 
         return $output;
