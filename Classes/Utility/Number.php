@@ -14,6 +14,8 @@
 
 namespace Causal\Extractor\Utility;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Number utility class.
  *
@@ -22,6 +24,17 @@ namespace Causal\Extractor\Utility;
  */
 class Number
 {
+
+    /**
+     * Casts a string as an integer.
+     *
+     * @param string $str
+     * @return int
+     */
+    public static function castInteger($str)
+    {
+        return (int)$str;
+    }
 
     /**
      * Extracts an integer at the end of a string.

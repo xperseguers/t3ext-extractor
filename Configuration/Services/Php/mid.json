@@ -1,0 +1,10 @@
+[
+  {
+    "FAL": "description",
+    "DATA": "midi|comments|comment->Causal\\Extractor\\Utility\\Karaoke::extract"
+  },
+  {
+    "FAL": "duration",
+    "DATA": "playtime_seconds->Causal\\Extractor\\Utility\\Number::castInteger"
+  }
+]

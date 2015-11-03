@@ -39,6 +39,9 @@ class DateTime
             // Native PDF format
             array_shift($matches);
             $str = vsprintf('%s/%s/%s %s:%s:%s', $matches);
+        } elseif (preg_match('/^\d{4}$/', $str)) {
+            // Standalone year (prevent 0 with 1 sec added if year is 1970)
+            $str .= '/01/01 00:00:01';
         }
         $timestamp = strtotime($str);
         return $timestamp !== false ? $timestamp : null;

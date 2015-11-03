@@ -1,0 +1,53 @@
+[
+  {
+    "FAL": "caption",
+    "DATA": [
+      "id3v2|comments|album->Causal\\Extractor\\Utility\\Array_::concatenate(', ')",
+      "id3v1|comments|album",
+      "quicktime|comments|album->Causal\\Extractor\\Utility\\Array_::concatenate(', ')"
+    ]
+  },
+  {
+    "FAL": "copyright",
+    "DATA": [
+      "id3v2|comments|copyright_message->Causal\\Extractor\\Utility\\Array_::concatenate('-')",
+      "id3v2|comments|year->Causal\\Extractor\\Utility\\Array_::concatenate('-')",
+      "id3v1|comments|year"
+    ]
+  },
+  {
+    "FAL": "creator",
+    "DATA": [
+      "id3v2|comments|artist->Causal\\Extractor\\Utility\\Array_::concatenate(', ')",
+      "id3v1|comments|artist",
+      "quicktime|comments|artist->Causal\\Extractor\\Utility\\Array_::concatenate(', ')"
+    ]
+  },
+  {
+    "FAL": "creator_tool",
+    "DATA": [
+      "quicktime|comments|encoding_tool->Causal\\Extractor\\Utility\\Array_::concatenate(', ')"
+    ]
+  },
+  {
+    "FAL": "content_creation_date",
+    "DATA": [
+      "quicktime|comments|creation_date|0->Causal\\Extractor\\Utility\\DateTime::timestamp"
+    ]
+  },
+  {
+    "FAL": "description",
+    "DATA": "id3v1|comment"
+  },
+  {
+    "FAL": "duration",
+    "DATA": "playtime_seconds->Causal\\Extractor\\Utility\\Number::castInteger"
+  },
+  {
+    "FAL": "title",
+    "DATA": [
+      "id3v2|comments|title->Causal\\Extractor\\Utility\\Array_::concatenate(', ')",
+      "quicktime|comments|title->Causal\\Extractor\\Utility\\Array_::concatenate(', ')"
+    ]
+  }
+]

@@ -27,6 +27,57 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PhpService extends AbstractService
 {
 
+    /** @var array */
+    protected $imageExtensions = array(
+        'gif',      // IMAGETYPE_GIF
+        'jpg',      // IMAGETYPE_JPEG
+        'jpeg',     // IMAGETYPE_JPEG
+        'png',      // IMAGETYPE_PNG
+        'bmp',      // IMAGETYPE_BMP
+        'tif',      // IMAGETYPE_TIFF_II / IMAGETYPE_TIFF_MM
+        'tiff',     // IMAGETYPE_TIFF_II / IMAGETYPE_TIFF_MM
+        'wbmp',     // IMAGETYPE_WBMP
+        'xbm',      // IMAGETYPE_XBM
+        'ico',      // IMAGETYPE_ICO
+    );
+
+    /** @var array */
+    protected $officeDocumentExtensions = array(
+        'docx',
+        'xlsx',
+        'pptx',
+        'ppsx',
+    );
+
+    /** @var array */
+    protected $getId3Extensions = array(
+        '3gp',
+        'aa',
+        'aac',
+        'ac3',
+        'amr',
+        'au',
+        'avr',
+        'dss',
+        'dts',
+        'flac',
+        'la',
+        'lpac',
+        'm4a',
+        'mid',
+        'midi',
+        'mp3',
+        'mp4',
+        'mpeg',
+        'mpg',
+        'ogg',
+        'ttf',
+        'voc',
+        'wav',
+        'wma',
+        'wmv',
+    );
+
     /**
      * Returns a list of supported file types.
      *
@@ -34,22 +85,11 @@ class PhpService extends AbstractService
      */
     public function getSupportedFileTypes()
     {
-        return array(
-            'gif',      // IMAGETYPE_GIF
-            'jpg',      // IMAGETYPE_JPEG
-            'jpeg',     // IMAGETYPE_JPEG
-            'png',      // IMAGETYPE_PNG
-            'bmp',      // IMAGETYPE_BMP
-            'tif',      // IMAGETYPE_TIFF_II / IMAGETYPE_TIFF_MM
-            'tiff',     // IMAGETYPE_TIFF_II / IMAGETYPE_TIFF_MM
-            'wbmp',     // IMAGETYPE_WBMP
-            'xbm',      // IMAGETYPE_XBM
-            'ico',      // IMAGETYPE_ICO
-            'docx',
-            'xlsx',
-            'pptx',
-            'ppsx',
-            'pdf',
+        return array_merge(
+            $this->imageExtensions,
+            $this->officeDocumentExtensions,
+            $this->getId3Extensions,
+            array('pdf')
         );
     }
 
@@ -63,14 +103,14 @@ class PhpService extends AbstractService
     public function extractMetadataFromLocalFile($fileName)
     {
         $extension = strtolower(substr($fileName, strrpos($fileName, '.') + 1));
-        switch ($extension) {
-            case 'docx':
-            case 'xlsx':
-            case 'pptx':
-            case 'ppsx':
+        switch (true) {
+            case in_array($extension, $this->officeDocumentExtensions):
                 $metadata = $this->extractMetadataFromOfficeDocument($fileName);
                 break;
-            case 'pdf':
+            case in_array($extension, $this->getId3Extensions):
+                $metadata = $this->extractMetadataWithGetId3($fileName);
+                break;
+            case $extension === 'pdf':
                 $metadata = $this->extractMetadataFromPdf($fileName);
                 break;
             default:
@@ -103,6 +143,26 @@ class PhpService extends AbstractService
             }
             zip_close($zip);
         }
+
+        return $metadata;
+    }
+
+    /**
+     * Extracts metadata using the GetID3 library.
+     *
+     * @param string $fileName Path to the file
+     * @return array
+     */
+    protected function extractMetadataWithGetId3($fileName)
+    {
+        $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extractor');
+        require_once($extensionPath . 'Resources/Private/vendor/getID3/getid3/getid3.php');
+
+        $getID3 = new \getID3();
+        $getID3->setOption(array('encoding' => 'UTF-8'));
+
+        $metadata = $getID3->analyze($fileName);
+        \getid3_lib::ksort_recursive($metadata);
 
         return $metadata;
     }

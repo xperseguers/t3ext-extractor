@@ -1,0 +1,3 @@
+[submodule "Resources/Private/vendor/getID3"]
+	path = Resources/Private/vendor/getID3
+	url = https://github.com/JamesHeinrich/getID3.git

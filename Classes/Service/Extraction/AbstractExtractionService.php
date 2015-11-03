@@ -221,9 +221,13 @@ abstract class AbstractExtractionService implements ExtractorInterface
                         $processor = $matches[1];
                         $parameters = array($value);
                         if (isset($matches[3])) {
-                            $fields = GeneralUtility::trimExplode(',', $matches[3]);
-                            foreach ($fields as $field) {
-                                $parameters[] = $parentValue[$field];
+                            if ($matches[3]{0} === '\'') {
+                                $parameters[] = substr($matches[3], 1, -1);
+                            } else {
+                                $fields = GeneralUtility::trimExplode(',', $matches[3]);
+                                foreach ($fields as $field) {
+                                    $parameters[] = $parentValue[$field];
+                                }
                             }
                         }
                         $value = call_user_func_array($processor, $parameters);

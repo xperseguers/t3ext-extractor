@@ -48,7 +48,7 @@ tl;dr
 
 	# Replace TER version with a git clone (or use symbolic link if you prefer)
 	rm -rf extractor
-	git clone https://git.typo3.org/TYPO3CMS/Extensions/Extractor.git extractor
+	git clone --recursive https://git.typo3.org/TYPO3CMS/Extensions/Extractor.git extractor
 	cd extractor
 
 	# Setup your environment
