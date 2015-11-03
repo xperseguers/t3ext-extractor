@@ -653,3 +653,18 @@ if (version_compare(TYPO3_version, '6.99.99', '<=')) {
         $GLOBALS['TCA']['sys_file_metadata']['palettes'][$palette]['canNotCollapse'] = 1;
     }
 }
+
+// Reapply possible changes to sys_file_metadata from extensions loaded *before* EXT:extractor
+$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+foreach ($loadedExtensions as $extension) {
+    if ($extension === 'extractor') {
+        break;
+    }
+    $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extension);
+    if (strpos($extensionPath, '/sysext/') === false) {
+        $overrideTcaFileName = $extensionPath . 'Configuration/TCA/Overrides/sys_file_metadata.php';
+        if (is_file($overrideTcaFileName)) {
+            include($overrideTcaFileName);
+        }
+    }
+}
