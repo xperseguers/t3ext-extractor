@@ -1,64 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2015-10-27T14:02:21Z"
-          product-name="extractor">
+    <file source-language="en" datatype="plaintext" original="messages" date="2015-10-27T14:02:21Z"  product-name="extractor">
         <header/>
         <body>
-            <trans-unit id="settings.enable_tika">
-                <source>Apache Tika: If ticked, Apache Tika will be used to detect and extract metadata from your
-                    assets.
-                </source>
-            </trans-unit>
-            <trans-unit id="settings.enable_tools">
-                <source>External Tools: If ticked, external tools will be used to detect and extract metadata from your
-                    assets.
-                </source>
-            </trans-unit>
-            <trans-unit id="settings.auto_extract">
-                <source>Extract metadata after upload: If ticked, the metadata extraction will be invoked after
-                    uploading a file. You will not have to wait until the corresponding FAL scheduler task is run.
-                    BEWARE! Upload workflow will be slown-down and may put additional stress to your server.
-                </source>
-            </trans-unit>
-            <trans-unit id="settings.mapping_base_directory">
-                <source>Base directory for mapping: The metadata extraction requires mapping configuration files.
-                    By default these are provided in the Configuration/Services directory. If you wish to use a different
-                    mapping configuration, you can provide a different mapping configuration base directory.
-                </source>
-            </trans-unit>
-            <trans-unit id="settings.disabled">
-                <source>Option is not available: This option is not available with this version of TYPO3 since it
-                    is natively supported.
-                </source>
-            </trans-unit>
-            <trans-unit id="settings.tika_mode">
-                <source>Mode</source>
-            </trans-unit>
-            <trans-unit id="settings.tika_mode.jar">
-                <source>Standalone application</source>
-            </trans-unit>
-            <trans-unit id="settings.tika_mode.server">
-                <source>Server</source>
-            </trans-unit>
-            <trans-unit id="settings.tika_jar_path">
-                <source>Tika Application Path: Path to your Apache Tika application jar file (tika-app-x.x.jar). This
-                    path may be relative to the root of your website or absolute. Download the jar from
-                    https://tika.apache.org/download.html
-                </source>
-            </trans-unit>
-            <trans-unit id="settings.tika_server_host">
-                <source>Tika Server Host: Host running the Apache Tika server.</source>
-            </trans-unit>
-            <trans-unit id="settings.tika_server_port">
-                <source>Tika Server Port: Port on the Apache Tika server.</source>
-            </trans-unit>
-            <trans-unit id="settings.tools_exiftool">
-                <source>exiftool: Absolute path to external program "exiftool". Leave empty if not available.</source>
-            </trans-unit>
-            <trans-unit id="settings.tools_pdfinfo">
-                <source>pdfinfo: Absolute path to external program "pdfinfo". Leave empty if not available.</source>
-            </trans-unit>
-
             <trans-unit id="sys_file_metadata.copyright">
                 <source>Copyright</source>
             </trans-unit>

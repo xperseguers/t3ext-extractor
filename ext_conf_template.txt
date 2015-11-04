@@ -1,32 +1,32 @@
 # customcategory=tika=Apache Tika
 # customcategory=tools=External Tools
 
-# cat=basic/enable/10; type=boolean; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.enable_tika
+# cat=basic/enable/10; type=boolean; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.enable_tika
 enable_tika = 0
 
-# cat=basic/enable/20; type=boolean; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.enable_tools
+# cat=basic/enable/20; type=boolean; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.enable_tools
 enable_tools = 0
 
-# cat=basic/enable/30; type=user[Causal\Extractor\Em\ConfigurationHelper->createCheckboxFor62]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.auto_extract
+# cat=basic/enable/30; type=user[Causal\Extractor\Em\ConfigurationHelper->createCheckboxFor62]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.auto_extract
 auto_extract = 0
 
-# cat=basic/enable/40; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.mapping_base_directory
+# cat=basic/enable/40; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.mapping_base_directory
 mapping_base_directory = EXT:extractor/Configuration/Services/
 
-# cat=tika//10; type=options[LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_mode.jar=jar,LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_mode.server=server]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_mode
+# cat=tika//10; type=options[LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tika_mode.jar=jar,LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tika_mode.server=server]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tika_mode
 tika_mode = jar
 
-# cat=tika//20; type=user[Causal\Extractor\Em\ConfigurationHelper->createTikaJarPath]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_jar_path
+# cat=tika//20; type=user[Causal\Extractor\Em\ConfigurationHelper->createTikaJarPath]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tika_jar_path
 tika_jar_path =
 
-# cat=tika//30; type=user[Causal\Extractor\Em\ConfigurationHelper->createTikaServerHost]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_server_host
+# cat=tika//30; type=user[Causal\Extractor\Em\ConfigurationHelper->createTikaServerHost]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tika_server_host
 tika_server_host =
 
-# cat=tika//40; type=int+; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tika_server_port
+# cat=tika//40; type=int+; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tika_server_port
 tika_server_port = 9998
 
-# cat=tools//20; type=user[Causal\Extractor\Em\ConfigurationHelper->createToolInput]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_exiftool
+# cat=tools//20; type=user[Causal\Extractor\Em\ConfigurationHelper->createToolInput]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tools_exiftool
 tools_exiftool =
 
-# cat=tools//30; type=user[Causal\Extractor\Em\ConfigurationHelper->createToolInput]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:settings.tools_pdfinfo
+# cat=tools//30; type=user[Causal\Extractor\Em\ConfigurationHelper->createToolInput]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tools_pdfinfo
 tools_pdfinfo =
