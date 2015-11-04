@@ -111,7 +111,7 @@ class ConfigurationHelper
 
             $html .= '<div style="margin-top:1em">';
             $html .= '<img src="../../typo3conf/ext/extractor/Documentation/Images/' . (
-                    $success ? 'animation_ok.gif' : 'animation_ko.gif'
+                    $success ? 'animation-ok.gif' : 'animation-ko.gif'
                 ) . '" alt="" />';
             $html .= '</div>';
         }
