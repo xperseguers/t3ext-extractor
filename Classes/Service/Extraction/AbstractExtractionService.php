@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Service\Extraction;
 
+use Causal\Extractor\Utility\ExtensionHelper;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -287,113 +288,9 @@ abstract class AbstractExtractionService implements ExtractorInterface
         $types[] = $extension;
 
         // Then category of file
-        $category = $this->getExtensionCategory($extension);
-        if (!empty($category)) {
-            $types[] = $category;
-        }
+        $types[] = ExtensionHelper::getExtensionCategory($extension);
 
         return $types;
-    }
-
-    /**
-     * Returns the category of a given file extension.
-     *
-     * @param string $extension
-     * @return string|null
-     */
-    protected function getExtensionCategory($extension)
-    {
-        switch ($extension) {
-            case 'ai':
-            case 'bmp':
-            case 'draw':
-            case 'gif':
-            case 'jpg':
-            case 'mng':
-            case 'png':
-            case 'psd':
-            case 'tif':
-            case 'wmf':
-                return 'image';
-
-            case 'doc':
-            case 'docx':
-            case 'pdf':
-            case 'pps':
-            case 'ppt':
-            case 'pptx':
-            case 'xls':
-            case 'xlsx':
-                return 'document';
-
-            case 'bz2':
-            case 'gz':
-            case 'rar':
-            case 'tar':
-            case 'zip':
-                return 'archive';
-
-            case '3gp':
-            case 'aac':
-            case 'act':
-            case 'aiff':
-            case 'amr':
-            case 'ape':
-            case 'au':
-            case 'awb':
-            case 'dct':
-            case 'dss':
-            case 'dvf':
-            case 'flac':
-            case 'gsm':
-            case 'm4a':
-            case 'm4p':
-            case 'mid':
-            case 'mmf':
-            case 'mp3':
-            case 'mpc':
-            case 'msv':
-            case 'oga':
-            case 'ogg':
-            case 'ra':
-            case 'rm':
-            case 'sln':
-            case 'tta':
-            case 'vox':
-            case 'wav':
-            case 'wma':
-            case 'wv':
-                return 'audio';
-
-            case '3g2':
-            case 'avi':
-            case 'f4a':
-            case 'f4b':
-            case 'f4p':
-            case 'f4v':
-            case 'flv':
-            case 'm2v':
-            case 'm4p':
-            case 'm4v':
-            case 'mkv':
-            case 'mov':
-            case 'mp2':
-            case 'mp4':
-            case 'mpe':
-            case 'mpg':
-            case 'mpv':
-            case 'mxf':
-            case 'nsv':
-            case 'ogv':
-            case 'qt':
-            case 'vob':
-            case 'webm':
-            case 'wmv':
-            case 'yuv':
-                return 'video';
-        }
-
-        return null;
     }
 
 }

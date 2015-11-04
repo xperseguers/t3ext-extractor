@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2015-11-04T06:52:39Z"  product-name="extractor">
+        <header/>
+        <body>
+            <trans-unit id="report_title">
+                <source>Installed extraction services</source>
+            </trans-unit>
+            <trans-unit id="report_description">
+                <source>List of all installed metadata extraction services with information and status for each of them.</source>
+            </trans-unit>
+            <trans-unit id="report_explanation">
+				<source>This report displays a list of installed metadata extraction services, with detailed information
+                    about each of them. The services are ordered by priority.</source>
+			</trans-unit>
+
+            <trans-unit id="extractors">
+                <source>Extraction services</source>
+            </trans-unit>
+            <trans-unit id="class">
+                <source>Class</source>
+            </trans-unit>
+            <trans-unit id="driver_restrictions">
+                <source>Driver restrictions</source>
+            </trans-unit>
+            <trans-unit id="priority">
+                <source>Priority</source>
+            </trans-unit>
+            <trans-unit id="execution_priority">
+                <source>Execution priority</source>
+            </trans-unit>
+            <trans-unit id="file_types">
+                <source>File types</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
