@@ -38,12 +38,17 @@ class ExtensionHelper
             case 'bmp':
             case 'draw':
             case 'gif':
+            case 'ico':
+            case 'jpeg':
             case 'jpg':
             case 'mng':
             case 'png':
             case 'psd':
             case 'tif':
+            case 'tiff':
+            case 'wbmp':
             case 'wmf':
+            case 'xbm':
                 return 'image';
 
             case 'doc':
@@ -111,6 +116,7 @@ class ExtensionHelper
             case 'mp2':
             case 'mp4':
             case 'mpe':
+            case 'mpeg':
             case 'mpg':
             case 'mpv':
             case 'mxf':
