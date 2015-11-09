@@ -70,21 +70,28 @@ class ExtensionHelper
                 return 'archive';
 
             case '3gp':
+            case 'aa':
             case 'aac':
+            case 'ac3':
             case 'act':
             case 'aiff':
             case 'amr':
             case 'ape':
             case 'au':
+            case 'avr':
             case 'awb':
             case 'dct':
             case 'dss':
+            case 'dts':
             case 'dvf':
             case 'flac':
             case 'gsm':
+            case 'la':
+            case 'lpac':
             case 'm4a':
             case 'm4p':
             case 'mid':
+            case 'midi':
             case 'mmf':
             case 'mp3':
             case 'mpc':
@@ -95,6 +102,7 @@ class ExtensionHelper
             case 'rm':
             case 'sln':
             case 'tta':
+            case 'voc':
             case 'vox':
             case 'wav':
             case 'wma':

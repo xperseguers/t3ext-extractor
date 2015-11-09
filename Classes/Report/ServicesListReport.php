@@ -178,9 +178,9 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
         ksort($groups);
 
         $groupedFileTypes = '';
-        foreach ($groups as $extensions) {
+        foreach ($groups as $group => $extensions) {
             sort($extensions);
-            $groupedFileTypes .= implode(', ', $extensions) . LF . LF;
+            $groupedFileTypes .= '<strong>' . $group . ':</strong> ' . implode(', ', $extensions) . LF . LF;
         }
 
         $groupedFileTypes = nl2br(trim($groupedFileTypes));
