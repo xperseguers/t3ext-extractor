@@ -8,8 +8,18 @@
                     assets.
                 </source>
             </trans-unit>
-            <trans-unit id="settings.enable_tools">
-                <source>External Tools: If ticked, external tools will be used to detect and extract metadata from your
+            <trans-unit id="settings.enable_tools_exiftool">
+                <source>exiftool: If ticked, external tool "exiftool" will be used to detect and extract metadata from your
+                    assets.
+                </source>
+            </trans-unit>
+            <trans-unit id="settings.enable_tools_pdfinfo">
+                <source>pdfinfo: If ticked, external tool "pdfinfo" will be used to detect and extract metadata from your
+                    assets.
+                </source>
+            </trans-unit>
+            <trans-unit id="settings.enable_php">
+                <source>Native PHP: If ticked, native PHP code and libraries will be used to detect and extract metadata from your
                     assets.
                 </source>
             </trans-unit>

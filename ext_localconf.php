@@ -9,11 +9,18 @@ if (is_array($settings)) {
         $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\TikaMetadataExtraction');
         $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\TikaLanguageDetector');
     }
-    if (isset($settings['enable_tools']) && (bool)$settings['enable_tools']) {
+    // Backward compatibility with removed combined option
+    $externalTools = !isset($settings['enable_tools_exiftool']) && isset($settings['enable_tools']) && (bool)$settings['enable_tools'];
+    if ($externalTools || (isset($settings['enable_tools_exiftool']) && (bool)$settings['enable_tools_exiftool'])) {
         $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\ExifToolMetadataExtraction');
+    }
+    if ($externalTools || (isset($settings['enable_tools_pdfinfo']) && (bool)$settings['enable_tools_pdfinfo'])) {
         $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\PdfinfoMetadataExtraction');
     }
-    $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\PhpMetadataExtraction');
+    // Mind the "!isset" in test below to be backward compatible
+    if (!isset($settings['enable_php']) || (bool)$settings['enable_php']) {
+        $extractorRegistry->registerExtractionService('Causal\\Extractor\\Service\\Extraction\\PhpMetadataExtraction');
+    }
 }
 
 if (version_compare(TYPO3_version, '7.5.0', '<') && isset($settings['auto_extract']) && (bool)$settings['auto_extract']) {
