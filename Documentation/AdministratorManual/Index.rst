@@ -52,6 +52,8 @@ The tabs (see corresponding figures) let you configure the various settings of t
     Path to various external tools (optional).
 
 
+.. _admin-manual-install-tika:
+
 Apache Tika
 ^^^^^^^^^^^
 
@@ -91,6 +93,8 @@ you easily double check that provided parameters are correct:
     same with the standalone application jar will typically result in a delay of a few seconds per file.
 
 
+.. _admin-manual-install-tools:
+
 External Tools
 ^^^^^^^^^^^^^^
 
@@ -98,3 +102,17 @@ This extension is capable of using external tools to extract metadata:
 
 - `exiftool <http://www.sno.phy.queensu.ca/~phil/exiftool/>`__ for files containing EXIF, IPTC / XMP metadata;
 - `pdfinfo <http://linuxcommand.org/man_pages/pdfinfo1.html>`__ for PDF.
+
+
+.. _admin-manual-reports:
+
+Available extraction services
+-----------------------------
+
+You may open :menuselection:`Admin Tools --> Reports --> Installed extraction services` to get an overview of installed
+metadata extraction services, with detailed information about each of them.
+
+.. figure:: ../Images/reports.png
+    :alt: Extraction services
+
+    Overview of available metadata extraction services, with supported file types.
