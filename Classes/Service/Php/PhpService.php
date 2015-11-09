@@ -71,7 +71,6 @@ class PhpService extends AbstractService
         'mpeg',
         'mpg',
         'ogg',
-        'ttf',
         'voc',
         'wav',
         'wma',

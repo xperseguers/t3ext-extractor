@@ -1,0 +1,17 @@
+[
+  {
+    "FAL": "content_creation_date",
+    "DATA": [
+      "Creation-Date->Causal\\Extractor\\Utility\\DateTime::timestamp",
+      "date->Causal\\Extractor\\Utility\\DateTime::timestamp"
+    ]
+  },
+  {
+    "FAL": "copyright",
+    "DATA": "Copyright"
+  },
+  {
+    "FAL": "title",
+    "DATA": "FontName"
+  }
+]
