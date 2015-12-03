@@ -17,6 +17,7 @@ namespace Causal\Extractor\Service\Php;
 use Causal\Extractor\Service\AbstractService;
 use Causal\Extractor\Utility\ColorSpace;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * A PhpService service implementation.
@@ -227,6 +228,11 @@ class PhpService extends AbstractService
                 $xml = simplexml_load_string($contents);
                 $data = @json_decode(@json_encode($xml), true);
                 foreach ($data['RDF']['Description'] as $index => $values) {
+                    if (!MathUtility::canBeInterpretedAsInteger($index)) {
+                        $values = array(
+                            $index => $values,
+                        );
+                    }
                     foreach ($values as $key => $value) {
                         if (isset($value['Seq'])) {
                             $value = implode(', ', $value['Seq']);
@@ -234,8 +240,12 @@ class PhpService extends AbstractService
                             $value = implode(', ', $value['Alt']);
                         } elseif (isset($value['Bag'])) {
                             $value = implode(', ', $value['Bag']);
+                        } elseif (is_array($value)) {
+                            $value = implode(', ', $value);
                         }
-                        $metadata['xmp:' . $key] = $value;
+                        if (!empty($value)) {
+                            $metadata['xmp:' . $key] = $value;
+                        }
                     }
                 }
             }
