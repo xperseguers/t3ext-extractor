@@ -40,11 +40,11 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
 
         /** @var \TYPO3\CMS\Core\Registry $registry */
         $registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
-        $this->supportedFileTypes = $registry->get('tx_extractor', 'exiftool.extensions');
-        if (empty($this->supportedFileTypes)) {
+        $this->supportedFileExtensions = $registry->get('tx_extractor', 'exiftool.extensions');
+        if (empty($this->supportedFileExtensions)) {
             if (($exifToolService = $this->getExifToolService()) !== null) {
-                $this->supportedFileTypes = $exifToolService->getSupportedFileTypes();
-                $registry->set('tx_extractor', 'exiftool.extensions', $this->supportedFileTypes);
+                $this->supportedFileExtensions = $exifToolService->getSupportedFileExtensions();
+                $registry->set('tx_extractor', 'exiftool.extensions', $this->supportedFileExtensions);
             }
         }
     }
@@ -59,7 +59,7 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
     {
         $exifToolService = $this->getExifToolService();
         $fileExtension = strtolower($file->getProperty('extension'));
-        return ($exifToolService !== null && in_array($fileExtension, $this->supportedFileTypes));
+        return ($exifToolService !== null && in_array($fileExtension, $this->supportedFileExtensions));
     }
 
     /**

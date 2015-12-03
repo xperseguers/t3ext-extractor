@@ -137,7 +137,11 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
         $driverRestrictions = $extractor->getDriverRestrictions()
             ? implode(', ', $extractor->getDriverRestrictions())
             : '*';
-        $fileTypes = $extractor->getFileTypeRestrictions() ?: array('*');
+        if ($extractor instanceof \Causal\Extractor\Service\Extraction\AbstractExtractionService) {
+            $fileTypes = $extractor->getFileExtensionRestrictions() ?: array('*');
+        } else {
+            $fileTypes = $extractor->getFileTypeRestrictions() ?: array('*');
+        }
 
         if (version_compare(TYPO3_version, '6.99.99', '<=')) {
             $rowClass = 'cell typo3-message message-ok';

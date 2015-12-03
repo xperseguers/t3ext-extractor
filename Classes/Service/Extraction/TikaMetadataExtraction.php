@@ -45,11 +45,11 @@ class TikaMetadataExtraction extends AbstractExtractionService
 
         /** @var \TYPO3\CMS\Core\Registry $registry */
         $registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
-        $this->supportedFileTypes = $registry->get('tx_extractor', 'tika.extensions.metadata');
-        if (empty($this->supportedFileTypes)) {
+        $this->supportedFileExtensions = $registry->get('tx_extractor', 'tika.extensions.metadata');
+        if (empty($this->supportedFileExtensions)) {
             if (($tikaService = $this->getTikaService()) !== null) {
-                $this->supportedFileTypes = $tikaService->getSupportedFileTypes();
-                $registry->set('tx_extractor', 'tika.extensions.metadata', $this->supportedFileTypes);
+                $this->supportedFileExtensions = $tikaService->getSupportedFileExtensions();
+                $registry->set('tx_extractor', 'tika.extensions.metadata', $this->supportedFileExtensions);
             }
         }
     }
@@ -64,7 +64,7 @@ class TikaMetadataExtraction extends AbstractExtractionService
     {
         $tikaService = $this->getTikaService();
         $fileExtension = strtolower($file->getProperty('extension'));
-        return ($tikaService !== null && in_array($fileExtension, $this->supportedFileTypes));
+        return ($tikaService !== null && in_array($fileExtension, $this->supportedFileExtensions));
     }
 
     /**

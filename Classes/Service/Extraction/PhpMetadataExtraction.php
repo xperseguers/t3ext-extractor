@@ -39,7 +39,7 @@ class PhpMetadataExtraction extends AbstractExtractionService
         parent::__construct();
 
         $phpService = $this->getPhpService();
-        $this->supportedFileTypes = $phpService->getSupportedFileTypes();
+        $this->supportedFileExtensions = $phpService->getSupportedFileExtensions();
     }
 
     /**
@@ -51,7 +51,7 @@ class PhpMetadataExtraction extends AbstractExtractionService
     public function canProcess(File $file)
     {
         $fileExtension = strtolower($file->getProperty('extension'));
-        return in_array($fileExtension, $this->supportedFileTypes);
+        return in_array($fileExtension, $this->supportedFileExtensions);
     }
 
     /**

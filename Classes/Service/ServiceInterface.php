@@ -27,11 +27,11 @@ interface ServiceInterface
 {
 
     /**
-     * Returns a list of supported file types.
+     * Returns a list of supported file extensions.
      *
      * @return array
      */
-    public function getSupportedFileTypes();
+    public function getSupportedFileExtensions();
 
     /**
      * Takes a file reference and extracts its metadata.

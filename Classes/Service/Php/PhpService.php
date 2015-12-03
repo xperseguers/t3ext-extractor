@@ -82,7 +82,7 @@ class PhpService extends AbstractService
      *
      * @return array
      */
-    public function getSupportedFileTypes()
+    public function getSupportedFileExtensions()
     {
         return array_merge(
             $this->imageExtensions,

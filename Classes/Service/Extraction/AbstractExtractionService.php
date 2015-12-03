@@ -44,7 +44,12 @@ abstract class AbstractExtractionService implements ExtractorInterface
     /**
      * @var array
      */
-    protected $supportedFileTypes = array('__INVALID__');
+    protected $supportedFileExtensions = array('__INVALID__');
+
+    /**
+     * @var array
+     */
+    protected $supportedFileTypes = array();
 
     /**
      * Priority in handling extraction.
@@ -63,6 +68,16 @@ abstract class AbstractExtractionService implements ExtractorInterface
     public function getFileTypeRestrictions()
     {
         return $this->supportedFileTypes;
+    }
+
+    /**
+     * Returns an array of supported file extensions.
+     *
+     * @return array
+     */
+    public function getFileExtensionRestrictions()
+    {
+        return $this->supportedFileExtensions;
     }
 
     /**

@@ -54,7 +54,7 @@ class ExifToolService extends AbstractService
      *
      * @return array
      */
-    public function getSupportedFileTypes()
+    public function getSupportedFileExtensions()
     {
         $exifToolCommand = GeneralUtility::getFileAbsFileName($this->settings['tools_exiftool'], false)
             . ' -listr';

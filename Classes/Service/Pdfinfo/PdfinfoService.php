@@ -48,7 +48,7 @@ class PdfinfoService extends AbstractService
      *
      * @return array
      */
-    public function getSupportedFileTypes()
+    public function getSupportedFileExtensions()
     {
         return array('pdf');
     }

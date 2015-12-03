@@ -64,7 +64,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
      *
      * @return array
      */
-    public function getSupportedFileTypes()
+    public function getSupportedFileExtensions()
     {
         $content = $this->send('GET', '/mime-types', 'application/json');
         $mimeTypes = json_decode($content, true);

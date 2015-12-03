@@ -72,7 +72,7 @@ class AppService extends AbstractService implements TikaServiceInterface
      *
      * @return array
      */
-    public function getSupportedFileTypes()
+    public function getSupportedFileExtensions()
     {
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -jar ' . $this->escapeShellArgument(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
