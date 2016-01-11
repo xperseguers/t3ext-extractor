@@ -496,14 +496,6 @@ if (version_compare(TYPO3_version, '7.6.0', '<')) {
 
     $GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['sys_file_metadata'], $tcaV7);
 
-    // Add category tab if categories column is present
-    if (isset($GLOBALS['TCA']['sys_file_metadata']['columns']['categories'])) {
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
-            'sys_file_metadata',
-            '--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category,categories'
-        );
-    }
-
 }
 
 // Additional metadata
@@ -642,6 +634,14 @@ $tca = array(
 );
 
 $GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['sys_file_metadata'], $tca);
+
+// Add category tab if categories column is present
+if (isset($GLOBALS['TCA']['sys_file_metadata']['columns']['categories'])) {
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+        'sys_file_metadata',
+        '--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category,categories'
+    );
+}
 
 if (version_compare(TYPO3_version, '6.99.99', '<=')) {
     // EXT:frontend does not exist
