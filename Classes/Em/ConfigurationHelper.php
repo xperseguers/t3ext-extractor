@@ -178,7 +178,7 @@ class ConfigurationHelper
      */
     public function createCheckboxFor62(array $params, $pObj)
     {
-        if (version_compare(TYPO3_version, '7.5.0', '>=')) {
+        if (version_compare(TYPO3_version, '7.5', '>=')) {
             list($title, $message) = GeneralUtility::trimExplode(':', $this->translate('settings.disabled'), true, 2);
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
@@ -192,9 +192,17 @@ class ConfigurationHelper
         } else {
             $html = $this->createFormInputField(array(
                 'name' => $params['fieldName'],
+                'value' => '0',
+            ), 'hidden');
+            $configuration = array(
+                'name' => $params['fieldName'],
                 'id' => 'em-' . $params['propertyName'],
                 'value' => '1',
-            ), 'checkbox');
+            );
+            if ((bool)$params['fieldValue']) {
+                $configuration['checked'] = 'checked';
+            }
+            $html .= $this->createFormInputField($configuration, 'checkbox');
         }
 
         return $html;
