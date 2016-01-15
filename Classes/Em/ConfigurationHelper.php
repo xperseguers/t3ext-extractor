@@ -253,7 +253,7 @@ class ConfigurationHelper
      */
     protected function translate($id, array $arguments = null)
     {
-        $value = $this->getLanguageService()->sL('LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:' . $id);
+        $value = $this->getLanguageService()->sL('LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:' . $id);
         $value = empty($value) ? $id : $value;
 
         if (is_array($arguments) && $value !== null) {
