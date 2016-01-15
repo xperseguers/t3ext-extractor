@@ -10,7 +10,8 @@
     "FAL",
     "EXIF",
     "IPTC",
-    "XMP"
+    "XMP",
+    "ID3"
   ],
   "homepage": "https://forge.typo3.org/projects/extension-extractor",
   "support": {

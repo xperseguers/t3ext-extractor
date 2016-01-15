@@ -30,7 +30,7 @@ Metadata and Content Analysis Service
         Tika and other external tools for enhanced metadata extraction.
 
     :Keywords:
-        Metadata, Content Analysis, Tika, FAL, EXIF, IPTC, XMP
+        Metadata, Content Analysis, Tika, FAL, EXIF, IPTC, XMP, ID3
 
     :Copyright:
         2014-2016
@@ -55,7 +55,7 @@ Metadata and Content Analysis Service
     **Other version of this document**
 
     :PDF:
-        https://docs.typo3.org/typo3cms/extensions/extractor/1.2.1/_pdf/
+        https://docs.typo3.org/typo3cms/extensions/extractor/1.2.2/_pdf/
 
 
     **Table of Contents**
