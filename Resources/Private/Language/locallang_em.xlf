@@ -3,6 +3,15 @@
     <file source-language="en" datatype="plaintext" original="messages" date="2015-11-04T06:46:48Z"  product-name="extractor">
         <header/>
         <body>
+            <trans-unit id="settings.category.mapping">
+                <source>Mapping</source>
+            </trans-unit>
+            <trans-unit id="settings.category.tika">
+                <source>Apache Tika</source>
+            </trans-unit>
+            <trans-unit id="settings.category.tools">
+                <source>External Tools</source>
+            </trans-unit>
             <trans-unit id="settings.enable_tika">
                 <source>Apache Tika: If ticked, Apache Tika will be used to detect and extract metadata from your
                     assets.

@@ -1,5 +1,6 @@
-# customcategory=tika=Apache Tika
-# customcategory=tools=External Tools
+# customcategory=mapping=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.category.mapping
+# customcategory=tika=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.category.tika
+# customcategory=tools=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.category.tools
 
 # cat=basic/enable/10; type=boolean; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.enable_tika
 enable_tika = 0
@@ -15,9 +16,6 @@ enable_php = 1
 
 # cat=basic/enable/50; type=user[Causal\Extractor\Em\ConfigurationHelper->createCheckboxFor62]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.auto_extract
 auto_extract = 0
-
-# cat=basic/enable/60; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.mapping_base_directory
-mapping_base_directory = EXT:extractor/Configuration/Services/
 
 # cat=tika//10; type=options[LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tika_mode.jar=jar,LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tika_mode.server=server]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tika_mode
 tika_mode = jar
@@ -36,3 +34,6 @@ tools_exiftool =
 
 # cat=tools//30; type=user[Causal\Extractor\Em\ConfigurationHelper->createToolInput]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tools_pdfinfo
 tools_pdfinfo =
+
+# cat=mapping//10; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.mapping_base_directory
+mapping_base_directory = EXT:extractor/Configuration/Services/
