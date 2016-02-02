@@ -182,7 +182,7 @@ class ConfigurationHelper
             list($title, $message) = GeneralUtility::trimExplode(':', $this->translate('settings.disabled'), true, 2);
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                 $message,
                 $title,
                 FlashMessage::INFO

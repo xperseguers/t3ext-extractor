@@ -44,7 +44,7 @@ class TikaMetadataExtraction extends AbstractExtractionService
         parent::__construct();
 
         /** @var \TYPO3\CMS\Core\Registry $registry */
-        $registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+        $registry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
         $this->supportedFileExtensions = $registry->get('tx_extractor', 'tika.extensions.metadata');
         if (empty($this->supportedFileExtensions)) {
             if (($tikaService = $this->getTikaService()) !== null) {

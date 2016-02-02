@@ -100,7 +100,7 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
 
         if ($pdfinfoService === null) {
             try {
-                $pdfinfoService = GeneralUtility::makeInstance('Causal\\Extractor\\Service\\Pdfinfo\\PdfinfoService');
+                $pdfinfoService = GeneralUtility::makeInstance(\Causal\Extractor\Service\Pdfinfo\PdfinfoService::class);
             } catch (\RuntimeException $e) {
                 // Nothing to do
             }

@@ -88,7 +88,7 @@ class PhpMetadataExtraction extends AbstractExtractionService
         static $phpService = null;
 
         if ($phpService === null) {
-            $phpService = GeneralUtility::makeInstance('Causal\\Extractor\\Service\\Php\\PhpService');
+            $phpService = GeneralUtility::makeInstance(\Causal\Extractor\Service\Php\PhpService::class);
         }
 
         return $phpService;

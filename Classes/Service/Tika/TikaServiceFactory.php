@@ -44,9 +44,9 @@ class TikaServiceFactory
 
         switch ($tikaService) {
             case 'jar':
-                return GeneralUtility::makeInstance('Causal\\Extractor\\Service\\Tika\\AppService');
+                return GeneralUtility::makeInstance(\Causal\Extractor\Service\Tika\AppService::class);
             case 'server':
-                return GeneralUtility::makeInstance('Causal\\Extractor\\Service\\Tika\\ServerService');
+                return GeneralUtility::makeInstance(\Causal\Extractor\Service\Tika\ServerService::class);
             default:
                 throw new \InvalidArgumentException(
                     'Unknown Tika service type "' . $tikaService . '". Must be one of "jar" or "server".',
