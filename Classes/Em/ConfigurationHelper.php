@@ -25,7 +25,7 @@ use Causal\Extractor\Service\Tika\TikaServiceFactory;
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class ConfigurationHelper
+class ConfigurationHelper extends AbstractConfigurationField
 {
 
     /**
@@ -242,35 +242,6 @@ class ConfigurationHelper
             $html .= '</ul>';
         }
         return $html;
-    }
-
-    /**
-     * Translates a label.
-     *
-     * @param string $id
-     * @param array $arguments
-     * @return string
-     */
-    protected function translate($id, array $arguments = null)
-    {
-        $value = $this->getLanguageService()->sL('LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:' . $id);
-        $value = empty($value) ? $id : $value;
-
-        if (is_array($arguments) && $value !== null) {
-            return vsprintf($value, $arguments);
-        } else {
-            return $value;
-        }
-    }
-
-    /**
-     * Returns the LanguageService.
-     *
-     * @return \TYPO3\CMS\Lang\LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
     }
 
 }

@@ -8,4 +8,9 @@ if (TYPO3_MODE === 'BE') {
         'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Images/tx_sv_report.png',
         'report' => \Causal\Extractor\Report\ServicesListReport::class
     );
+
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
+        $_EXTKEY . '::analyze',
+        \Causal\Extractor\Em\AjaxController::class . '->renderAjax'
+    );
 }

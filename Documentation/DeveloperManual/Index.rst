@@ -64,6 +64,11 @@ DATA
     This is either a unique key or an array of ordered keys to be checked for content in the extracted metadata. In
     addition, an arbitrary post-processor may be specified using the ``->`` array notation.
 
+.. figure:: ../Images/configuration-helper-tool.png
+    :alt: Configuration Helper Tool
+
+    A configuration helper tool is available in Extension Manager.
+
 
 .. _developer-manual-hook:
 

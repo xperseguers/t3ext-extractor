@@ -57,6 +57,45 @@
             <trans-unit id="settings.tools_pdfinfo">
                 <source>pdfinfo: Absolute path to external program "pdfinfo". Leave empty if not available.</source>
             </trans-unit>
+            <trans-unit id="settings.mapping_configuration">
+                <source>Configuration Helper Tool</source>
+            </trans-unit>
+            <trans-unit id="settings.mapping_configuration.description">
+                <source>This tool helps you configuring the mapping between the output of a
+                    metadata extraction service and FAL by suggesting how to write a mapping configuration line in the
+                    JSON files stored within the directory configured above.
+
+                    Start by choosing a file in the dropdown list, then click on any metadata property to transfer it
+                    to the text area showing you what to write in your mapping configuration file.
+
+                    Some sample files are provided by this extension, but you may analyze your own pictures by storing
+                    them within directory __USERDIR__.
+                </source>
+            </trans-unit>
+            <trans-unit id="settings.mapping_configuration.chooseFile">
+                <source>Choose file:</source>
+            </trans-unit>
+            <trans-unit id="settings.mapping_configuration.chooseFile.samples">
+                <source>Samples</source>
+            </trans-unit>
+            <trans-unit id="settings.mapping_configuration.chooseFile.custom">
+                <source>Custom</source>
+            </trans-unit>
+            <trans-unit id="settings.mapping_configuration.service">
+                <source>Service:</source>
+            </trans-unit>
+            <trans-unit id="settings.mapping_configuration.fal">
+                <source>FAL Property:</source>
+            </trans-unit>
+            <trans-unit id="settings.mapping_configuration.property">
+                <source>Metatada Property:</source>
+            </trans-unit>
+            <trans-unit id="settings.mapping_configuration.json">
+                <source>JSON:</source>
+            </trans-unit>
+            <trans-unit id="settings.mapping_configuration.json.copy">
+                <source>copy to clipboard</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

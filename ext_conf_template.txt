@@ -37,3 +37,6 @@ tools_pdfinfo =
 
 # cat=mapping//10; type=string; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.mapping_base_directory
 mapping_base_directory = EXT:extractor/Configuration/Services/
+
+# cat=mapping//20; type=user[Causal\Extractor\Em\MappingController->render]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.mapping_configuration
+mapping_configuration =
