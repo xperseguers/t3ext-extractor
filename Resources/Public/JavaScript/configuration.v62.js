@@ -1,4 +1,5 @@
-define(['jquery', "TYPO3/CMS/Extractor/select2"], function($) {
+// IIFE for faster access to $ and safe $ use
+(function ($) {
 
     $(document).ready(function () {
         $('.tx-extractor select').select2({width: '100%'});
@@ -12,4 +13,4 @@ define(['jquery', "TYPO3/CMS/Extractor/select2"], function($) {
         Extractor.initializePropertyActions();
     });
 
-});
+}(jQuery || TYPO3.jQuery));

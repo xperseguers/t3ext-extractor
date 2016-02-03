@@ -1,0 +1,36 @@
+.tx-extractor label {
+    display: block;
+    margin-top: 1em;
+    padding-bottom: 0 !important;
+    font-weight: bold;
+}
+
+.tx-extractor table {
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+.tx-extractor td {
+    vertical-align: text-top;
+}
+
+.tx-extractor td:first-child {
+    width: 20em;
+}
+
+.tx-extractor td:last-child {
+    padding-left: 1em;
+}
+
+.tx-extractor a {
+    color: blue;
+}
+
+#tx-extractor-preview {
+    margin-top: 1em;
+}
+
+#tx-extractor-property,
+#tx-extractor-json {
+    width: 99% !important;
+}

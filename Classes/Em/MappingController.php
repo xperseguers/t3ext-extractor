@@ -60,58 +60,23 @@ class MappingController extends AbstractConfigurationField
     {
         $resourcesPath = ExtensionManagementUtility::extRelPath($this->extensionKey) . 'Resources/Public/';
 
-        $html = [];
+        $inlineJs = 'var configurationAjaxUrl = \'' . BackendUtility::getAjaxUrl($this->extensionKey . '::analyze') . '\';';
+
+        $pageRenderer = $this->getPageRenderer();
         if (version_compare(TYPO3_version, '6.2.99', '<=')) {
-            $pathJquery = PathUtility::getAbsoluteWebPath('contrib/jquery/jquery-1.11.0.min.js');
-            $html[] = '<script type="text/javascript" src="' . $pathJquery . '"></script>';
+            $pageRenderer->addJsFile('contrib/jquery/jquery-1.11.0.min.js');
+            $pageRenderer->addJsFile($resourcesPath . 'JavaScript/select2.js');
+            $pageRenderer->addJsFile($resourcesPath . 'JavaScript/configuration.v62.js');
+        } else {
+            $inlineJs .= LF . 'require(["TYPO3/CMS/Extractor/configuration"]);';
         }
-        $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/configuration.js?ts=' . time() . '"></script>';
-        $html[] = '<script type="text/javascript">';
-        $html[] = 'var configurationAjaxUrl = \'' . BackendUtility::getAjaxUrl($this->extensionKey . '::analyze') . '\';';
-        $html[] = '</script>';
+        $pageRenderer->addJsFile($resourcesPath . 'JavaScript/extractor.js');
+        $pageRenderer->addJsInlineCode($this->extensionKey, $inlineJs);
 
-        $html[] = '<style type="text/css">';
-        $html[] = <<<CSS
-.tx-extractor label {
-    display: block;
-    margin-top: 1em;
-    padding-bottom: 0 !important;
-    font-weight: bold;
-}
+        $pageRenderer->addCssFile($resourcesPath . 'Css/select2.min.css');
+        $pageRenderer->addCssFile($resourcesPath . 'Css/configuration.css');
 
-.tx-extractor table {
-    width: 100%;
-    margin-bottom: 1em;
-}
-
-.tx-extractor td {
-    vertical-align: text-top;
-}
-
-.tx-extractor td:first-child {
-    width: 20em;
-}
-
-.tx-extractor td:last-child {
-    padding-left: 1em;
-}
-
-.tx-extractor a {
-    color: blue;
-}
-
-#tx-extractor-preview {
-    margin-top: 1em;
-}
-
-#tx-extractor-property,
-#tx-extractor-json {
-    width: 99% !important;
-}
-
-CSS;
-        $html[] = '</style>';
-
+        $html = [];
         $html[] = $this->smartFormat($this->translate('settings.mapping_configuration.description'));
         $html[] = '<div class="tx-extractor">';
         $html[] = '<table><tr><td>';
@@ -187,9 +152,6 @@ CSS;
      */
     protected function getServiceSelector()
     {
-        $output = '<label for="tx-extractor-service">' . $this->translate('settings.mapping_configuration.service', true) . '</label>';
-        $output .= '<select id="tx-extractor-service">';
-
         $services = [
             'enable_tika' => ['tika', 'Apache Tika'],
             'enable_php' => ['php', 'PHP'],
@@ -198,13 +160,18 @@ CSS;
 
         ];
 
+        $options = [];
         foreach ($services as $key => $valueTitle) {
             if (!empty($this->settings[$key])) {
-                $output .= '<option value="' . $valueTitle[0] . '">' . htmlspecialchars($valueTitle[1]) . '</option>';
+                $options[$valueTitle[0]] = $valueTitle[1];
             }
         }
 
-        $output .= '</select>';
+        $output = $this->getHtmlSelect(
+            'tx-extractor-service',
+            'settings.mapping_configuration.service',
+            $options
+        );
 
         return $output;
     }
@@ -219,9 +186,7 @@ CSS;
         /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $databaseConnection */
         $databaseConnection = $GLOBALS['TYPO3_DB'];
 
-        $output = '<label for="tx-extractor-fal">' . $this->translate('settings.mapping_configuration.fal', true) . '</label>';
-        $output .= '<select id="tx-extractor-fal">';
-
+        $options = [];
         $fields = $databaseConnection->admin_get_fields('sys_file_metadata');
         foreach ($fields as $field => $_) {
             switch (true) {
@@ -233,9 +198,43 @@ CSS;
                     // Nothing to do
                     break;
                 default:
-                    $output .= sprintf('<option value="%s">%s</option>', $field, $field);
+                    $title = $field;
+                    if (isset($GLOBALS['TCA']['sys_file_metadata']['columns'][$field]['label'])) {
+                        $title .= ' [' . $this->translate($GLOBALS['TCA']['sys_file_metadata']['columns'][$field]['label']) . ']';
+                    }
+                    $options[$field] = $title;
                     break;
             }
+        }
+
+        $output = $this->getHtmlSelect(
+            'tx-extractor-fal',
+            'settings.mapping_configuration.fal',
+            $options
+        );
+
+        return $output;
+    }
+
+    /**
+     * Creates a HTML dropdown list.
+     *
+     * @param string $id
+     * @param string $labelKey
+     * @param array $options
+     * @param bool $prependEmpty
+     * @return string
+     */
+    protected function getHtmlSelect($id, $labelKey, array $options, $prependEmpty = false)
+    {
+        $output = '<label for="' . htmlspecialchars($id) . '">' . $this->translate($labelKey, true) . '</label>';
+        $output .= '<select id="' . htmlspecialchars($id) . '">';
+
+        if ($prependEmpty) {
+            $output .= '<option value=""></option>';
+        }
+        foreach ($options as $key => $value) {
+            $output .= sprintf('<option value="%s">%s</option>', htmlspecialchars($key), htmlspecialchars($value));
         }
 
         $output .= '</select>';
@@ -298,6 +297,23 @@ CSS;
 
         $folder = $defaultStorage->getDefaultFolder();
         return $folder;
+    }
+
+    /**
+     * Returns current PageRenderer.
+     *
+     * @return \TYPO3\CMS\Core\Page\PageRenderer
+     */
+    protected function getPageRenderer()
+    {
+        if (version_compare(TYPO3_version, '7.4', '>=')) {
+            $pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+        } else {
+            /** @var \TYPO3\CMS\Backend\Template\DocumentTemplate $documentTemplate */
+            $documentTemplate = $GLOBALS['TBE_TEMPLATE'];
+            $pageRenderer = $documentTemplate->getPageRenderer();
+        }
+        return $pageRenderer;
     }
 
 }

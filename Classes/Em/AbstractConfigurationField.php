@@ -13,6 +13,7 @@
  */
 
 namespace Causal\Extractor\Em;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract class for configuration fields.
@@ -33,7 +34,12 @@ abstract class AbstractConfigurationField
      */
     protected function translate($id, $hsc = false, array $arguments = null)
     {
-        $value = $this->getLanguageService()->sL('LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:' . $id);
+        if (!GeneralUtility::isFirstPartOfStr($id, 'LLL:EXT:')) {
+            $reference = 'LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:' . $id;
+        } else {
+            $reference = $id;
+        }
+        $value = $this->getLanguageService()->sL($reference);
         $value = empty($value) ? $id : $value;
 
         if (is_array($arguments) && $value !== null) {
