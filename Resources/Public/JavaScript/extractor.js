@@ -34,19 +34,22 @@ Extractor = {
     },
 
     updateJson: function () {
-        var propertyField = $('#tx-extractor-property');
         var falField = $('#tx-extractor-fal');
         var jsonField = $('#tx-extractor-json');
+        var property = $('#tx-extractor-property').val();
+        var processor = $('#tx-extractor-processor').val();
 
-        var property = propertyField.val().replace(/\\/g, '\\\\');
+        if (processor != '') property += '->' + processor;
 
-        jsonField.val("{\n  \"FAL\": \"" + falField.val() + "\",\n  \"DATA\": \"" + property + "\"\n}");
+        jsonField.val("{\n  \"FAL\": \"" + falField.val() + "\",\n  \"DATA\": \"" + property.replace(/\\/g, '\\\\') + "\"\n}");
     },
 
     initializePropertyActions: function () {
         $('.tx-extractor-property').click(function () {
             var property = $(this).data('property');
-            $('#tx-extractor-property').val(property).trigger('change');
+            var processor = $(this).data('processor');
+            $('#tx-extractor-property').val(property);
+            $('#tx-extractor-processor').val(processor).trigger('change');
 
             // Prevent save action from configuration form
             return false;

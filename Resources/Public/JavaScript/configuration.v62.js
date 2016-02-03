@@ -9,6 +9,7 @@
         $('#tx-extractor-service').change(Extractor.extractMetadata);
         $('#tx-extractor-fal').change(Extractor.updateJson);
         $('#tx-extractor-property').change(Extractor.updateJson);
+        $('#tx-extractor-processor').change(Extractor.updateJson);
 
         Extractor.initializePropertyActions();
     });

@@ -177,10 +177,12 @@ class AjaxController
 
         foreach ($metadata as $key => $value) {
             $keyName = ($parent ? $parent . '|' : '') . $key;
-            $postProcessor = $this->suggestPostProcessor($value, $key);
-            $propertyPath = $keyName . ($postProcessor ? '->' . $postProcessor : '');
+            $processor = $this->suggestProcessor($value, $key);
+            $propertyPath = $keyName . ($processor ? '->' . $processor : '');
 
-            $property = '\'<a class="tx-extractor-property" href="#" data-property="' . htmlspecialchars($propertyPath) . '">' . htmlspecialchars($key) . '</a>\'';
+            $property = '\'<a class="tx-extractor-property" href="#"' .
+                ' data-property="' . htmlspecialchars($keyName) . '"' .
+                ' data-processor="' . htmlspecialchars($processor) . '">' . htmlspecialchars($key) . '</a>\'';
 
             if (is_array($value)) {
                 $value = $this->htmlizeMetadata($value, $indent + 1, $keyName);
@@ -197,13 +199,13 @@ class AjaxController
     }
 
     /**
-     * Suggests a post-processor to be used for extracting a given value.
+     * Suggests a processor to be used for extracting a given value.
      *
      * @param mixed $value
      * @param string $property
      * @return string
      */
-    protected function suggestPostProcessor($value, $property)
+    protected function suggestProcessor($value, $property)
     {
         $postProcessor = null;
 
@@ -214,7 +216,7 @@ class AjaxController
                 $postProcessor = 'Causal\\Extractor\\Utility\\DateTime::timestamp';
                 break;
             case stripos($property, 'gps') !== false:
-                $postProcessor = 'Causal\\Extractor\\Utility\\Gps::toDecimal()';
+                $postProcessor = 'Causal\\Extractor\\Utility\\Gps::toDecimal';
                 break;
         }
 

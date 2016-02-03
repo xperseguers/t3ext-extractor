@@ -93,11 +93,11 @@
   },
   {
     "FAL": "latitude",
-    "DATA": "GPSLatitude->Causal\\Extractor\\Utility\\Gps::toDecimal()"
+    "DATA": "GPSLatitude->Causal\\Extractor\\Utility\\Gps::toDecimal"
   },
   {
     "FAL": "longitude",
-    "DATA": "GPSLongitude->Causal\\Extractor\\Utility\\Gps::toDecimal()"
+    "DATA": "GPSLongitude->Causal\\Extractor\\Utility\\Gps::toDecimal"
   },
   {
     "FAL": "ranking",

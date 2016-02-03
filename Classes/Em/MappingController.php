@@ -87,6 +87,7 @@ class MappingController extends AbstractConfigurationField
         $html[] = $this->getFalPropertySelector();
         $html[] = '<label for="tx-extractor-property">' . $this->translate('settings.mapping_configuration.property', true) . '</label>';
         $html[] = '<input type="text" id="tx-extractor-property" />';
+        $html[] = $this->getProcessorSelector();
         $html[] = '<label for="tx-extractor-json">' . $this->translate('settings.mapping_configuration.json', true) . '</label>';
         $html[] = '<textarea id="tx-extractor-json" rows="4"></textarea>';
         $html[] = '<button id="tx-extractor-copy">' . $this->translate('settings.mapping_configuration.json.copy', true) . '</button>';
@@ -211,6 +212,29 @@ class MappingController extends AbstractConfigurationField
             'tx-extractor-fal',
             'settings.mapping_configuration.fal',
             $options
+        );
+
+        return $output;
+    }
+
+    /**
+     * Returns a processor selector.
+     *
+     * @return string
+     */
+    protected function getProcessorSelector()
+    {
+        $output = '<label for="tx-extractor-processor">' . $this->translate('settings.mapping_configuration.processor', true) . '</label>';
+        $output .= '<select id="tx-extractor-processor">';
+
+        $processors = $GLOBALS['TYPO3_CONF_VARS']['EXT'][$this->extensionKey]['processors'];
+        $options = array_combine($processors, $processors);
+
+        $output = $this->getHtmlSelect(
+            'tx-extractor-processor',
+            'settings.mapping_configuration.processor',
+            $options,
+            true
         );
 
         return $output;

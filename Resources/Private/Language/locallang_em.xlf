@@ -90,6 +90,9 @@
             <trans-unit id="settings.mapping_configuration.property">
                 <source>Metatada Property:</source>
             </trans-unit>
+            <trans-unit id="settings.mapping_configuration.processor">
+                <source>Processor:</source>
+            </trans-unit>
             <trans-unit id="settings.mapping_configuration.json">
                 <source>JSON:</source>
             </trans-unit>

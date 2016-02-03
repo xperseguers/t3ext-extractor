@@ -27,6 +27,17 @@ $boot = function ($_EXTKEY) {
     if (version_compare(TYPO3_version, '7.5', '<') && isset($settings['auto_extract']) && (bool)$settings['auto_extract']) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'][] = \Causal\Extractor\Hook\FileUploadHook::class;
     }
+
+    /* ===========================================================================
+        Register post-processors (only useful for mapping helper tool in EM)
+    =========================================================================== */
+    $GLOBALS['TYPO3_CONF_VARS']['EXT'][$_EXTKEY]['processors'] = [
+        'Causal\\Extractor\\Utility\\Array_::concatenate',
+        'Causal\\Extractor\\Utility\\ColorSpace::normalize',
+        'Causal\\Extractor\\Utility\\DateTime::timestamp',
+        'Causal\\Extractor\\Utility\\Number::extractFloat',
+        'Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd',
+    ];
 };
 
 $boot($_EXTKEY);
