@@ -389,7 +389,6 @@ class PhpService extends AbstractService
             }
         } else {
             // Fall back to hack
-            $encoding = mb_detect_encoding($text, 'UTF-8', true);
             $encodedText = utf8_encode($text);
             if (strpos($encodedText, 'Ã') === false) {
                 $text = $encodedText;
