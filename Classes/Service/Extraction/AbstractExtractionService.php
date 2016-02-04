@@ -16,6 +16,7 @@ namespace Causal\Extractor\Service\Extraction;
 
 use Causal\Extractor\Utility\ExtensionHelper;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -32,6 +33,12 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @var array
      */
     protected $settings;
+
+    /**
+     * @var string
+     * @abstract
+     */
+    protected $serviceName = null;
 
     /**
      * AbstractService constructor.
@@ -127,17 +134,19 @@ abstract class AbstractExtractionService implements ExtractorInterface
     }
 
     /**
-     * Returns the data mapping for a given service key/subtype.
+     * Returns the potential mapping files.
      *
-     * @param string $service
+     * @param File $file
      * @param array $types
-     * @return array|null
-     * @throws \Exception
+     * @return array
      */
-    protected function getDataMapping($service, array $types = array())
+    public function getPotentialMappingFiles(File $file, array &$types = null)
     {
+        $potentialFiles = [];
+        $types = $this->extensionToServiceTypes($file->getExtension());
+
         $pathConfiguration = GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory'], false);
-        if ($pathConfiguration === '') {
+        if ($pathConfiguration === '' || !is_dir($pathConfiguration)) {
             $pathConfiguration = ExtensionManagementUtility::extPath('extractor') . 'Configuration/Services/';
         }
         $pathConfiguration = rtrim($pathConfiguration, '/') . '/';
@@ -149,8 +158,28 @@ abstract class AbstractExtractionService implements ExtractorInterface
         $types[] = 'metadata';
 
         foreach ($types as $type) {
-            $mappingFileName = $pathConfiguration . $service . '/' . $type . '.json';
-            if (is_file($mappingFileName)) {
+            $potentialFiles[] = $pathConfiguration . $this->serviceName . '/' . $type . '.json';
+        }
+
+        return $potentialFiles;
+    }
+
+    /**
+     * Returns the data mapping for a given service key/subtype.
+     *
+     * @param File $file
+     * @return array|null
+     * @throws \Exception
+     */
+    protected function getDataMapping(File $file)
+    {
+        $types = [];
+        $mappingFiles = $this->getPotentialMappingFiles($file, $types);
+        $mappingFileName = null;
+
+        foreach ($mappingFiles as $mappingFile) {
+            if (is_file($mappingFile)) {
+                $mappingFileName = $mappingFile;
                 break;
             }
         }
@@ -162,7 +191,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
                     throw new \Exception($classRef . ' must provide a method "postProcessDataMapping', 1425290629);
                 }
                 $hookData = array(
-                    'service' => $service,
+                    'service' => $this->serviceName,
                     'types' => $types,
                     'mappingFileName' => $mappingFileName,
                 );
@@ -195,7 +224,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     protected function remapServiceOutput(array $data, array $mapping = null)
     {
-        $output = array();
+        $output = [];
 
         if (!is_array($mapping)) {
             // Make sure unprocessed arrays will never have a risk to find their way to the database

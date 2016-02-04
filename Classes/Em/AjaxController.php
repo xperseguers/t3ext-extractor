@@ -39,6 +39,7 @@ class AjaxController
         $success = false;
         $html = '';
         $preview = '';
+        $mappingFileNames = [];
 
         if ($GLOBALS['BE_USER']->isAdmin()) {
             if (version_compare(TYPO3_version, '7.0', '>=')) {
@@ -58,19 +59,26 @@ class AjaxController
             /** @var Service\ServiceInterface $extractor */
             $extractor = null;
 
+            /** @var Service\Extraction\AbstractExtractionService $extractionService */
+            $extractionService = null;
+
             try {
                 switch ($service) {
                     case 'exiftool':
                         $extractor = GeneralUtility::makeInstance(Service\ExifTool\ExifToolService::class);
+                        $extractionService = GeneralUtility::makeInstance(Service\Extraction\ExifToolMetadataExtraction::class);
                         break;
                     case 'pdfinfo':
                         $extractor = GeneralUtility::makeInstance(Service\Pdfinfo\PdfInfoService::class);
+                        $extractionService = GeneralUtility::makeInstance(Service\Extraction\PdfinfoMetadataExtraction::class);
                         break;
                     case 'php':
                         $extractor = GeneralUtility::makeInstance(Service\Php\PhpService::class);
+                        $extractionService = GeneralUtility::makeInstance(Service\Extraction\PdfinfoMetadataExtraction::class);
                         break;
                     case 'tika':
                         $extractor = Service\Tika\TikaServiceFactory::getTika();
+                        $extractionService = GeneralUtility::makeInstance(Service\Extraction\TikaMetadataExtraction::class);
                         break;
                 }
             } catch (\Exception $e) {
@@ -82,6 +90,16 @@ class AjaxController
                 $metadata = $extractor->extractMetadata($file);
                 $html = $this->htmlizeMetadata($metadata);
 
+                // Populate the possible mapping configuration file names
+                $mappingFileNames = $extractionService->getPotentialMappingFiles($file);
+                $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor']);
+                if (isset($settings['mapping_base_directory'])) {
+                    $pathConfiguration = GeneralUtility::getFileAbsFileName($settings['mapping_base_directory'], false);
+                    foreach ($mappingFileNames as &$fileName) {
+                        $fileName = substr($fileName, strlen($pathConfiguration));
+                    }
+                }
+
                 if (in_array(strtolower($file->getExtension()), ['jpg', 'jpeg', 'png', 'gif'])) {
                     $preview = '<img src="' . $publicUrl . '" alt="" width="300" />';
                 }
@@ -92,6 +110,7 @@ class AjaxController
             'success' => $success,
             'preview' => $preview,
             'html' => $html,
+            'files' => $mappingFileNames,
         ]);
     }
 

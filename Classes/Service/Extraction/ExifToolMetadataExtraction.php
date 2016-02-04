@@ -32,6 +32,11 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
     protected $priority = 90;
 
     /**
+     * @var string
+     */
+    protected $serviceName = 'ExifTool';
+
+    /**
      * ExifToolMetadataExtraction constructor.
      */
     public function __construct()
@@ -77,8 +82,7 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
 
         $extractedMetadata = $this->getExifToolService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {
-            $serviceTypes = $this->extensionToServiceTypes($file->getExtension());
-            $dataMapping = $this->getDataMapping('ExifTool', $serviceTypes);
+            $dataMapping = $this->getDataMapping($file);
             $metadata = $this->remapServiceOutput($extractedMetadata, $dataMapping);
         }
 

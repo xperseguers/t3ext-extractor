@@ -83,6 +83,9 @@
             <trans-unit id="settings.mapping_configuration.chooseFile.custom">
                 <source>Custom</source>
             </trans-unit>
+            <trans-unit id="settings.mapping_configuration.files">
+                <source>Priority of configuration files:</source>
+            </trans-unit>
             <trans-unit id="settings.mapping_configuration.service">
                 <source>Service:</source>
             </trans-unit>

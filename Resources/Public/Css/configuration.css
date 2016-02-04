@@ -36,3 +36,15 @@
 #tx-extractor-preview {
     margin-top: 1em;
 }
+
+#tx-extractor-files {
+    margin-top: 1em;
+}
+
+#tx-extractor-files p {
+    font-weight: bold;
+}
+
+#tx-extractor-files ol {
+    padding-left: 1.3em;
+}

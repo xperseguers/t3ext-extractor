@@ -23,6 +23,12 @@ Extractor = {
             success: function (data) {
                 $('#tx-extractor-metadata').html(data.html);
                 $('#tx-extractor-preview').html(data.preview);
+                if (data.files.length > 0) {
+                    $('#tx-extractor-files ol').html('<li>' + data.files.join('</li><li>') + '</li>');
+                    $('#tx-extractor-files').show();
+                } else {
+                    $('#tx-extractor-files').hide();
+                }
                 $('#tx-extractor-property').val('');
                 $('#tx-extractor-sample').val('');
                 $('#tx-extractor-output').val('');

@@ -32,6 +32,11 @@ class PhpMetadataExtraction extends AbstractExtractionService
     protected $priority = 50;
 
     /**
+     * @var string
+     */
+    protected $serviceName = 'Php';
+
+    /**
      * PhpMetadataExtraction constructor.
      */
     public function __construct()
@@ -69,8 +74,7 @@ class PhpMetadataExtraction extends AbstractExtractionService
 
         $extractedMetadata = $this->getPhpService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {
-            $serviceTypes = $this->extensionToServiceTypes($file->getExtension());
-            $dataMapping = $this->getDataMapping('Php', $serviceTypes);
+            $dataMapping = $this->getDataMapping($file);
             $metadata = $this->remapServiceOutput($extractedMetadata, $dataMapping);
         }
 

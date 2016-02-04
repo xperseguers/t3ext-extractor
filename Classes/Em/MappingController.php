@@ -84,6 +84,10 @@ class MappingController extends AbstractConfigurationField
         // Choose file
         $html[] = $this->getFileSelector();
         $html[] = '<div id="tx-extractor-preview"></div>';
+        $html[] = '<div id="tx-extractor-files">';
+        $html[] = '<p>' . $this->translate('settings.mapping_configuration.files', true) . '</p>';
+        $html[] = '<ol></ol>';
+        $html[] = '</div>';
         $html[] = '</td><td>';
         // Service
         $html[] = $this->getServiceSelector();

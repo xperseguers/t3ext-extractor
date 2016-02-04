@@ -32,6 +32,11 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
     protected $priority = 70;
 
     /**
+     * @var string
+     */
+    protected $serviceName = 'Pdfinfo';
+
+    /**
      * Only "application/pdf" is supported.
      *
      * @var array
@@ -80,8 +85,7 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
 
         $extractedMetadata = $this->getPdfinfoService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {
-            $serviceTypes = $this->extensionToServiceTypes($file->getExtension());
-            $dataMapping = $this->getDataMapping('Pdfinfo', $serviceTypes);
+            $dataMapping = $this->getDataMapping($file);
             $metadata = $this->remapServiceOutput($extractedMetadata, $dataMapping);
         }
 

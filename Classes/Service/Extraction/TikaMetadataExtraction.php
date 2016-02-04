@@ -32,6 +32,11 @@ class TikaMetadataExtraction extends AbstractExtractionService
     protected $priority = 80;
 
     /**
+     * @var string
+     */
+    protected $serviceName = 'Tika';
+
+    /**
      * @var bool
      */
     protected $tikaAvailable;
@@ -82,8 +87,7 @@ class TikaMetadataExtraction extends AbstractExtractionService
 
         $extractedMetadata = $this->getTikaService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {
-            $serviceTypes = $this->extensionToServiceTypes($file->getExtension());
-            $dataMapping = $this->getDataMapping('Tika', $serviceTypes);
+            $dataMapping = $this->getDataMapping($file);
             $metadata = $this->remapServiceOutput($extractedMetadata, $dataMapping);
         }
 
