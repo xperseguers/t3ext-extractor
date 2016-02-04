@@ -69,7 +69,7 @@ class Dimension
      * @param string $str
      * @return string
      */
-    public function extractUnit($str)
+    public static function extractUnit($str)
     {
         $unit = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
@@ -90,7 +90,7 @@ class Dimension
      * @param float $value
      * @return float
      */
-    protected function pointsToMillimeters($value)
+    protected static function pointsToMillimeters($value)
     {
         // 1 inch = 72 points
         $inches = $value / 72;
