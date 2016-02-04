@@ -24,6 +24,7 @@ Extractor = {
                 $('#tx-extractor-metadata').html(data.html);
                 $('#tx-extractor-preview').html(data.preview);
                 $('#tx-extractor-property').val('');
+                $('#tx-extractor-processor').val('').trigger('change');
                 $('#tx-extractor-json').val('');
 
                 if (data.success) {
