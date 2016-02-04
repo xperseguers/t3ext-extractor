@@ -126,7 +126,9 @@ class MappingController extends AbstractConfigurationField
             $key = 'file:' . $file->getStorage()->getUid() . ':' . $file->getIdentifier();
             $files['custom'][$key] = $file->getName();
         }
-        ksort($files['custom']);
+        if (!empty($files['custom'])) {
+            ksort($files['custom']);
+        }
 
         $output = '<label for="tx-extractor-file">' . $this->translate('settings.mapping_configuration.chooseFile', true) . '</label>';
         $output .= '<select id="tx-extractor-file"><option value=""></option>';
