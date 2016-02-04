@@ -34,7 +34,7 @@ class AjaxController
      * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
      * @return void
      */
-    public function renderAjax(array $params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
+    public function analyze(array $params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = null) {
         $ajaxObj->setContentFormat('json');
         $success = false;
         $html = '';
@@ -92,6 +92,63 @@ class AjaxController
             'success' => $success,
             'preview' => $preview,
             'html' => $html,
+        ]);
+    }
+
+    /**
+     * Processes a sample value.
+     *
+     * @param array $params
+     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler|null $ajaxObj
+     * @return string
+     */
+    public function process(array $params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = null) {
+        $ajaxObj->setContentFormat('json');
+        $text = '';
+
+        if ($GLOBALS['BE_USER']->isAdmin()) {
+            if (version_compare(TYPO3_version, '7.0', '>=')) {
+                /** @var \TYPO3\CMS\Core\Http\ServerRequest $request */
+                $request = $params['request'];
+                $queryParameters = $request->getQueryParams();
+                $sample = $queryParameters['sample'];
+                $processor = $queryParameters['processor'];
+            } else {
+                $sample = GeneralUtility::_GET('sample');
+                $processor = GeneralUtility::_GET('processor');
+            }
+
+            if (preg_match('/^([^(]+)(\((.*)\))?$/', $processor, $matches)) {
+                $processor = $matches[1];
+                if (preg_match('/[[].*[]]/', $sample)) {
+                    $value = json_decode($sample, true);
+                    if ($value === null) {
+                        // Probably not a JSON string after all
+                        $value = $sample;
+                    }
+                    $sample = $value;
+                }
+                $parameters = array($sample);
+                // Support for $matches[3] is currently *very* basic!
+                // @see \Causal\Extractor\Service\Extraction\AbstractExtractionService::remapServiceOutput
+                if ($matches[3]) {
+                    if ($matches[3]{0} === '\'') {
+                        $parameters[] = substr($matches[3], 1, -1);
+                    } else {
+                        $parameters[] = $matches[3];
+                    }
+                }
+                try {
+                    $text = call_user_func_array($processor, $parameters);
+                } catch (\Exception $e) {
+                    $text = sprintf('Exception #%s: %s', $e->getCode(), $e->getMessage());
+                }
+            }
+        }
+
+        $ajaxObj->setContent([
+            'success' => true,
+            'text' => $text,
         ]);
     }
 
@@ -179,10 +236,12 @@ class AjaxController
             $keyName = ($parent ? $parent . '|' : '') . $key;
             $processor = $this->suggestProcessor($value, $key);
             $propertyPath = $keyName . ($processor ? '->' . $processor : '');
+            $sample = is_array($value) ? json_encode(array_values($value)) : htmlspecialchars($value);
 
             $property = '\'<a class="tx-extractor-property" href="#"' .
                 ' data-property="' . htmlspecialchars($keyName) . '"' .
-                ' data-processor="' . htmlspecialchars($processor) . '">' . htmlspecialchars($key) . '</a>\'';
+                ' data-processor="' . htmlspecialchars($processor) . '"' .
+                ' data-sample=\'' . $sample . '\'>' . htmlspecialchars($key) . '</a>\'';
 
             if (is_array($value)) {
                 $value = $this->htmlizeMetadata($value, $indent + 1, $keyName);
@@ -217,6 +276,9 @@ class AjaxController
                 break;
             case stripos($property, 'gps') !== false:
                 $postProcessor = 'Causal\\Extractor\\Utility\\Gps::toDecimal';
+                break;
+            case is_array($value):
+                $postProcessor = 'Causal\\Extractor\\Utility\\Array_::concatenate(\', \')';
                 break;
         }
 

@@ -28,9 +28,13 @@ class DateTime
      *
      * @param string $str
      * @return integer|null
+     * @throws \InvalidArgumentException
      */
     public static function timestamp($str)
     {
+        if (is_array($str)) {
+            throw new \InvalidArgumentException('String parameter expected, array given', 1454591417);
+        }
         if (preg_match('/^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}$/', $str)) {
             // PHP built-in format when reading EXIF
             list($date, $time) = explode(' ', $str, 2);

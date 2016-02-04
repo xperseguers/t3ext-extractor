@@ -60,7 +60,8 @@ class MappingController extends AbstractConfigurationField
     {
         $resourcesPath = ExtensionManagementUtility::extRelPath($this->extensionKey) . 'Resources/Public/';
 
-        $inlineJs = 'var configurationAjaxUrl = \'' . BackendUtility::getAjaxUrl($this->extensionKey . '::analyze') . '\';';
+        $inlineJs = 'var extractorAnalyzeAction = \'' . BackendUtility::getAjaxUrl($this->extensionKey . '::analyze') . '\';';
+        $inlineJs .= 'var extractorProcessAction = \'' . BackendUtility::getAjaxUrl($this->extensionKey . '::process') . '\';';
 
         $pageRenderer = $this->getPageRenderer();
         if (version_compare(TYPO3_version, '6.2.99', '<=')) {
@@ -80,14 +81,26 @@ class MappingController extends AbstractConfigurationField
         $html[] = $this->smartFormat($this->translate('settings.mapping_configuration.description'));
         $html[] = '<div class="tx-extractor">';
         $html[] = '<table><tr><td>';
+        // Choose file
         $html[] = $this->getFileSelector();
         $html[] = '<div id="tx-extractor-preview"></div>';
         $html[] = '</td><td>';
+        // Service
         $html[] = $this->getServiceSelector();
+        //  FAL Property
         $html[] = $this->getFalPropertySelector();
+        // Metadata Property
         $html[] = '<label for="tx-extractor-property">' . $this->translate('settings.mapping_configuration.property', true) . '</label>';
-        $html[] = '<input type="text" id="tx-extractor-property" />';
+        $html[] = '<input type="text" id="tx-extractor-property" readonly="readonly" />';
+        // Processor
         $html[] = $this->getProcessorSelector();
+        // Sample Value
+        $html[] = '<label for="tx-extractor-sample">' . $this->translate('settings.mapping_configuration.sample', true) . '</label>';
+        $html[] = '<input type="text" id="tx-extractor-sample" readonly="readonly" />';
+        // Output
+        $html[] = '<label for="tx-extractor-output">' . $this->translate('settings.mapping_configuration.output', true) . '</label>';
+        $html[] = '<input type="text" id="tx-extractor-output" readonly="readonly" />';
+        // JSON
         $html[] = '<label for="tx-extractor-json">' . $this->translate('settings.mapping_configuration.json', true) . '</label>';
         $html[] = '<textarea id="tx-extractor-json" rows="4"></textarea>';
         $html[] = '<button id="tx-extractor-copy">' . $this->translate('settings.mapping_configuration.json.copy', true) . '</button>';

@@ -26,11 +26,13 @@
     color: blue;
 }
 
-#tx-extractor-preview {
-    margin-top: 1em;
+.tx-extractor input[type="text"], .tx-extractor textarea {
+    width: 100% !important;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
-#tx-extractor-property,
-#tx-extractor-json {
-    width: 99% !important;
+#tx-extractor-preview {
+    margin-top: 1em;
 }

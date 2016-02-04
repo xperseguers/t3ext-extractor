@@ -11,6 +11,10 @@ if (TYPO3_MODE === 'BE') {
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
         $_EXTKEY . '::analyze',
-        \Causal\Extractor\Em\AjaxController::class . '->renderAjax'
+        \Causal\Extractor\Em\AjaxController::class . '->analyze'
+    );
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
+        $_EXTKEY . '::process',
+        \Causal\Extractor\Em\AjaxController::class . '->process'
     );
 }

@@ -41,9 +41,13 @@ class Number
      *
      * @param string $str
      * @return string
+     * @throws \InvalidArgumentException
      */
     public static function extractIntegerAtEnd($str)
     {
+        if (is_array($str)) {
+            throw new \InvalidArgumentException('String parameter expected, array given', 1454591285);
+        }
         if (preg_match('/(\d+)$/', $str, $matches)) {
             return (int)$matches[1];
         }
@@ -55,9 +59,13 @@ class Number
      *
      * @param string $str
      * @return float
+     * @throws \InvalidArgumentException
      */
     public static function extractFloat($str)
     {
+        if (is_array($str)) {
+            throw new \InvalidArgumentException('String parameter expected, array given', 1454591360);
+        }
         if (preg_match('#^(\d+)/(\d+)$#', $str, $matches)) {
             $value = (int)$matches[1] / (float)$matches[2];
         } elseif (preg_match('/35 mm equivalent: (\d+\.\d+) mm/', $str, $matches)) {

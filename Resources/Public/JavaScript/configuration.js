@@ -7,8 +7,10 @@ define(['jquery', "TYPO3/CMS/Extractor/select2"], function($) {
         $('#tx-extractor-file').change(Extractor.extractMetadata);
         $('#tx-extractor-service').change(Extractor.extractMetadata);
         $('#tx-extractor-fal').change(Extractor.updateJson);
-        $('#tx-extractor-property').change(Extractor.updateJson);
-        $('#tx-extractor-processor').change(Extractor.updateJson);
+        $('#tx-extractor-processor').change(function() {
+            Extractor.updateJson();
+            Extractor.processSample();
+        });
 
         Extractor.initializePropertyActions();
     });

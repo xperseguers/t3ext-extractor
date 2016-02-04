@@ -30,9 +30,13 @@ class ColorSpace
      *
      * @param string $str
      * @return string
+     * @throws \InvalidArgumentException
      */
     public static function normalize($str)
     {
+        if (is_array($str)) {
+            throw new \InvalidArgumentException('String parameter expected, array given', 1454591450);
+        }
         if (MathUtility::canBeInterpretedAsInteger($str)) {
             // See http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html
             switch ((int)$str) {

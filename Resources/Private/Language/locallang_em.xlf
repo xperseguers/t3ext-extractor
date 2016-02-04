@@ -63,7 +63,9 @@
             <trans-unit id="settings.mapping_configuration.description">
                 <source>This tool helps you configuring the mapping between the output of a
                     metadata extraction service and FAL by suggesting how to write a mapping configuration line in the
-                    JSON files stored within the directory configured above.
+                    JSON files stored within the directory configured above. Please note that it does not support all
+                    bells and whistles described in the documentation but it should help you kickstart your own
+                    setup.
 
                     Start by choosing a file in the dropdown list, then click on any metadata property to transfer it
                     to the text area showing you what to write in your mapping configuration file.
@@ -89,6 +91,12 @@
             </trans-unit>
             <trans-unit id="settings.mapping_configuration.property">
                 <source>Metatada Property:</source>
+            </trans-unit>
+            <trans-unit id="settings.mapping_configuration.sample">
+                <source>Sample Value:</source>
+            </trans-unit>
+            <trans-unit id="settings.mapping_configuration.output">
+                <source>Output:</source>
             </trans-unit>
             <trans-unit id="settings.mapping_configuration.processor">
                 <source>Processor:</source>
