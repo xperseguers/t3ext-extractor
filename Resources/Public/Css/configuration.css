@@ -48,3 +48,8 @@
 #tx-extractor-files ol {
     padding-left: 1.3em;
 }
+
+#tx-extractor-files ol li:last-child {
+    font-style: italic;
+    font-size: 80%;
+}
