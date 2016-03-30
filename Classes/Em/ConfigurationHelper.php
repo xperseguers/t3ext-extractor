@@ -188,7 +188,25 @@ class ConfigurationHelper extends AbstractConfigurationField
                 FlashMessage::INFO
             );
 
-            $html = $flashMessage->render();
+            $title = '';
+            if (!empty($flashMessage->getTitle())) {
+                $title = '<h4 class="alert-title">' . $flashMessage->getTitle() . '</h4>';
+            }
+            $html = '
+			<div class="alert ' . $flashMessage->getClass() . '">
+				<div class="media">
+					<div class="media-left">
+						<span class="fa-stack fa-lg">
+							<i class="fa fa-circle fa-stack-2x"></i>
+							<i class="fa fa-' . $flashMessage->getIconName() . ' fa-stack-1x"></i>
+						</span>
+					</div>
+					<div class="media-body">
+						' . $title . '
+						<div class="alert-message">' . $flashMessage->getMessage() . '</div>
+					</div>
+				</div>
+			</div>';
         } else {
             $html = $this->createFormInputField(array(
                 'name' => $params['fieldName'],
