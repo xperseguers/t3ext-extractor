@@ -94,7 +94,13 @@ class AjaxController
                 $mappingFileNames = $extractionService->getPotentialMappingFiles($file);
                 $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor']);
                 if (isset($settings['mapping_base_directory'])) {
-                    $pathConfiguration = GeneralUtility::getFileAbsFileName($settings['mapping_base_directory'], false);
+                    if (version_compare(TYPO3_version, '8.0', '>=')) {
+                        $pathConfiguration = is_dir($this->settings['mapping_base_directory'])
+                            ? $this->settings['mapping_base_directory']
+                            : GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory']);
+                    } else {
+                        $pathConfiguration = GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory'], false);
+                    }
                     foreach ($mappingFileNames as &$fileName) {
                         $fileName = substr($fileName, strlen($pathConfiguration));
                     }

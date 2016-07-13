@@ -34,7 +34,7 @@ class ExifToolService extends AbstractService
     {
         parent::__construct();
 
-        $exifTool = GeneralUtility::getFileAbsFileName($this->settings['tools_exiftool'], false);
+        $exifTool = $this->getExifTool();
         if (!is_file($exifTool)) {
             throw new \RuntimeException(
                 'Invalid path or filename for ExifTool: ' . $this->settings['tools_exiftool'],
@@ -56,8 +56,7 @@ class ExifToolService extends AbstractService
      */
     public function getSupportedFileExtensions()
     {
-        $exifToolCommand = GeneralUtility::getFileAbsFileName($this->settings['tools_exiftool'], false)
-            . ' -listr';
+        $exifToolCommand = $this->getExifTool() . ' -listr';
 
         $shellOutput = array();
         CommandUtility::exec($exifToolCommand, $shellOutput);
@@ -82,9 +81,7 @@ class ExifToolService extends AbstractService
      */
     public function extractMetadataFromLocalFile($fileName)
     {
-        $exifToolCommand = GeneralUtility::getFileAbsFileName($this->settings['tools_exiftool'], false)
-            . ' -j'
-            . ' ' . $this->escapeShellArgument($fileName);
+        $exifToolCommand = $this->getExifTool() . ' -j ' . $this->escapeShellArgument($fileName);
 
         $shellOutput = array();
         CommandUtility::exec($exifToolCommand, $shellOutput);
@@ -95,6 +92,23 @@ class ExifToolService extends AbstractService
         }
 
         return $metadata[0];
+    }
+
+    /**
+     * Returns the path to the exiftool utility.
+     *
+     * @return string
+     */
+    protected function getExifTool()
+    {
+        if (version_compare(TYPO3_version, '8.0', '>=')) {
+            $exifTool = is_file($this->settings['tools_exiftool'])
+                ? $this->settings['tools_exiftool']
+                : GeneralUtility::getFileAbsFileName($this->settings['tools_exiftool']);
+        } else {
+            $exifTool = GeneralUtility::getFileAbsFileName($this->settings['tools_exiftool'], false);
+        }
+        return $exifTool;
     }
 
 }

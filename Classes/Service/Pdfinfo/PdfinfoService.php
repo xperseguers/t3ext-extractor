@@ -34,7 +34,7 @@ class PdfinfoService extends AbstractService
     {
         parent::__construct();
 
-        $pdfInfo = GeneralUtility::getFileAbsFileName($this->settings['tools_pdfinfo'], false);
+        $pdfInfo = $this->getPdfInfo();
         if (!is_file($pdfInfo)) {
             throw new \RuntimeException(
                 'Invalid path or filename for Pdfinfo: ' . $this->settings['tools_pdfinfo'],
@@ -61,8 +61,7 @@ class PdfinfoService extends AbstractService
      */
     public function extractMetadataFromLocalFile($fileName)
     {
-        $pdfinfoCommand = GeneralUtility::getFileAbsFileName($this->settings['tools_pdfinfo'], false)
-            . ' ' . $this->escapeShellArgument($fileName);
+        $pdfinfoCommand = $this->getPdfInfo() . ' ' . $this->escapeShellArgument($fileName);
 
         $shellOutput = array();
         CommandUtility::exec($pdfinfoCommand, $shellOutput);
@@ -73,6 +72,23 @@ class PdfinfoService extends AbstractService
         }
 
         return $metadata;
+    }
+
+    /**
+     * Returns the path to the pdfinfo utility.
+     *
+     * @return string
+     */
+    protected function getPdfInfo()
+    {
+        if (version_compare(TYPO3_version, '8.0', '>=')) {
+            $pdfInfo = is_file($this->settings['tools_pdfinfo'])
+                ? $this->settings['tools_pdfinfo']
+                : GeneralUtility::getFileAbsFileName($this->settings['tools_pdfinfo']);
+        } else {
+            $pdfInfo = GeneralUtility::getFileAbsFileName($this->settings['tools_pdfinfo'], false);
+        }
+        return $pdfInfo;
     }
 
 }

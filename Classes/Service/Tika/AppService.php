@@ -36,7 +36,8 @@ class AppService extends AbstractService implements TikaServiceInterface
     {
         parent::__construct();
 
-        if (!is_file(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))) {
+        $tikaJar = $this->getTikaJar();
+        if (!is_file($tikaJar)) {
             throw new \RuntimeException(
                 'Invalid path or filename for Tika application jar: ' . $this->settings['tika_jar_path'],
                 1445096468
@@ -57,7 +58,7 @@ class AppService extends AbstractService implements TikaServiceInterface
     {
         $version = '';
         $tikaCommand = CommandUtility::getCommand('java')
-            . ' -jar ' . $this->escapeShellArgument(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
+            . ' -jar ' . $this->escapeShellArgument($this->getTikaJar())
             . ' --version';
 
         $shellOutput = array();
@@ -75,7 +76,7 @@ class AppService extends AbstractService implements TikaServiceInterface
     public function getSupportedFileExtensions()
     {
         $tikaCommand = CommandUtility::getCommand('java')
-            . ' -jar ' . $this->escapeShellArgument(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
+            . ' -jar ' . $this->escapeShellArgument($this->getTikaJar())
             . ' --list-supported-types';
 
         $shellOutput = array();
@@ -132,7 +133,7 @@ class AppService extends AbstractService implements TikaServiceInterface
     {
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -Dfile.encoding=UTF8'
-            . ' -jar ' . $this->escapeShellArgument(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
+            . ' -jar ' . $this->escapeShellArgument($this->getTikaJar())
             . ' -m --json'
             . ' ' . $this->escapeShellArgument($fileName);
 
@@ -168,13 +169,30 @@ class AppService extends AbstractService implements TikaServiceInterface
     {
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -Dfile.encoding=UTF8'
-            . ' -jar ' . $this->escapeShellArgument(GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false))
+            . ' -jar ' . $this->escapeShellArgument($this->getTikaJar())
             . ' -l'
             . ' ' . $this->escapeShellArgument($fileName);
 
         $language = trim(CommandUtility::exec($tikaCommand));
 
         return $language;
+    }
+
+    /**
+     * Returns the path to the Apache Tika JAR.
+     *
+     * @return string
+     */
+    protected function getTikaJar()
+    {
+        if (version_compare(TYPO3_version, '8.0', '>=')) {
+            $tikaJar = is_file($this->settings['tika_jar_path'])
+                ? $this->settings['tika_jar_path']
+                : GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path']);
+        } else {
+            $tikaJar = GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false);
+        }
+        return $tikaJar;
     }
 
 }
