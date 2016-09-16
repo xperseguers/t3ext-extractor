@@ -100,7 +100,7 @@
   {
     "FAL": "source",
     "DATA": [
-      "FileSource->Causal\\Extractor\\Utility\\String::trim",
+      "FileSource->Causal\\Extractor\\Utility\\SimpleString::trim",
       "Company"
     ]
   },

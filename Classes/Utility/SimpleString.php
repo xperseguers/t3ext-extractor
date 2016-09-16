@@ -21,9 +21,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @deprecated Use \Causal\Extractor\Utility\SimpleString instead since this class name is not supported by PHP 7
  */
-class String
+class SimpleString
 {
 
     /**
@@ -31,12 +30,9 @@ class String
      *
      * @param string $str
      * @return int
-     * @deprecated Update your reference to use \Causal\Extractor\Utility\SimpleString::trim instead since "String" is a reserved class name in PHP 7
      */
     public static function trim($str)
     {
-        GeneralUtility::logDeprecatedFunction();
-
         // Remove non-printable characters (ASCII 0-31)
         $str = preg_replace('/[\x00-\x1F]/', '', $str);
         return trim($str);

@@ -43,7 +43,7 @@ $boot = function ($_EXTKEY) {
         'Causal\\Extractor\\Utility\\Number::castInteger',
         'Causal\\Extractor\\Utility\\Number::extractFloat',
         'Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd',
-        'Causal\\Extractor\\Utility\\String::trim',
+        'Causal\\Extractor\\Utility\\SimpleString::trim',
     ];
 };
 
