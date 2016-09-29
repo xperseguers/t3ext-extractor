@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Class AbstractExtractionService
@@ -295,13 +296,74 @@ abstract class AbstractExtractionService implements ExtractorInterface
         }
 
         foreach ($output as $key => $value) {
-            // Known cases: "keywords", "alternative"
+            // Known cases: "keywords", "alternative", "SupplementalCategories"
             if (is_array($value)) {
                 $output[$key] = implode(', ', $value);
             }
         }
 
         return $output;
+    }
+
+    /**
+     * Processes the categories.
+     *
+     * @param File $file
+     * @param array &$metadata
+     * @return void
+     */
+    protected function processCategories(File $file, array &$metadata)
+    {
+        $categories = [];
+        $key = '__categories__';
+        if (isset($metadata[$key])) {
+            $categories = GeneralUtility::trimExplode(', ', $metadata[$key], true);
+            unset($metadata[$key]);
+        }
+        if (empty($categories) || $file->getUid() === 0) {
+            return;
+        }
+
+        $database = static::getDatabaseConnection();
+        $table = 'sys_category';
+        $typo3Categories = $database->exec_SELECTgetRows(
+            'uid, title',
+            $table,
+            'sys_language_uid=0' . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table)
+        );
+
+        // Remove currently associated categories for this file
+        $relation = 'sys_category_record_mm';
+        $database->exec_DELETEquery(
+            $relation,
+            'uid_foreign=' . $file->getUid()
+                . ' AND tablenames=' . $database->fullQuoteStr('sys_file_metadata', $relation)
+                . ' AND fieldname=' . $database->fullQuoteStr('categories', $relation)
+        );
+
+        $sorting = 1;
+        $data = [];
+        foreach ($categories as $category) {
+            foreach ($typo3Categories as $typo3Category) {
+                if ($typo3Category['title'] === $category) {
+                    $data[] = [
+                        'uid_local' => (int)$typo3Category['uid'],
+                        'uid_foreign' => $file->getUid(),
+                        'tablenames' => 'sys_file_metadata',
+                        'fieldname' => 'categories',
+                        'sorting_foreign' => $sorting++,
+                    ];
+                }
+            }
+        }
+
+        if (!empty($data)) {
+            $database->exec_INSERTmultipleRows(
+                $relation,
+                ['uid_local', 'uid_foreign', 'tablenames', 'fieldname', 'sorting_foreign'],
+                $data
+            );
+        }
     }
 
     /**
@@ -345,6 +407,14 @@ abstract class AbstractExtractionService implements ExtractorInterface
         $types[] = ExtensionHelper::getExtensionCategory($extension);
 
         return $types;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected static function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 
 }

@@ -84,6 +84,7 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
         if (!empty($extractedMetadata)) {
             $dataMapping = $this->getDataMapping($file);
             $metadata = $this->remapServiceOutput($extractedMetadata, $dataMapping);
+            $this->processCategories($file, $metadata);
         }
 
         return $metadata;

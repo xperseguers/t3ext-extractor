@@ -168,5 +168,9 @@
   {
     "FAL": "aperture",
     "DATA": "Aperture"
+  },
+  {
+    "FAL": "__categories__",
+    "DATA": "SupplementalCategories"
   }
 ]
