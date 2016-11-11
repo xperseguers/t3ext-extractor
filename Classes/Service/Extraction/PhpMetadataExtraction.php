@@ -97,4 +97,20 @@ class PhpMetadataExtraction extends AbstractExtractionService
 
         return $phpService;
     }
+
+    /**
+     * Returns a logger.
+     *
+     * @return \TYPO3\CMS\Core\Log\Logger
+     */
+    protected static function getLogger()
+    {
+        /** @var \TYPO3\CMS\Core\Log\Logger $logger */
+        static $logger = null;
+        if ($logger === null) {
+            $logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
+        }
+
+        return $logger;
+    }
 }

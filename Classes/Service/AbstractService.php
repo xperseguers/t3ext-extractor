@@ -16,6 +16,7 @@ namespace Causal\Extractor\Service;
 
 use Causal\Extractor\Service\ServiceInterface;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -48,6 +49,13 @@ abstract class AbstractService implements ServiceInterface
      */
     public function extractMetadata(File $file)
     {
+        static::getLogger()->debug(
+            'Extracting metadata',
+            [
+                'file' => $file->getUid(),
+                'identifier' => $file->getCombinedIdentifier(),
+            ]
+        );
         $localTempFilePath = $file->getForLocalProcessing(false);
         $metadata = $this->extractMetadataFromLocalFile($localTempFilePath);
         $this->cleanupTempFile($localTempFilePath, $file);
@@ -99,4 +107,19 @@ abstract class AbstractService implements ServiceInterface
         return $escapedInput;
     }
 
+    /**
+     * Returns a logger.
+     *
+     * @return \TYPO3\CMS\Core\Log\Logger
+     */
+    protected static function getLogger()
+    {
+        /** @var \TYPO3\CMS\Core\Log\Logger $logger */
+        static $logger = null;
+        if ($logger === null) {
+            $logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
+        }
+
+        return $logger;
+    }
 }

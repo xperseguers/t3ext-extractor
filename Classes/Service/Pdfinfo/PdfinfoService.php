@@ -64,6 +64,15 @@ class PdfinfoService extends AbstractService
 
         $shellOutput = array();
         CommandUtility::exec($pdfinfoCommand, $shellOutput);
+
+        static::getLogger()->debug(
+            'Executing external script',
+            [
+                'commmand' => $pdfinfoCommand,
+                'output' => $shellOutput,
+            ]
+        );
+
         $metadata = array();
         foreach ($shellOutput as $line) {
             list($key, $value) = GeneralUtility::trimExplode(':', $line, true, 2);

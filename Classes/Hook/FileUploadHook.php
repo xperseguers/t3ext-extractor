@@ -52,6 +52,13 @@ class FileUploadHook implements \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
             }
 
             foreach ($fileObjects as $fileObject) {
+                static::getLogger()->debug(
+                    'File uploaded',
+                    [
+                        'file' => $fileObject->getUid(),
+                        'identifier' => $fileObject->getCombinedIdentifier(),
+                    ]
+                );
                 $storageRecord = $fileObject->getStorage()->getStorageRecord();
                 if ($storageRecord['driver'] === 'Local') {
                     $this->runMetaDataExtraction($fileObject);
@@ -74,22 +81,62 @@ class FileUploadHook implements \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
             static::$extractionServices = $extractorRegistry->getExtractorsWithDriverSupport('Local');
         }
 
-        $newMetaData = array(
-            0 => $fileObject->_getMetaData()
-        );
+        $newMetaData = [
+            0 => $fileObject->_getMetaData(),
+        ];
         foreach (static::$extractionServices as $service) {
+            static::getLogger()->debug(
+                'Checking availability of extraction service',
+                [
+                    'service' => get_class($service),
+                ]
+            );
             if ($service->canProcess($fileObject)) {
-                $newMetaData[$service->getPriority()] = $service->extractMetaData($fileObject, $newMetaData);
+                $metaData = $service->extractMetaData($fileObject, $newMetaData);
+                $newMetaData[$service->getPriority()] = $metaData;
+                static::getLogger()->debug(
+                    'Metadata extracted',
+                    [
+                        'service' => get_class($service),
+                        'metadata' => $metaData,
+                    ]
+                );
             }
         }
+
+        // Sorting and overloading metadata by priority
         ksort($newMetaData);
-        $metaData = array();
+        $metaData = [];
         foreach ($newMetaData as $data) {
             $metaData = array_merge($metaData, $data);
         }
+
+        static::getLogger()->debug(
+            'Updating metadata for file',
+            [
+                'file' => $fileObject->getUid(),
+                'identifier' => $fileObject->getCombinedIdentifier(),
+                'metadata' => $metaData,
+            ]
+        );
         $fileObject->_updateMetaDataProperties($metaData);
         $metaDataRepository = \TYPO3\CMS\Core\Resource\Index\MetaDataRepository::getInstance();
         $metaDataRepository->update($fileObject->getUid(), $metaData);
     }
 
+    /**
+     * Returns a logger.
+     *
+     * @return \TYPO3\CMS\Core\Log\Logger
+     */
+    protected static function getLogger()
+    {
+        /** @var \TYPO3\CMS\Core\Log\Logger $logger */
+        static $logger = null;
+        if ($logger === null) {
+            $logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
+        }
+
+        return $logger;
+    }
 }

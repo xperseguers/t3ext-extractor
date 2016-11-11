@@ -19,4 +19,8 @@ conf.py:
     pointsize: 10pt
     preamble: \usepackage{typo3}
   latex_show_pagerefs: True
+  intersphinx_mapping:
+    t3api:
+    - https://docs.typo3.org/typo3cms/CoreApiReference/
+    - null
 ...

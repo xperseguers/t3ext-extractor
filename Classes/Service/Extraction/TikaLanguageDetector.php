@@ -87,10 +87,26 @@ class TikaLanguageDetector extends AbstractExtractionService
                 $tikaService = \Causal\Extractor\Service\Tika\TikaServiceFactory::getTika();
             } catch (\RuntimeException $e) {
                 // Nothing to do
+                static::getLogger()->warning($e->getMessage());
             }
         }
 
         return $tikaService;
     }
 
+    /**
+     * Returns a logger.
+     *
+     * @return \TYPO3\CMS\Core\Log\Logger
+     */
+    protected static function getLogger()
+    {
+        /** @var \TYPO3\CMS\Core\Log\Logger $logger */
+        static $logger = null;
+        if ($logger === null) {
+            $logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
+        }
+
+        return $logger;
+    }
 }

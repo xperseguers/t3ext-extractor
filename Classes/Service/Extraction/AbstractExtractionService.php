@@ -167,6 +167,15 @@ abstract class AbstractExtractionService implements ExtractorInterface
             $potentialFiles[] = $pathConfiguration . $this->serviceName . '/' . $type . '.json';
         }
 
+        static::getLogger()->debug(
+            'Found potential mapping configuration files',
+            [
+                'file' => $file->getUid(),
+                'identifier' => $file->getCombinedIdentifier(),
+                'filenames' => $potentialFiles,
+            ]
+        );
+
         return $potentialFiles;
     }
 
@@ -190,6 +199,15 @@ abstract class AbstractExtractionService implements ExtractorInterface
             }
         }
 
+        static::getLogger()->debug(
+            'Mapping configuration file in use',
+            [
+                'file' => $file->getUid(),
+                'identifier' => $file->getCombinedIdentifier(),
+                'filename' => $mappingFileName,
+            ]
+        );
+
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'] as $classRef) {
                 $hookObject = GeneralUtility::getUserObj($classRef);
@@ -208,13 +226,22 @@ abstract class AbstractExtractionService implements ExtractorInterface
             }
         }
 
+        static::getLogger()->debug(
+            'Mapping configuration file in use after hook',
+            [
+                'filename' => $mappingFileName,
+            ]
+        );
+
         // Safeguard
         if (!is_file($mappingFileName)) {
+            static::getLogger()->warning('Not considering non-existent mapping configuration file', ['filename' => $mappingFileName]);
             return null;
         }
 
         $dataMapping = json_decode(file_get_contents($mappingFileName), true);
         if (!is_array($dataMapping)) {
+            static::getLogger()->warning('Cannot decode JSON from mapping configuration file', ['filename' => $mappingFileName]);
             return null;
         }
 
@@ -300,6 +327,14 @@ abstract class AbstractExtractionService implements ExtractorInterface
                 $output[$key] = implode(', ', $value);
             }
         }
+
+        static::getLogger()->debug(
+            'Raw data remapped to FAL array',
+            [
+                'input' => $data,
+                'output' => $output,
+            ]
+        );
 
         return $output;
     }
@@ -416,4 +451,10 @@ abstract class AbstractExtractionService implements ExtractorInterface
         return $GLOBALS['TYPO3_DB'];
     }
 
+    /**
+     * Returns a logger.
+     *
+     * @return \TYPO3\CMS\Core\Log\Logger
+     */
+    abstract protected static function getLogger();
 }

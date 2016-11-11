@@ -138,6 +138,15 @@ class AppService extends AbstractService implements TikaServiceInterface
 
         $shellOutput = array();
         CommandUtility::exec($tikaCommand, $shellOutput);
+
+        static::getLogger()->debug(
+            'Executing external script',
+            [
+                'commmand' => $tikaCommand,
+                'output' => $shellOutput,
+            ]
+        );
+
         $metadata = json_decode($shellOutput[0], true);
 
         return $metadata;

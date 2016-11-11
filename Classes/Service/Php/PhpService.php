@@ -117,6 +117,7 @@ class PhpService extends AbstractService
                 break;
         }
 
+        static::getLogger()->debug('Metadata extracted', $metadata);
         return $metadata;
     }
 
@@ -128,6 +129,8 @@ class PhpService extends AbstractService
      */
     protected function extractMetadataFromOfficeDocument($fileName)
     {
+        static::getLogger()->debug('Extracting metadata from MS Office document');
+
         $metadata = array();
 
         $zip = zip_open($fileName);
@@ -154,6 +157,8 @@ class PhpService extends AbstractService
      */
     protected function extractMetadataWithGetId3($fileName)
     {
+        static::getLogger()->debug('Extracting metadata with GetID3 library');
+
         $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extractor');
         require_once($extensionPath . 'Resources/Private/vendor/getID3/getid3/getid3.php');
 
@@ -174,6 +179,8 @@ class PhpService extends AbstractService
      */
     protected function extractMetadataFromPdf($fileName)
     {
+        static::getLogger()->debug('Extracting metadata from PDF');
+
         $metadata = array();
 
         $fh = fopen($fileName, 'r');
@@ -261,6 +268,8 @@ class PhpService extends AbstractService
      */
     protected function extractMetadataFromImage($fileName)
     {
+        static::getLogger()->debug('Extracting metadata from image');
+
         $metadata = $this->getMetadata($fileName);
         $metadata['Unit'] = 'px';
 

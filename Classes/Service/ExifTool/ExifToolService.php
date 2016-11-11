@@ -84,6 +84,15 @@ class ExifToolService extends AbstractService
 
         $shellOutput = array();
         CommandUtility::exec($exifToolCommand, $shellOutput);
+
+        static::getLogger()->debug(
+            'Executing external script',
+            [
+                'commmand' => $exifToolCommand,
+                'output' => $shellOutput,
+            ]
+        );
+
         $metadata = json_decode(implode('', $shellOutput), true);
 
         if (is_array($metadata[0]['Creator'])) {
