@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class Dimension
 {
-
     /**
      * Extracts the width from a dimension string for use in FAL.
      *
@@ -98,5 +97,4 @@ class Dimension
         $millimeters = $inches * 25.4;
         return $millimeters;
     }
-
 }

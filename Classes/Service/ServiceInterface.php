@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Resource\File;
  */
 interface ServiceInterface
 {
-
     /**
      * Returns a list of supported file extensions.
      *
@@ -48,5 +47,4 @@ interface ServiceInterface
      * @return array
      */
     public function extractMetadataFromLocalFile($fileName);
-
 }

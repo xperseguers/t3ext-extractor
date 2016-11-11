@@ -22,7 +22,6 @@ namespace Causal\Extractor\Utility;
  */
 class Gps
 {
-
     /**
      * Converts a latitude/longitude from a string representation to
      * its decimal value.
@@ -47,7 +46,6 @@ class Gps
 
             $reference = $matches[1];
             $decimal *= $reference === 'N' || $reference === 'E' ? 1 : -1;
-
         } elseif (preg_match('/^([NSEW]) (\d+\.\d+)° (\d+\.\d+)\' (\d+\.\d+)"$/', $str, $matches)) {
             $decimal = (float)$matches[2];
             $minutes = (float)$matches[3];
@@ -57,7 +55,6 @@ class Gps
 
             $reference = $matches[1];
             $decimal *= $reference === 'N' || $reference === 'E' ? 1 : -1;
-
         } elseif (preg_match('/^(\d+) deg (\d+)\' (\d+\.\d+)" ([NSEW])$/', $str, $matches)) {
             $decimal = (int)$matches[1];
             $minutes = (int)$matches[2];
@@ -71,5 +68,4 @@ class Gps
 
         return $decimal;
     }
-
 }

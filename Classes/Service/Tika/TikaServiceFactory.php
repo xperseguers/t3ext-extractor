@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TikaServiceFactory
 {
-
     /**
      * Creates an instance of a Tika service
      *
@@ -54,5 +53,4 @@ class TikaServiceFactory
                 );
         }
     }
-
 }

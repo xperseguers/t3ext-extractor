@@ -22,7 +22,6 @@ namespace Causal\Extractor\Utility;
  */
 class DateTime
 {
-
     /**
      * Converts a date/time into its Unix timestamp.
      *
@@ -50,5 +49,4 @@ class DateTime
         $timestamp = strtotime($str);
         return $timestamp !== false ? $timestamp : null;
     }
-
 }

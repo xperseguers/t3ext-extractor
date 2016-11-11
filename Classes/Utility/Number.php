@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Number
 {
-
     /**
      * Casts a string as an integer.
      *
@@ -75,5 +74,4 @@ class Number
         }
         return $value;
     }
-
 }

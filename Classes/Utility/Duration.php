@@ -22,7 +22,6 @@ namespace Causal\Extractor\Utility;
  */
 class Duration
 {
-
     /**
      * Normalizes a duration as a number of seconds.
      *
@@ -51,5 +50,4 @@ class Duration
         $milliseconds = (int)$str;
         return (int)($milliseconds / 1000);
     }
-
 }

@@ -27,12 +27,11 @@ use Causal\Extractor\Service\Tika\TikaServiceFactory;
  */
 class ConfigurationHelper extends AbstractConfigurationField
 {
-
     /**
      * Creates an input field for the Tika Jar path and checks its validity.
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj : The calling parent object.
+     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
     public function createTikaJarPath(array $params, $pObj)
@@ -75,7 +74,7 @@ class ConfigurationHelper extends AbstractConfigurationField
      * Creates an input field for the Tika server host and checks its validity.
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj : The calling parent object.
+     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
     public function createTikaServerHost(array $params, $pObj)
@@ -123,7 +122,7 @@ class ConfigurationHelper extends AbstractConfigurationField
      * Creates an input field for an external tool and checks its validity.
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj : The calling parent object.
+     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
     public function createToolInput(array $params, $pObj)
@@ -261,5 +260,4 @@ class ConfigurationHelper extends AbstractConfigurationField
         }
         return $html;
     }
-
 }

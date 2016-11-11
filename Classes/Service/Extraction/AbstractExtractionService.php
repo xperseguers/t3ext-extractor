@@ -29,7 +29,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 abstract class AbstractExtractionService implements ExtractorInterface
 {
-
     /**
      * @var array
      */

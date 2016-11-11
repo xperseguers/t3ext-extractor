@@ -25,13 +25,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class String
 {
-
     /**
      * Trims a string (and also removes non-printable binary characters).
      *
      * @param string $str
      * @return int
-     * @deprecated Update your reference to use \Causal\Extractor\Utility\SimpleString::trim instead since "String" is a reserved class name in PHP 7
+     * @deprecated Update your reference to use \Causal\Extractor\Utility\SimpleString::trim instead since "String"
+     *             is a reserved class name in PHP 7
      */
     public static function trim($str)
     {
@@ -41,5 +41,4 @@ class String
         $str = preg_replace('/[\x00-\x1F]/', '', $str);
         return trim($str);
     }
-
 }

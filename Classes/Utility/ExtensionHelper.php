@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class ExtensionHelper
 {
-
     /**
      * Returns the category of a given file extension.
      *
@@ -140,5 +139,4 @@ class ExtensionHelper
 
         return 'other';
     }
-
 }

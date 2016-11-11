@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SimpleString
 {
-
     /**
      * Trims a string (and also removes non-printable binary characters).
      *
@@ -37,5 +36,4 @@ class SimpleString
         $str = preg_replace('/[\x00-\x1F]/', '', $str);
         return trim($str);
     }
-
 }

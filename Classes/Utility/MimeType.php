@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MimeType
 {
-
     /**
      * @var array
      */
@@ -100,5 +99,4 @@ class MimeType
             fclose($fh);
         }
     }
-
 }

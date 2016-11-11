@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TikaLanguageDetector extends AbstractExtractionService
 {
-
     /**
      * @var array
      */

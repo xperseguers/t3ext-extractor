@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class FileUploadHook implements \TYPO3\CMS\Core\Utility\File\ExtendedFileUtilityProcessDataHookInterface
 {
-
     /**
      * @var \TYPO3\CMS\Core\Resource\Index\ExtractorInterface[]
      */
@@ -39,8 +38,12 @@ class FileUploadHook implements \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
      * @param \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $pObj The parent object
      * @return void
      */
-    public function processData_postProcessAction($action, array $cmdArr, array $result, \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $pObj)
-    {
+    public function processData_postProcessAction(
+        $action,
+        array $cmdArr,
+        array $result,
+        \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $pObj
+    ) {
         if ($action === 'upload') {
             /** @var \TYPO3\CMS\Core\Resource\File[] $fileObjects */
             $fileObjects = array_pop($result);

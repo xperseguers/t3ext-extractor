@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PhpMetadataExtraction extends AbstractExtractionService
 {
-
     /**
      * @var integer
      */
@@ -98,5 +97,4 @@ class PhpMetadataExtraction extends AbstractExtractionService
 
         return $phpService;
     }
-
 }

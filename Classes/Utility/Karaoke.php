@@ -22,7 +22,6 @@ namespace Causal\Extractor\Utility;
  */
 class Karaoke
 {
-
     /**
      * Extracts karaoke data.
      *
@@ -55,5 +54,4 @@ class Karaoke
 
         return trim($buffer);
     }
-
 }

@@ -13,6 +13,7 @@
  */
 
 namespace Causal\Extractor\Em;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -23,7 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractConfigurationField
 {
-
     /**
      * Translates a label.
      *
@@ -58,5 +58,4 @@ abstract class AbstractConfigurationField
     {
         return $GLOBALS['LANG'];
     }
-
 }

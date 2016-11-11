@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class ColorSpace
 {
-
     /**
      * Normalizes a color space for use in FAL.
      *
@@ -70,5 +69,4 @@ class ColorSpace
         // Not yet implemented
         return null;
     }
-
 }

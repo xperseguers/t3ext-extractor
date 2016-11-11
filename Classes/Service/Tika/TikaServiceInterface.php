@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Resource\File;
  */
 interface TikaServiceInterface extends ServiceInterface
 {
-
     /**
      * Returns the version of Tika.
      *
@@ -50,5 +49,4 @@ interface TikaServiceInterface extends ServiceInterface
      * @return string Language ISO code
      */
     public function detectLanguageFromLocalFile($file);
-
 }

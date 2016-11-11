@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
 {
-
     /**
      * Back-reference to the calling reports module
      *
@@ -200,5 +199,4 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
     {
         return $GLOBALS['LANG'];
     }
-
 }

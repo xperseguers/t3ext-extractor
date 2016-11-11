@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PdfinfoService extends AbstractService
 {
-
     /**
      * PdfinfoService constructor.
      */
@@ -90,5 +89,4 @@ class PdfinfoService extends AbstractService
         }
         return $pdfInfo;
     }
-
 }

@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class AjaxController
 {
-
     /**
      * Renders the menu so that it can be returned as response to an AJAX call
      *
@@ -34,7 +33,8 @@ class AjaxController
      * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
      * @return void
      */
-    public function analyze(array $params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = null) {
+    public function analyze(array $params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = null)
+    {
         $ajaxObj->setContentFormat('json');
         $success = false;
         $html = '';
@@ -99,7 +99,10 @@ class AjaxController
                             ? $this->settings['mapping_base_directory']
                             : GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory']);
                     } else {
-                        $pathConfiguration = GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory'], false);
+                        $pathConfiguration = GeneralUtility::getFileAbsFileName(
+                            $this->settings['mapping_base_directory'],
+                            false
+                        );
                     }
                     foreach ($mappingFileNames as &$fileName) {
                         $fileName = substr($fileName, strlen($pathConfiguration));
@@ -127,7 +130,8 @@ class AjaxController
      * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler|null $ajaxObj
      * @return string
      */
-    public function process(array $params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = null) {
+    public function process(array $params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = null)
+    {
         $ajaxObj->setContentFormat('json');
         $text = '';
 
@@ -233,7 +237,8 @@ class AjaxController
                 ]
             );
 
-            $publicUrl = PathUtility::getAbsoluteWebPath(rtrim($storageConfiguration['basePath'], '/') . $file->getIdentifier());
+            $identifier = rtrim($storageConfiguration['basePath'], '/') . $file->getIdentifier();
+            $publicUrl = PathUtility::getAbsoluteWebPath($identifier);
         } elseif (preg_match('/^file:(\d+):(.*)$/', $reference, $matches)) {
             $storage = $resourceFactory->getStorageObject((int)$matches[1]);
             $file = $storage->getFile($matches[2]);
@@ -309,5 +314,4 @@ class AjaxController
 
         return $postProcessor;
     }
-
 }

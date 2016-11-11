@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ExifToolService extends AbstractService
 {
-
     /**
      * ExifToolService constructor.
      */
@@ -110,5 +109,4 @@ class ExifToolService extends AbstractService
         }
         return $exifTool;
     }
-
 }

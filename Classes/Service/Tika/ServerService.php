@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ServerService extends AbstractService implements TikaServiceInterface
 {
-
     /**
      * ServerService constructor.
      */
@@ -213,5 +212,4 @@ class ServerService extends AbstractService implements TikaServiceInterface
 
         return $payload;
     }
-
 }

@@ -22,7 +22,6 @@ namespace Causal\Extractor\Utility;
  */
 class Array_
 {
-
     /**
      * Concatenates items from an array.
      *
@@ -38,5 +37,4 @@ class Array_
 
         return implode($glue, $pieces);
     }
-
 }

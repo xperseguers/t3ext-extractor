@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TikaMetadataExtraction extends AbstractExtractionService
 {
-
     /**
      * @var integer
      */
@@ -115,5 +114,4 @@ class TikaMetadataExtraction extends AbstractExtractionService
 
         return $tikaService;
     }
-
 }

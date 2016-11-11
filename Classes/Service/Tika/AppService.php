@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AppService extends AbstractService implements TikaServiceInterface
 {
-
     /**
      * AppService constructor.
      */
@@ -194,5 +193,4 @@ class AppService extends AbstractService implements TikaServiceInterface
         }
         return $tikaJar;
     }
-
 }

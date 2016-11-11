@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class PhpService extends AbstractService
 {
-
     /** @var array */
     protected $imageExtensions = array(
         'gif',      // IMAGETYPE_GIF
@@ -422,5 +421,4 @@ class PhpService extends AbstractService
 
         return $hours + ($minutes / 60) + ($seconds / 3600);
     }
-
 }

@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ExifToolMetadataExtraction extends AbstractExtractionService
 {
-
     /**
      * @var integer
      */
@@ -110,5 +109,4 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
 
         return $exifToolService;
     }
-
 }

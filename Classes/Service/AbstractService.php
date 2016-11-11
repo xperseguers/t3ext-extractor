@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 abstract class AbstractService implements ServiceInterface
 {
-
     /**
      * @var array
      */

@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class MappingController extends AbstractConfigurationField
 {
-
     /**
      * @var string
      */
@@ -53,15 +52,17 @@ class MappingController extends AbstractConfigurationField
      * Renders the mapping module.
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj : The calling parent object.
+     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
     public function render(array $params, $pObj)
     {
         $resourcesPath = ExtensionManagementUtility::extRelPath($this->extensionKey) . 'Resources/Public/';
 
-        $inlineJs = 'var extractorAnalyzeAction = \'' . BackendUtility::getAjaxUrl($this->extensionKey . '::analyze') . '\';';
-        $inlineJs .= 'var extractorProcessAction = \'' . BackendUtility::getAjaxUrl($this->extensionKey . '::process') . '\';';
+        $ajaxUrlAnalyze = BackendUtility::getAjaxUrl($this->extensionKey . '::analyze');
+        $ajaxUrlProcess = BackendUtility::getAjaxUrl($this->extensionKey . '::process');
+        $inlineJs = 'var extractorAnalyzeAction = \'' . $ajaxUrlAnalyze . '\';';
+        $inlineJs .= 'var extractorProcessAction = \'' . $ajaxUrlProcess . '\';';
 
         $pageRenderer = $this->getPageRenderer();
         if (version_compare(TYPO3_version, '6.2.99', '<=')) {
@@ -94,20 +95,25 @@ class MappingController extends AbstractConfigurationField
         //  FAL Property
         $html[] = $this->getFalPropertySelector();
         // Metadata Property
-        $html[] = '<label for="tx-extractor-property">' . $this->translate('settings.mapping_configuration.property', true) . '</label>';
+        $label = $this->translate('settings.mapping_configuration.property', true);
+        $html[] = '<label for="tx-extractor-property">' . $label . '</label>';
         $html[] = '<input type="text" id="tx-extractor-property" readonly="readonly" />';
         // Processor
         $html[] = $this->getProcessorSelector();
         // Sample Value
-        $html[] = '<label for="tx-extractor-sample">' . $this->translate('settings.mapping_configuration.sample', true) . '</label>';
+        $label = $this->translate('settings.mapping_configuration.sample', true);
+        $html[] = '<label for="tx-extractor-sample">' . $label . '</label>';
         $html[] = '<input type="text" id="tx-extractor-sample" readonly="readonly" />';
         // Output
-        $html[] = '<label for="tx-extractor-output">' . $this->translate('settings.mapping_configuration.output', true) . '</label>';
+        $label = $this->translate('settings.mapping_configuration.output', true);
+        $html[] = '<label for="tx-extractor-output">' . $label . '</label>';
         $html[] = '<input type="text" id="tx-extractor-output" readonly="readonly" />';
         // JSON
-        $html[] = '<label for="tx-extractor-json">' . $this->translate('settings.mapping_configuration.json', true) . '</label>';
+        $label = $this->translate('settings.mapping_configuration.json', true);
+        $html[] = '<label for="tx-extractor-json">' . $label . '</label>';
         $html[] = '<textarea id="tx-extractor-json" rows="4"></textarea>';
-        $html[] = '<button id="tx-extractor-copy">' . $this->translate('settings.mapping_configuration.json.copy', true) . '</button>';
+        $lagel = $this->translate('settings.mapping_configuration.json.copy', true);
+        $html[] = '<button id="tx-extractor-copy">' . $label . '</button>';
         $html[] = '</td></tr></table>';
         $html[] = '<pre id="tx-extractor-metadata"></pre>';
         $html[] = '</div>';
@@ -139,7 +145,9 @@ class MappingController extends AbstractConfigurationField
 
         $userFiles = $folder->getFiles();
         foreach ($userFiles as $file) {
-            if ($file->getName() === 'index.html') continue;
+            if ($file->getName() === 'index.html') {
+                continue;
+            }
             $key = 'file:' . $file->getStorage()->getUid() . ':' . $file->getIdentifier();
             $files['custom'][$key] = $file->getName();
         }
@@ -147,12 +155,14 @@ class MappingController extends AbstractConfigurationField
             ksort($files['custom']);
         }
 
-        $output = '<label for="tx-extractor-file">' . $this->translate('settings.mapping_configuration.chooseFile', true) . '</label>';
+        $label = $this->translate('settings.mapping_configuration.chooseFile', true);
+        $output = '<label for="tx-extractor-file">' . $label . '</label>';
         $output .= '<select id="tx-extractor-file"><option value=""></option>';
 
         foreach ($files as $category => $f) {
             if (!empty($f)) {
-                $output .= '<optgroup label="' . $this->translate('settings.mapping_configuration.chooseFile.' . $category, true) . '">';
+                $label = $this->translate('settings.mapping_configuration.chooseFile.' . $category, true);
+                $output .= '<optgroup label="' . $label . '">';
                 foreach ($f as $path => $name) {
                     $output .= '<option value="' . htmlspecialchars($path) . '">' . htmlspecialchars($name) . '</option>';
                 }
@@ -243,7 +253,8 @@ class MappingController extends AbstractConfigurationField
      */
     protected function getProcessorSelector()
     {
-        $output = '<label for="tx-extractor-processor">' . $this->translate('settings.mapping_configuration.processor', true) . '</label>';
+        $label = $this->translate('settings.mapping_configuration.processor', true);
+        $output = '<label for="tx-extractor-processor">' . $label . '</label>';
         $output .= '<select id="tx-extractor-processor">';
 
         $processors = $GLOBALS['TYPO3_CONF_VARS']['EXT'][$this->extensionKey]['processors'];
@@ -358,5 +369,4 @@ class MappingController extends AbstractConfigurationField
         }
         return $pageRenderer;
     }
-
 }

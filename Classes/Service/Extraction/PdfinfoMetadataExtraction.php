@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PdfinfoMetadataExtraction extends AbstractExtractionService
 {
-
     /**
      * @var integer
      */
@@ -113,5 +112,4 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
 
         return $pdfinfoService;
     }
-
 }
