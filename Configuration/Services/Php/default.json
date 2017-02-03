@@ -71,14 +71,12 @@
   {
     "FAL": "height",
     "DATA": [
-      "ImageHeight",
       "COMPUTED|Height"
     ]
   },
   {
     "FAL": "width",
     "DATA": [
-      "ImageWidth",
       "COMPUTED|Width"
     ]
   },

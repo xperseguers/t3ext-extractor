@@ -61,14 +61,6 @@
     "DATA": "Keywords"
   },
   {
-    "FAL": "height",
-    "DATA": "ImageHeight"
-  },
-  {
-    "FAL": "width",
-    "DATA": "ImageWidth"
-  },
-  {
     "FAL": "location_city",
     "DATA": [
       "LocationCreatedCity",
