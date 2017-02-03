@@ -125,7 +125,7 @@ Geographical fields
 """""""""""""""""""
 
 According to the `IPTC standards <https://www.iptc.org/std/photometadata/documentation/IPTC-CS5-FileInfo-UserGuide_6.pdf>`__,
-the descriptions of geographic fields contained within the IPTC Core Image section did not clearly distinguish wether
+the descriptions of geographic fields contained within the IPTC Core Image section did not clearly distinguish whether
 the value should be the actual location shown in the image, or the location where the photo was taken. Because most GPS
 systems, by default, indicate where the photographer was standing, the IPTC standard is now suggesting to use the fields
 City, Region and Country for the location "shown" in the image, whereas the latitude and longitude will logically be
