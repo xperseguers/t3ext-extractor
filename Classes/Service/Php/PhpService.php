@@ -377,7 +377,13 @@ class PhpService extends AbstractService
                     );
                     foreach ($mapping as $iptcKey => $metadataKey) {
                         if (isset($data[$iptcKey])) {
-                            $metadata['IPTC' . $metadataKey] = static::safeUtf8Encode($data[$iptcKey][0]);
+                            if ($metadataKey === 'Keywords') {
+                                foreach ($data[$iptcKey] as $keyword) {
+                                    $metadata['IPTC' . $metadataKey][] = static::safeUtf8Encode($keyword);
+                                }
+                            } else {
+                                $metadata['IPTC' . $metadataKey] = static::safeUtf8Encode($data[$iptcKey][0]);
+                            }
                         }
                     }
                 }

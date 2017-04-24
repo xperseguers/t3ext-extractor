@@ -351,7 +351,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
         $categories = [];
         $key = '__categories__';
         if (isset($metadata[$key])) {
-            $categories = GeneralUtility::trimExplode(', ', $metadata[$key], true);
+            $categories = GeneralUtility::trimExplode(',', $metadata[$key], true);
             unset($metadata[$key]);
         }
         if (empty($categories) || $file->getUid() === 0) {

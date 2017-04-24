@@ -69,6 +69,15 @@
     ]
   },
   {
+    "FAL": "__categories__",
+    "DATA": [
+      "IPTCKeywords",
+      "cp:keywords",
+      "xmp:Keywords",
+      "Keywords"
+    ]
+  },
+  {
     "FAL": "height",
     "DATA": [
       "COMPUTED|Height"
