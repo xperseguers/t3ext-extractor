@@ -55,7 +55,7 @@ Metadata and Content Analysis Service
     **Other version of this document**
 
     :PDF:
-        https://docs.typo3.org/typo3cms/extensions/extractor/1.4.0/_pdf/
+        https://docs.typo3.org/typo3cms/extensions/extractor/1.5.0/_pdf/
 
 
     **Table of Contents**
