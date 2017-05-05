@@ -14,6 +14,9 @@ Links
 :TER:
 	https://typo3.org/extensions/repository/view/extractor
 
+:Packagist:
+	https://packagist.org/packages/causal/extractor
+
 :Bug Tracker:
 	https://forge.typo3.org/projects/extension-extractor/issues
 
