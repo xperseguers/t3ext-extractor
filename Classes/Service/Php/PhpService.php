@@ -159,8 +159,11 @@ class PhpService extends AbstractService
     {
         static::getLogger()->debug('Extracting metadata with GetID3 library');
 
-        $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extractor');
-        require_once($extensionPath . 'Resources/Private/vendor/getID3/getid3/getid3.php');
+        // Require 3rd-party libraries, in case TYPO3 does not run in composer mode
+        $pharFileName = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extractor') . 'Libraries/james-heinrich-getid3.phar';
+        if (is_file($pharFileName)) {
+            @include 'phar://' . $pharFileName . '/vendor/autoload.php';
+        }
 
         $getID3 = new \getID3();
         $getID3->setOption(array('encoding' => 'UTF-8'));

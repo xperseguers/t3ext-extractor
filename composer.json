@@ -21,7 +21,6 @@
     {
       "name": "Xavier Perseguers",
       "email": "xavier@causal.ch",
-      "company": "Causal Sàrl",
       "homepage": "https://www.causal.ch",
       "role": "Developer"
     }
@@ -29,7 +28,8 @@
   "license": "GPL-2.0+",
   "require": {
     "php": ">= 5.5.0, <= 7.1.99",
-    "typo3/cms-core": ">= 6.2.0, <= 8.7.99"
+    "typo3/cms-core": ">= 6.2.0, <= 8.7.99",
+    "james-heinrich/getid3": "^1.9.14"
   },
   "autoload": {
     "psr-4": {
@@ -48,6 +48,26 @@
     "post-autoload-dump": [
       "mkdir -p .Build/Web/typo3conf/ext/",
       "[ -L .Build/Web/typo3conf/ext/extractor ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/extractor"
+    ],
+    "extension-create-libs": [
+      "mkdir -p Libraries/temp",
+      "[ -f $HOME/.composer/vendor/bin/phar-composer ] || composer global require clue/phar-composer",
+      "if [ ! -f Libraries/james-heinrich-getid3.phar ]; then cd Libraries/temp && composer require james-heinrich/getid3=^1.9.14 && composer config classmap-authoritative true && composer config prepend-autoloader false && composer dump-autoload; fi",
+      "[ -f Libraries/james-heinrich-getid3.phar ] || $HOME/.composer/vendor/bin/phar-composer build Libraries/temp/ Libraries/james-heinrich-getid3.phar",
+      "chmod -x Libraries/*.phar",
+      "rm -rf Libraries/temp"
+    ],
+    "extension-build": [
+      "@extension-create-libs"
+    ],
+    "extension-release": [
+      "@extension-build",
+      "rm -rf Tests/",
+      "rm .gitattributes",
+      "rm .gitignore"
+    ],
+    "extension-clean": [
+      "rm -rf Libraries"
     ]
   },
   "extra": {
