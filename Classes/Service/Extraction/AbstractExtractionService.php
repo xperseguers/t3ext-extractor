@@ -359,6 +359,21 @@ abstract class AbstractExtractionService implements ExtractorInterface
         }
 
         $database = static::getDatabaseConnection();
+
+        // Fetch the uid associated to the corresponding sys_file_metadata record
+        $table = 'sys_file_metadata';
+        $row = $database->exec_SELECTgetSingleRow(
+            'uid',
+            $table,
+            'file=' . $file->getUid() . ' AND sys_language_uid=0'
+                . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table)
+        );
+        if (!$row) {
+            // An error occurred, cannot proceed!
+            return;
+        }
+        $fileMetadataUid = (int)$row['uid'];
+
         $table = 'sys_category';
         $typo3Categories = $database->exec_SELECTgetRows(
             'uid, title',
@@ -370,7 +385,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
         $relation = 'sys_category_record_mm';
         $database->exec_DELETEquery(
             $relation,
-            'uid_foreign=' . $file->getUid()
+            'uid_foreign=' . $fileMetadataUid
                 . ' AND tablenames=' . $database->fullQuoteStr('sys_file_metadata', $relation)
                 . ' AND fieldname=' . $database->fullQuoteStr('categories', $relation)
         );
@@ -382,7 +397,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
                 if ($typo3Category['title'] === $category) {
                     $data[] = [
                         'uid_local' => (int)$typo3Category['uid'],
-                        'uid_foreign' => $file->getUid(),
+                        'uid_foreign' => $fileMetadataUid,
                         'tablenames' => 'sys_file_metadata',
                         'fieldname' => 'categories',
                         'sorting_foreign' => $sorting++,
