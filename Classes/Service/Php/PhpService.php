@@ -325,6 +325,12 @@ class PhpService extends AbstractService
     {
         $extension = strtolower(substr($fileName, strrpos($fileName, '.') + 1));
         $metadata = array();
+
+        if (!file_exists($fileName)) {
+            // Early exit if the file to be analysed is in fact "missing" locally
+            return $metadata;
+        }
+
         if (GeneralUtility::inList('jpg,jpeg,tif,tiff', $extension) && function_exists('exif_read_data')) {
             $exif = @exif_read_data($fileName);
             if ($exif) {
