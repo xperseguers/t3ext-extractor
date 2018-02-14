@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Abstract service.
@@ -59,7 +60,12 @@ abstract class AbstractService implements ServiceInterface
         $localTempFilePath = $file->getForLocalProcessing(false);
         $metadata = $this->extractMetadataFromLocalFile($localTempFilePath);
         $this->cleanupTempFile($localTempFilePath, $file);
-
+        // Emit Signal after meta data has been extracted
+        $this->getSignalSlotDispatcher()->dispatch(
+            'AbstractService',
+            'postMetaDataExtraction',
+            [$storageRecord]
+        );
         return $metadata;
     }
 
@@ -121,5 +127,15 @@ abstract class AbstractService implements ServiceInterface
         }
 
         return $logger;
+    }
+
+    /**
+     * Returns the SignalSlot dispatcher.
+     *
+     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     */
+    protected function getSignalSlotDispatcher()
+    {
+        return GeneralUtility::makeInstance(Dispatcher::class);
     }
 }

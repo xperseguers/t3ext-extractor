@@ -16,6 +16,7 @@ namespace Causal\Extractor\Hook;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * This class allows metadata to be extracted automatically after
@@ -62,6 +63,12 @@ class FileUploadHook implements \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
                 $storageRecord = $fileObject->getStorage()->getStorageRecord();
                 if ($storageRecord['driver'] === 'Local') {
                     $this->runMetaDataExtraction($fileObject);
+                    // Emit Signal after meta data has been extracted
+                    $this->getSignalSlotDispatcher()->dispatch(
+                        self::class,
+                        'postMetaDataExtraction',
+                        [$storageRecord]
+                    );
                 }
             }
         }
@@ -138,5 +145,15 @@ class FileUploadHook implements \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
         }
 
         return $logger;
+    }
+
+    /**
+     * Returns the SignalSlot dispatcher.
+     *
+     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     */
+    protected function getSignalSlotDispatcher()
+    {
+        return GeneralUtility::makeInstance(Dispatcher::class);
     }
 }
