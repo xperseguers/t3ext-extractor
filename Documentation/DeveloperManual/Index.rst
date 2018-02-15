@@ -78,3 +78,30 @@ Hook
 The method ``\Causal\Extractor\Service\Extraction\AbstractExtractionService::getDataMapping()`` is the central method
 invoked to map extracted metadata to FAL properties. Developers may dynamically alter the mapping by hooking into the
 process using ``$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook']``.
+
+
+.. _developer-manual-signal:
+
+Signal after extraction
+-----------------------
+
+Once the meta data has been extracted, a signal is emitted, which allows other extensions to process the file further.
+The Signal can be connected to a Slot as follows (e.g. in file ``ext_localconf.php`` of your extension).
+
+.. code-block:: php
+
+    // Initiate SignalSlotDispatcher
+    $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        'TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher'
+    );
+
+    // Connect the Signal "postMetaDataExtraction" to a Slot
+    $signalSlotDispatcher->connect(
+        'Causal\\Extractor\\Service\\AbstractService',
+        'postMetaDataExtraction',
+        'Vendor\\MyExtension\\Service\\SlotService',
+        'dispatch'
+    );
+
+This requires a PHP class ``\Vendor\MyExtension\Service\SlotService`` and a method ``dispatch()`` in this class.
+The FAL ``$storageRecord`` is passed as a parameter to the method.
