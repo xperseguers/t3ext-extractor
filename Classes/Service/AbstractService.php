@@ -62,7 +62,7 @@ abstract class AbstractService implements ServiceInterface
         $this->cleanupTempFile($localTempFilePath, $file);
         // Emit Signal after meta data has been extracted
         $this->getSignalSlotDispatcher()->dispatch(
-            'AbstractService',
+            self::class,
             'postMetaDataExtraction',
             [$storageRecord]
         );
