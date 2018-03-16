@@ -74,7 +74,7 @@ class AjaxController
                         break;
                     case 'php':
                         $extractor = GeneralUtility::makeInstance(Service\Php\PhpService::class);
-                        $extractionService = GeneralUtility::makeInstance(Service\Extraction\PdfinfoMetadataExtraction::class);
+                        $extractionService = GeneralUtility::makeInstance(Service\Extraction\PhpMetadataExtraction::class);
                         break;
                     case 'tika':
                         $extractor = Service\Tika\TikaServiceFactory::getTika();
