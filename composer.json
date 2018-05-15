@@ -28,8 +28,8 @@
   "license": "GPL-2.0-or-later",
   "require": {
     "php": ">= 5.5.0, <= 7.2.99",
-    "typo3/cms-core": ">= 6.2.0, <= 8.7.99",
-    "james-heinrich/getid3": "^1.9.14"
+    "typo3/cms-core": ">= 7.6.0, <= 8.7.99",
+    "james-heinrich/getid3": "^1.9.15"
   },
   "autoload": {
     "psr-4": {
@@ -71,7 +71,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "1.5.x-dev"
+      "dev-master": "1.6.x-dev"
     },
     "typo3/cms": {
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
