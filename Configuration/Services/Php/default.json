@@ -90,10 +90,11 @@
     ]
   },
   {
-    "FAL": "note",
+    "FAL": "copyright",
     "DATA": [
       "IPTCCopyright",
-      "Copyright"
+      "Copyright",
+      "xmp:rights"
     ]
   },
   {
@@ -110,10 +111,6 @@
       "FileSource->Causal\\Extractor\\Utility\\SimpleString::trim",
       "Company"
     ]
-  },
-  {
-    "FAL": "note",
-    "DATA": "xmp:rights"
   },
   {
     "FAL": "pages",
