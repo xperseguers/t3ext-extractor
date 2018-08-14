@@ -89,7 +89,7 @@ class MimeType
                 if ($buffer{0} === '#') {
                     continue;
                 }
-                list($mimeType, $extensions) = GeneralUtility::trimExplode(TAB, $buffer, true);
+                list($mimeType, $extensions) = GeneralUtility::trimExplode("\t", $buffer, true);
                 $extensions = GeneralUtility::trimExplode(' ', $extensions, true);
                 static::$mimeTypesMapping[$mimeType] = $extensions;
                 foreach ($extensions as $extension) {
