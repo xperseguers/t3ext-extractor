@@ -169,29 +169,28 @@ class ConfigurationHelper extends AbstractConfigurationField
     }
 
     /**
-     * Creates a checkbox when running TYPO3 6.2 (actually less than 7.5.0).
+     * Creates a checkbox.
      *
      * @param array $params
      * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
-    public function createCheckboxFor62(array $params, $pObj)
+    public function createCheckboxForExtensionManager(array $params, $pObj)
     {
-        if (version_compare(TYPO3_version, '7.5', '>=')) {
-            list($title, $message) = GeneralUtility::trimExplode(':', $this->translate('settings.disabled'), true, 2);
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-            $flashMessage = GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                $message,
-                $title,
-                FlashMessage::INFO
-            );
+        list($title, $message) = GeneralUtility::trimExplode(':', $this->translate('settings.disabled'), true, 2);
+        /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+        $flashMessage = GeneralUtility::makeInstance(
+            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+            $message,
+            $title,
+            FlashMessage::INFO
+        );
 
-            $title = '';
-            if (!empty($flashMessage->getTitle())) {
-                $title = '<h4 class="alert-title">' . $flashMessage->getTitle() . '</h4>';
-            }
-            $html = '
+        $title = '';
+        if (!empty($flashMessage->getTitle())) {
+            $title = '<h4 class="alert-title">' . $flashMessage->getTitle() . '</h4>';
+        }
+        $html = '
 			<div class="alert ' . $flashMessage->getClass() . '">
 				<div class="media">
 					<div class="media-left">
@@ -206,21 +205,6 @@ class ConfigurationHelper extends AbstractConfigurationField
 					</div>
 				</div>
 			</div>';
-        } else {
-            $html = $this->createFormInputField(array(
-                'name' => $params['fieldName'],
-                'value' => '0',
-            ), 'hidden');
-            $configuration = array(
-                'name' => $params['fieldName'],
-                'id' => 'em-' . $params['propertyName'],
-                'value' => '1',
-            );
-            if ((bool)$params['fieldValue']) {
-                $configuration['checked'] = 'checked';
-            }
-            $html .= $this->createFormInputField($configuration, 'checkbox');
-        }
 
         return $html;
     }

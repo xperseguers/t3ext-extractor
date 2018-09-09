@@ -79,12 +79,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
     {
         $language = $this->getLanguageService();
         $header = '<h4>' . $language->getLL('extractors')  . '</h4>';
-
-        if (version_compare(TYPO3_version, '6.99.99', '<=')) {
-            $tableClass = 'services';
-        } else {
-            $tableClass = 'table table-striped table-hover';
-        }
+        $tableClass = 'table table-striped table-hover';
 
         $extractorsList = '
 		<table cellspacing="1" cellpadding="2" border="0" class="' . $tableClass .'">
@@ -142,19 +137,13 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
             $fileTypes = $extractor->getFileTypeRestrictions() ?: array('*');
         }
 
-        if (version_compare(TYPO3_version, '6.99.99', '<=')) {
-            $rowClass = 'cell typo3-message message-ok';
-        } else {
-            $rowClass = '';
-        }
-
         $serviceRow = '
         <tr class="service">
-            <td class="' . $rowClass .'">' . $class . ' (EXT:' . $extensionName . ')</td>
-            <td class="' . $rowClass .'">' . htmlspecialchars($driverRestrictions) . '</td>
-            <td class="' . $rowClass .'">' . (int)$extractor->getPriority() . '</td>
-            <td class="' . $rowClass .'">' . (int)$extractor->getExecutionPriority() . '</td>
-            <td class="' . $rowClass .'">' . $this->groupFileTypes($fileTypes) . '</td>
+            <td>' . $class . ' (EXT:' . $extensionName . ')</td>
+            <td>' . htmlspecialchars($driverRestrictions) . '</td>
+            <td>' . (int)$extractor->getPriority() . '</td>
+            <td>' . (int)$extractor->getExecutionPriority() . '</td>
+            <td>' . $this->groupFileTypes($fileTypes) . '</td>
         </tr>';
 
         return $serviceRow;

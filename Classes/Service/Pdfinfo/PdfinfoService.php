@@ -60,7 +60,7 @@ class PdfinfoService extends AbstractService
      */
     public function extractMetadataFromLocalFile($fileName)
     {
-        $pdfinfoCommand = $this->getPdfInfo() . ' -enc UTF-8 ' . $this->escapeShellArgument($fileName);
+        $pdfinfoCommand = $this->getPdfInfo() . ' -enc UTF-8 ' . CommandUtility::escapeShellArgument($fileName);
 
         $shellOutput = array();
         CommandUtility::exec($pdfinfoCommand, $shellOutput);

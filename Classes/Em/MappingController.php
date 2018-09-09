@@ -65,13 +65,7 @@ class MappingController extends AbstractConfigurationField
         $inlineJs .= 'var extractorProcessAction = \'' . $ajaxUrlProcess . '\';';
 
         $pageRenderer = $this->getPageRenderer();
-        if (version_compare(TYPO3_version, '6.2.99', '<=')) {
-            $pageRenderer->addJsFile('contrib/jquery/jquery-1.11.0.min.js');
-            $pageRenderer->addJsFile($resourcesPath . 'JavaScript/select2.js');
-            $pageRenderer->addJsFile($resourcesPath . 'JavaScript/configuration.v62.js');
-        } else {
-            $inlineJs .= LF . 'require(["TYPO3/CMS/Extractor/configuration"]);';
-        }
+        $inlineJs .= LF . 'require(["TYPO3/CMS/Extractor/configuration"]);';
         $pageRenderer->addJsFile($resourcesPath . 'JavaScript/extractor.js');
         $pageRenderer->addJsInlineCode($this->extensionKey, $inlineJs);
 
@@ -360,13 +354,7 @@ class MappingController extends AbstractConfigurationField
      */
     protected function getPageRenderer()
     {
-        if (version_compare(TYPO3_version, '7.4', '>=')) {
-            $pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-        } else {
-            /** @var \TYPO3\CMS\Backend\Template\DocumentTemplate $documentTemplate */
-            $documentTemplate = $GLOBALS['TBE_TEMPLATE'];
-            $pageRenderer = $documentTemplate->getPageRenderer();
-        }
+        $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
         return $pageRenderer;
     }
 }

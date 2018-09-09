@@ -42,16 +42,11 @@ class AjaxController
         $mappingFileNames = [];
 
         if ($GLOBALS['BE_USER']->isAdmin()) {
-            if (version_compare(TYPO3_version, '7.0', '>=')) {
-                /** @var \TYPO3\CMS\Core\Http\ServerRequest $request */
-                $request = $params['request'];
-                $queryParameters = $request->getQueryParams();
-                $file = $queryParameters['file'];
-                $service = $queryParameters['service'];
-            } else {
-                $file = GeneralUtility::_GET('file');
-                $service = GeneralUtility::_GET('service');
-            }
+            /** @var \TYPO3\CMS\Core\Http\ServerRequest $request */
+            $request = $params['request'];
+            $queryParameters = $request->getQueryParams();
+            $file = $queryParameters['file'];
+            $service = $queryParameters['service'];
 
             $publicUrl = '';
             $file = $this->getFile($file, $publicUrl);
@@ -136,16 +131,11 @@ class AjaxController
         $text = '';
 
         if ($GLOBALS['BE_USER']->isAdmin()) {
-            if (version_compare(TYPO3_version, '7.0', '>=')) {
-                /** @var \TYPO3\CMS\Core\Http\ServerRequest $request */
-                $request = $params['request'];
-                $queryParameters = $request->getQueryParams();
-                $sample = $queryParameters['sample'];
-                $processor = $queryParameters['processor'];
-            } else {
-                $sample = GeneralUtility::_GET('sample');
-                $processor = GeneralUtility::_GET('processor');
-            }
+            /** @var \TYPO3\CMS\Core\Http\ServerRequest $request */
+            $request = $params['request'];
+            $queryParameters = $request->getQueryParams();
+            $sample = $queryParameters['sample'];
+            $processor = $queryParameters['processor'];
 
             if (preg_match('/^([^(]+)(\((.*)\))?$/', $processor, $matches)) {
                 $processor = $matches[1];

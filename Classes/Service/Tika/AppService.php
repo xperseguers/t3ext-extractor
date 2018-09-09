@@ -57,7 +57,7 @@ class AppService extends AbstractService implements TikaServiceInterface
     {
         $version = '';
         $tikaCommand = CommandUtility::getCommand('java')
-            . ' -jar ' . $this->escapeShellArgument($this->getTikaJar())
+            . ' -jar ' . CommandUtility::escapeShellArgument($this->getTikaJar())
             . ' --version';
 
         $shellOutput = array();
@@ -75,7 +75,7 @@ class AppService extends AbstractService implements TikaServiceInterface
     public function getSupportedFileExtensions()
     {
         $tikaCommand = CommandUtility::getCommand('java')
-            . ' -jar ' . $this->escapeShellArgument($this->getTikaJar())
+            . ' -jar ' . CommandUtility::escapeShellArgument($this->getTikaJar())
             . ' --list-supported-types';
 
         $shellOutput = array();
@@ -132,9 +132,9 @@ class AppService extends AbstractService implements TikaServiceInterface
     {
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -Dfile.encoding=UTF8'
-            . ' -jar ' . $this->escapeShellArgument($this->getTikaJar())
+            . ' -jar ' . CommandUtility::escapeShellArgument($this->getTikaJar())
             . ' -m --json'
-            . ' ' . $this->escapeShellArgument($fileName);
+            . ' ' . CommandUtility::escapeShellArgument($fileName);
 
         $shellOutput = array();
         CommandUtility::exec($tikaCommand, $shellOutput);
@@ -177,9 +177,9 @@ class AppService extends AbstractService implements TikaServiceInterface
     {
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -Dfile.encoding=UTF8'
-            . ' -jar ' . $this->escapeShellArgument($this->getTikaJar())
+            . ' -jar ' . CommandUtility::escapeShellArgument($this->getTikaJar())
             . ' -l'
-            . ' ' . $this->escapeShellArgument($fileName);
+            . ' ' . CommandUtility::escapeShellArgument($fileName);
 
         $language = trim(CommandUtility::exec($tikaCommand));
 

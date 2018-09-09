@@ -80,7 +80,7 @@ class ExifToolService extends AbstractService
      */
     public function extractMetadataFromLocalFile($fileName)
     {
-        $exifToolCommand = $this->getExifTool() . ' -j ' . $this->escapeShellArgument($fileName);
+        $exifToolCommand = $this->getExifTool() . ' -j ' . CommandUtility::escapeShellArgument($fileName);
 
         $shellOutput = array();
         CommandUtility::exec($exifToolCommand, $shellOutput);

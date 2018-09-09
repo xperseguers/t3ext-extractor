@@ -14,7 +14,7 @@ enable_tools_pdfinfo = 0
 # cat=basic/enable/40; type=boolean; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.enable_php
 enable_php = 1
 
-# cat=basic/enable/50; type=user[Causal\Extractor\Em\ConfigurationHelper->createCheckboxFor62]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.auto_extract
+# cat=basic/enable/50; type=user[Causal\Extractor\Em\ConfigurationHelper->createCheckboxForExtensionManager]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.auto_extract
 auto_extract = 0
 
 # cat=tika//10; type=options[LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tika_mode.jar=jar,LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tika_mode.server=server]; label=LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:settings.tika_mode
