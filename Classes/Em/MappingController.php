@@ -57,7 +57,7 @@ class MappingController extends AbstractConfigurationField
      */
     public function render(array $params, $pObj)
     {
-        $resourcesPath = ExtensionManagementUtility::extRelPath($this->extensionKey) . 'Resources/Public/';
+        $resourcesPath = '../' . ExtensionManagementUtility::siteRelPath($this->extensionKey) . 'Resources/Public/';
 
         $ajaxUrlAnalyze = BackendUtility::getAjaxUrl('extractor_analyze');
         $ajaxUrlProcess = BackendUtility::getAjaxUrl('extractor_process');
