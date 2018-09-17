@@ -14,6 +14,8 @@
 
 namespace Causal\Extractor\Em;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Causal\Extractor\Service;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -29,21 +31,18 @@ class AjaxController
     /**
      * Renders the menu so that it can be returned as response to an AJAX call
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused
-     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
-     * @return void
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function analyze(array $params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = null)
+    public function analyze(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
     {
-        $ajaxObj->setContentFormat('json');
         $success = false;
         $html = '';
         $preview = '';
         $mappingFileNames = [];
 
         if ($GLOBALS['BE_USER']->isAdmin()) {
-            /** @var \TYPO3\CMS\Core\Http\ServerRequest $request */
-            $request = $params['request'];
             $queryParameters = $request->getQueryParams();
             $file = $queryParameters['file'];
             $service = $queryParameters['service'];
@@ -110,29 +109,29 @@ class AjaxController
             }
         }
 
-        $ajaxObj->setContent([
+        $out = [
             'success' => $success,
             'preview' => $preview,
             'html' => $html,
             'files' => $mappingFileNames,
-        ]);
+        ];
+        $response->getBody()->write(json_encode($out));
+        return $response;
     }
 
     /**
      * Processes a sample value.
      *
-     * @param array $params
-     * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler|null $ajaxObj
-     * @return string
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function process(array $params = [], \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = null)
+    public function process(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
     {
         $ajaxObj->setContentFormat('json');
         $text = '';
 
         if ($GLOBALS['BE_USER']->isAdmin()) {
-            /** @var \TYPO3\CMS\Core\Http\ServerRequest $request */
-            $request = $params['request'];
             $queryParameters = $request->getQueryParams();
             $sample = $queryParameters['sample'];
             $processor = $queryParameters['processor'];
@@ -165,10 +164,12 @@ class AjaxController
             }
         }
 
-        $ajaxObj->setContent([
+        $out = [
             'success' => true,
             'text' => $text,
-        ]);
+        ];
+        $response->getBody()->write(json_encode($out));
+        return $response;
     }
 
     /**
@@ -246,7 +247,7 @@ class AjaxController
      * @param null|string $parent
      * @return mixed
      */
-    protected function htmlizeMetadata(array $metadata, $indent = 0, $parent = null)
+    protected function htmlizeMetadata(array $metadata, int $indent = 0, $parent = null)
     {
         $html = [];
 
@@ -284,7 +285,7 @@ class AjaxController
      * @param string $property
      * @return string
      */
-    protected function suggestProcessor($value, $property)
+    protected function suggestProcessor($value, string $property)
     {
         $postProcessor = null;
 
@@ -292,13 +293,13 @@ class AjaxController
             case stripos($property, 'date') !== false:
             case stripos($property, 'modified') !== false:
             case stripos($property, 'created') !== false:
-                $postProcessor = 'Causal\\Extractor\\Utility\\DateTime::timestamp';
+                $postProcessor = \Causal\Extractor\Utility\DateTime::class . '::timestamp';
                 break;
             case stripos($property, 'gps') !== false:
-                $postProcessor = 'Causal\\Extractor\\Utility\\Gps::toDecimal';
+                $postProcessor = \Causal\Extractor\Utility\Gps::class . '::toDecimal';
                 break;
             case is_array($value):
-                $postProcessor = 'Causal\\Extractor\\Utility\\Array_::concatenate(\', \')';
+                $postProcessor = \Causal\Extractor\UtilityArray_::class . '::concatenate(\', \')';
                 break;
         }
 
