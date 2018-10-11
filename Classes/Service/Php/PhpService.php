@@ -175,6 +175,99 @@ class PhpService extends AbstractService
     }
 
     /**
+     * @param $buffer
+     * @param $bufferSize
+     * @param $startPosition
+     * @param $metaDataLength
+     */
+    private function extractXMPMetaRecursive($buffer, $bufferSize, $startPosition, &$metaDataLength)
+    {
+        // 'XML/Type/Metadata' in hex
+        $startSequence = "\x58\x4D\x4C\x2F\x54\x79\x70\x65\x2F\x4D\x65\x74\x61\x64\x61\x74\x61";
+        $nextStartPosition = strpos($buffer, $startSequence, $startPosition);
+        // seek 30 bytes back to find the Length Number "/Length *****/Subtype/XML/Type/Metadata"
+        $lengthHeaderOffset = 30;
+
+        if ($nextStartPosition !== false && $nextStartPosition - $lengthHeaderOffset > 0) {
+            $headerData = substr($buffer, $nextStartPosition - $lengthHeaderOffset, $lengthHeaderOffset);
+            $matches = [];
+            preg_match_all('/<<\/Length\ (\d+)\/Subtype\//m', $headerData, $matches, PREG_SET_ORDER, 0);
+            if (!empty($matches) && isset($matches[0][1])) {
+                $metaLen = (int)$matches[0][1];
+                if ($metaLen > 0) {
+                    // skip $startSequence and stream "XML/Type/Metadata>>stream\r\n"
+                    $metaDataStartOffset = $nextStartPosition + 27;
+                    $metaDataLength[] = [
+                        'offset' => $metaDataStartOffset,
+                        'length' => $metaLen
+                    ];
+                    // jump over the meta data section and start looking for another metadata section
+                    $nextPossibleStartPosition = $metaDataStartOffset + $metaLen;
+                    if ($nextPossibleStartPosition < $bufferSize) {
+                        $this->extractXMPMetaRecursive($buffer, $bufferSize, $nextPossibleStartPosition, $metaDataLength);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param \DOMNodeList $domNodeList
+     * @param array $xmpMetadata
+     */
+    private function parseRDFXMPDataRecursive($domNodeList, &$xmpMetadata)
+    {
+        /** @var \DOMNode $childNode */
+        foreach ($domNodeList as $childNode) {
+            if ($childNode->nodeType === XML_ELEMENT_NODE || $childNode instanceof \DOMElement) {
+                $subNodes = $childNode->childNodes;
+                // single TEXT NODE
+                if ($subNodes->count() === 1 && $subNodes->item(0)->nodeType === XML_TEXT_NODE) {
+                    if (!isset($xmpMetadata[$childNode->tagName])) {
+                        $value = trim($subNodes->item(0)->nodeValue);
+                        if (MathUtility::canBeInterpretedAsInteger($value)) {
+                            $value = (int)$value;
+                        } elseif (MathUtility::canBeInterpretedAsFloat($value)) {
+                            $value = (float)$value;
+                        }
+                        $xmpMetadata[$childNode->tagName] = $value;
+                    }
+                } elseif ($subNodes->count() > 0) { // go deeper
+                    $this->parseRDFXMPDataRecursive($subNodes, $xmpMetadata);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param $xmpXMLData
+     * @return array
+     */
+    private function parseXMPMetaXML($xmpXMLData)
+    {
+        $xmpMetadata = [];
+        $dom = new \DomDocument('1.0', 'UTF-8');
+        $dom->loadXML($xmpXMLData);
+        $dom->encoding = 'UTF-8';
+        $dom->preserveWhiteSpace = false;
+        $dom->substituteEntities = false;
+
+        if ('x:xmpmeta' !== $dom->documentElement->nodeName) {
+            return $xmpMetadata;
+        }
+
+        $xpath = new \DOMXPath($dom);
+        $xpath->registerNamespace('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
+        $nodes = $xpath->query('//rdf:Description');
+
+        if ($nodes->count() > 0) {
+            $this->parseRDFXMPDataRecursive($nodes, $xmpMetadata);
+        }
+
+        return $xmpMetadata;
+    }
+
+    /**
      * Extracts metadata from a PDF document.
      *
      * @param string $fileName Path to the file
@@ -183,80 +276,61 @@ class PhpService extends AbstractService
     protected function extractMetadataFromPdf($fileName)
     {
         static::getLogger()->debug('Extracting metadata from PDF');
+        $metadata = [];
 
-        $metadata = array();
-
-        $fh = fopen($fileName, 'r');
+        $fh = fopen($fileName, 'rb');
         if (is_resource($fh)) {
-            $xmpPointer = 0;
-            $objects = array();
-            while (($buffer = fgets($fh, 1024000)) !== false) {
-                if (preg_match('/^(\d+) \d+ obj(.*)/', $buffer, $matches)) {
-                    $object = trim($matches[2]);
-                    while (($b = fgets($fh, 1024000)) !== false) {
-                        if (trim($b) === 'endobj') {
-                            break;
-                        }
-                        $object .= $b;
+            clearstatcache();
+            $chunkSize = 1002400;
+            // rollback of the complete "<</Length *****/Subtype/XML/Type/Metadata>>stream "to
+            // length is dynamic but 50 should be a good catch all
+            $staticOffsetRollback = 50;
+            $metaDataLength = [];
+
+            // find all XMP data block offsets
+            while (!feof($fh)) {
+                $currentPointerPosition = ftell($fh);
+                $buffer = fread($fh, $chunkSize);
+                if ($buffer !== false) {
+                    $metaDataChunkLength = [];
+                    $this->extractXMPMetaRecursive($buffer, strlen($buffer), 0, $metaDataChunkLength);
+                    if (!empty($metaDataChunkLength)) {
+                        $metaDataLength[] = [
+                            'file_offset' =>  $currentPointerPosition,
+                            'locations' => $metaDataChunkLength
+                        ];
                     }
-                    // TODO: check if $object is worth keeping (to lower memory usage)
-                    $objects[$matches[1]] = $object;
-                    if (strpos($object, '<x:xmpmeta ') !== false) {
-                        $xmpPointer = $matches[1];
+                    unset($buffer); // clear memory from scope
+                    if(!feof($fh)) {
+                        fseek($fh, -$staticOffsetRollback, SEEK_CUR);
+                    }
+                } else {
+                    break;
+                }
+            }
+
+            // load and parse all found XMP Data Blocks
+            $metadataItems = [];
+            foreach ($metaDataLength as $possibleMetadataLocation) {
+                $fileOffset = $possibleMetadataLocation['file_offset'];
+                foreach ($possibleMetadataLocation['locations'] as $subMetadataLocation) {
+                    $chunkOffset = $subMetadataLocation['offset'];
+                    $metaContentLength = $subMetadataLocation['length'];
+                    $absoluteFileLocation = $fileOffset + $chunkOffset ;
+                    fseek($fh, $absoluteFileLocation, SEEK_SET);
+                    $metadataContent = fread($fh, $metaContentLength);
+                    $metadataItem = $this->parseXMPMetaXML(trim($metadataContent));
+                    if ($metadataItem) {
+                        $metadataItems[] = $metadataItem;
                     }
                 }
             }
             fclose($fh);
 
-            // Native PDF metadata are referenced in position 1
-            if (isset($objects[1])) {
-                if (preg_match_all('#/([A-Za-z]+) (\d+) 0 R#', $objects[1], $matches)) {
-                    foreach ($matches[1] as $index => $key) {
-                        $referencedObject = $matches[2][$index];
-                        $value = trim($objects[$referencedObject]);
-                        if (preg_match('/^\((.+)\)$/', $value, $m)) {
-                            $metadata[$key] = $m[1];
-                        }
-                    }
-                }
-            }
-            if (isset($objects[3])) {
-                if (preg_match('#<< /Type /Pages .* /Count (\d+)#', $objects[3], $matches)) {
-                    $metadata['Pages'] = (int)$matches[1];
-                }
-            }
-
-            // XMP block
-            if ($xmpPointer > 0) {
-                $contents = $objects[$xmpPointer];
-                $start = strpos($contents, '<x:xmpmeta ');
-                $end = strpos($contents, '</x:xmpmeta>');
-                $contents = substr($contents, $start, $end - $start + 12);
-                // Remove namespaces
-                $contents = preg_replace('#(</?)([a-z]+):([A-Za-z]+)#', '\1\3', $contents);
-                $xml = simplexml_load_string($contents);
-                $data = @json_decode(@json_encode($xml), true);
-                foreach ($data['RDF']['Description'] as $index => $values) {
-                    if (!MathUtility::canBeInterpretedAsInteger($index)) {
-                        $values = array(
-                            $index => $values,
-                        );
-                    }
-                    foreach ($values as $key => $value) {
-                        if (isset($value['Seq'])) {
-                            $value = implode(', ', $value['Seq']);
-                        } elseif (isset($value['Alt'])) {
-                            $value = implode(', ', $value['Alt']);
-                        } elseif (isset($value['Bag'])) {
-                            $value = implode(', ', $value['Bag']);
-                        } elseif (is_array($value)) {
-                            $value = implode(', ', $value);
-                        }
-                        if (!empty($value)) {
-                            $metadata['xmp:' . $key] = $value;
-                        }
-                    }
-                }
+            // currently we only want the last found meta data
+            $metaDataBlockCount = count($metadataItems);
+            if ($metaDataBlockCount > 0 && !empty($metadataItems[$metaDataBlockCount-1])) {
+                $metadata = $metadataItems[$metaDataBlockCount-1];
             }
         }
 
