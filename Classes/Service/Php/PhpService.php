@@ -212,10 +212,11 @@ class PhpService extends AbstractService
     }
 
     /**
-     * @param \DOMNodeList $domNodeList
-     * @param array $xmpMetadata
+     * @param $domNodeList
+     * @param $xmpMetadata
+     * @param string $parentTitle
      */
-    private function parseRDFXMPDataRecursive($domNodeList, &$xmpMetadata)
+    private function parseRDFXMPDataRecursive($domNodeList, &$xmpMetadata, $parentTitle = '')
     {
         /** @var \DOMNode $childNode */
         foreach ($domNodeList as $childNode) {
@@ -223,17 +224,25 @@ class PhpService extends AbstractService
                 $subNodes = $childNode->childNodes;
                 // single TEXT NODE
                 if ($subNodes->count() === 1 && $subNodes->item(0)->nodeType === XML_TEXT_NODE) {
-                    if (!isset($xmpMetadata[$childNode->tagName])) {
-                        $value = trim($subNodes->item(0)->nodeValue);
-                        if (MathUtility::canBeInterpretedAsInteger($value)) {
-                            $value = (int)$value;
-                        } elseif (MathUtility::canBeInterpretedAsFloat($value)) {
-                            $value = (float)$value;
+
+                    $value = trim($subNodes->item(0)->nodeValue);
+                    if (MathUtility::canBeInterpretedAsInteger($value)) {
+                        $value = (int)$value;
+                    } elseif (MathUtility::canBeInterpretedAsFloat($value)) {
+                        $value = (float)$value;
+                    }
+                    $tagName = $parentTitle.'_'.$childNode->tagName;
+                    if (!isset($xmpMetadata[$tagName])) {
+                        $xmpMetadata[$tagName] = $value;
+                    } else {
+                        if (!is_array($xmpMetadata[$tagName])) {
+                            $scalarValue = $xmpMetadata[$tagName];
+                            $xmpMetadata[$tagName] = [$scalarValue];
                         }
-                        $xmpMetadata[$childNode->tagName] = $value;
+                        $xmpMetadata[$tagName][] = $value;
                     }
                 } elseif ($subNodes->count() > 0) { // go deeper
-                    $this->parseRDFXMPDataRecursive($subNodes, $xmpMetadata);
+                    $this->parseRDFXMPDataRecursive($subNodes, $xmpMetadata, $parentTitle.'_'.$childNode->tagName);
                 }
             }
         }
@@ -258,13 +267,75 @@ class PhpService extends AbstractService
 
         $xpath = new \DOMXPath($dom);
         $xpath->registerNamespace('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
-        $nodes = $xpath->query('//rdf:Description');
+        $baseNode = 'rdf:Description';
+        $nodes = $xpath->query('//'.$baseNode);
 
         if ($nodes->count() > 0) {
             $this->parseRDFXMPDataRecursive($nodes, $xmpMetadata);
         }
 
-        return $xmpMetadata;
+        $sanitizedMetadata = [];
+        $baseKeySequenceToRemove = '_'.$baseNode.'_';
+        $staticReplaceKeyMap = [
+            'dc:creator_rdf:Seq_rdf:li' => 'xmp:creator',
+            'dc:title_rdf:Alt_rdf:li' => 'xmp:title',
+            'dc:description_rdf:Alt_rdf:li' => 'xmp:description',
+            'dc:rights_rdf:Alt_rdf:li' => 'xmp:right',
+            'dc:subject_rdf:Bag_rdf:li' => 'xmp:subject',
+            'pdf:Keywords' => 'xmp:Keywords',
+            'pdf:Producer' => 'xmp:Producer',
+        ];
+
+        foreach ($xmpMetadata as $key => $value) {
+            $sanitizedKey = str_replace($baseKeySequenceToRemove, '', $key);
+            if (is_array($value)) {
+                $value = implode(', ', $value);
+            }
+
+            if (isset($staticReplaceKeyMap[$sanitizedKey])) {
+                $sanitizedKey = $staticReplaceKeyMap[$sanitizedKey];
+            } else {
+                $subKeyList = explode(':', $sanitizedKey);
+                $lastKeyIndex = count($subKeyList) - 1;
+                if ($lastKeyIndex >= 0) {
+                    $sanitizedKey = 'xmp:'.$subKeyList[$lastKeyIndex];
+                }
+            }
+
+            $sanitizedMetadata[$sanitizedKey] = $value;
+        }
+
+        return $sanitizedMetadata;
+    }
+
+    /**
+     * @param $buffer
+     * @return array
+     */
+    private function extractNativePDFInformation($buffer)
+    {
+        $nativeData = [];
+        // find pageNumber
+        $re = '/<< \/Type \/Pages (.*) \/Count (\d+)/m';
+        $matches = [];
+        preg_match_all($re, $buffer, $matches, PREG_SET_ORDER, 0);
+        if (!empty($matches) && isset($matches[0][2])) {
+            $nativeData['Pages'] = (int)$matches[0][2];
+        }
+
+        $matches = [];
+        // TODO: braces in value can cause a early exit in regex for this group
+        $nativeMetaData = '/\/([a-zA-Z]+)\((.+?)[\)\/]/m';
+        preg_match_all($nativeMetaData, $buffer, $matches, PREG_SET_ORDER, 0);
+        foreach ($matches as $match) {
+            if (!empty($match[1]) && !empty($match[2])) {
+                $key = $match[1];
+                $value = $match[2];
+                $nativeData[trim($key)] = trim($value);
+            }
+        }
+
+        return $nativeData;
     }
 
     /**
@@ -300,6 +371,12 @@ class PhpService extends AbstractService
                             'locations' => $metaDataChunkLength
                         ];
                     }
+
+                    $nativeData = $this->extractNativePDFInformation($buffer);
+                    foreach ($nativeData as $key => $value) {
+                        $metadata[$key] = $value;
+                    }
+
                     unset($buffer); // clear memory from scope
                     if(!feof($fh)) {
                         fseek($fh, -$staticOffsetRollback, SEEK_CUR);
@@ -320,7 +397,7 @@ class PhpService extends AbstractService
                     fseek($fh, $absoluteFileLocation, SEEK_SET);
                     $metadataContent = fread($fh, $metaContentLength);
                     $metadataItem = $this->parseXMPMetaXML(trim($metadataContent));
-                    if ($metadataItem) {
+                    if (!empty($metadataItem) && count($metadataItem) > 1) {
                         $metadataItems[] = $metadataItem;
                     }
                 }
@@ -330,7 +407,10 @@ class PhpService extends AbstractService
             // currently we only want the last found meta data
             $metaDataBlockCount = count($metadataItems);
             if ($metaDataBlockCount > 0 && !empty($metadataItems[$metaDataBlockCount-1])) {
-                $metadata = $metadataItems[$metaDataBlockCount-1];
+                $item = $metadataItems[$metaDataBlockCount-1];
+                foreach ($item as $key => $value) {
+                    $metadata[$key] = $value;
+                }
             }
         }
 
