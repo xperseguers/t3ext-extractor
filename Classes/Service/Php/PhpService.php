@@ -223,7 +223,7 @@ class PhpService extends AbstractService
             if ($childNode->nodeType === XML_ELEMENT_NODE || $childNode instanceof \DOMElement) {
                 $subNodes = $childNode->childNodes;
                 // single TEXT NODE
-                if ($subNodes->count() === 1 && $subNodes->item(0)->nodeType === XML_TEXT_NODE) {
+                if ($subNodes->length === 1 && $subNodes->item(0)->nodeType === XML_TEXT_NODE) {
 
                     $value = trim($subNodes->item(0)->nodeValue);
                     if (MathUtility::canBeInterpretedAsInteger($value)) {
@@ -241,7 +241,7 @@ class PhpService extends AbstractService
                         }
                         $xmpMetadata[$tagName][] = $value;
                     }
-                } elseif ($subNodes->count() > 0) { // go deeper
+                } elseif ($subNodes->length > 0) { // go deeper
                     $this->parseRDFXMPDataRecursive($subNodes, $xmpMetadata, $parentTitle.'_'.$childNode->tagName);
                 }
             }
@@ -270,7 +270,7 @@ class PhpService extends AbstractService
         $baseNode = 'rdf:Description';
         $nodes = $xpath->query('//'.$baseNode);
 
-        if ($nodes->count() > 0) {
+        if ($nodes->length > 0) {
             $this->parseRDFXMPDataRecursive($nodes, $xmpMetadata);
         }
 
