@@ -175,10 +175,10 @@ class PhpService extends AbstractService
     }
 
     /**
-     * @param $buffer
-     * @param $bufferSize
-     * @param $startPosition
-     * @param $metaDataLength
+     * @param string $buffer
+     * @param int $bufferSize
+     * @param int $startPosition
+     * @param array $metaDataLength
      */
     private function extractXMPMetaRecursive($buffer, $bufferSize, $startPosition, &$metaDataLength)
     {
@@ -212,8 +212,8 @@ class PhpService extends AbstractService
     }
 
     /**
-     * @param $domNodeList
-     * @param $xmpMetadata
+     * @param \DOMNodeList $domNodeList
+     * @param array $xmpMetadata
      * @param string $parentTitle
      */
     private function parseRDFXMPDataRecursive($domNodeList, &$xmpMetadata, $parentTitle = '')
@@ -249,7 +249,7 @@ class PhpService extends AbstractService
     }
 
     /**
-     * @param $xmpXMLData
+     * @param string $xmpXMLData
      * @return array
      */
     private function parseXMPMetaXML($xmpXMLData)
@@ -309,7 +309,7 @@ class PhpService extends AbstractService
     }
 
     /**
-     * @param $buffer
+     * @param string $buffer
      * @return array
      */
     private function extractNativePDFInformation($buffer)
@@ -600,3 +600,4 @@ class PhpService extends AbstractService
         return $hours + ($minutes / 60) + ($seconds / 3600);
     }
 }
+
