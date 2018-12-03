@@ -254,6 +254,11 @@ class PhpService extends AbstractService
      */
     private function parseXMPMetaXML($xmpXMLData)
     {
+        // we don't support AES encrypted METADATA currently
+        if (strpos($xmpXMLData, '<?xpacket') === false) {
+            return [];
+        }
+
         $xmpMetadata = [];
         $dom = new \DomDocument('1.0', 'UTF-8');
         $dom->loadXML($xmpXMLData);
