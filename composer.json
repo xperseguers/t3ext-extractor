@@ -13,9 +13,9 @@
     "XMP",
     "ID3"
   ],
-  "homepage": "https://forge.typo3.org/projects/extension-extractor",
+  "homepage": "https://github.com/xperseguers/t3ext-extractor",
   "support": {
-    "issues": "https://forge.typo3.org/projects/extension-extractor/issues"
+    "issues": "https://github.com/xperseguers/t3ext-extractor/issues"
   },
   "authors": [
     {
@@ -27,7 +27,7 @@
   ],
   "license": "GPL-2.0-or-later",
   "require": {
-    "php": ">= 5.5.0, <= 7.2.99",
+    "php": ">=7.0.0",
     "ext-dom": "*",
     "typo3/cms-core": "^8.7 || ^9.5",
     "james-heinrich/getid3": "^1.9.15"

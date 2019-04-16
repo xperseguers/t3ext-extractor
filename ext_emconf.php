@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Metadata and content analysis service',
     'description' => 'This extension detects and extracts metadata (EXIF / IPTC / XMP / ...) from potentially thousand different file types (such as MS Word/Powerpoint/Excel documents, PDF and images) and bring them automatically and natively to TYPO3 when uploading assets. Works with built-in PHP functions but takes advantage of Apache Tika and other external tools for enhanced metadata extraction.',
     'category' => 'services',
-    'author' => 'Xavier Perseguers (Causal)',
+    'author' => 'Xavier Perseguers',
     'author_company' => 'Causal Sàrl',
     'author_email' => 'xavier@causal.ch',
     'shy' => '',
@@ -30,7 +30,7 @@ $EM_CONF[$_EXTKEY] = [
     'version' => '1.7.0-dev',
     'constraints' => [
         'depends' => [
-            'php' => '5.5.0-7.2.99',
+            'php' => '7.0.0-7.3.99',
             'typo3' => '8.7.0-9.5.99',
             'filemetadata' => '',
         ],
