@@ -38,7 +38,6 @@
     }
   },
   "replace": {
-    "extractor": "self.version",
     "typo3-ter/extractor": "self.version"
   },
   "config": {
@@ -75,6 +74,7 @@
       "dev-master": "1.7.x-dev"
     },
     "typo3/cms": {
+      "extension-key": "extractor",
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
       "web-dir": ".Build/Web"
     }
