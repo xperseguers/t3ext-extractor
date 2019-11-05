@@ -26,11 +26,11 @@ class Gps
      * Converts a latitude/longitude from a string representation to
      * its decimal value.
      *
-     * @param string $str DDD MM.MMMM
+     * @param string|null $str DDD MM.MMMM
      * @param string $reference ('N', 'S', 'E', 'W')
      * @return string DDD.DDDD
      */
-    public static function toDecimal($str, $reference = '')
+    public static function toDecimal(?string $str = null, string $reference = ''): ?string
     {
         $decimal = null;
         if (!empty($reference)) {

@@ -25,10 +25,10 @@ class Duration
     /**
      * Normalizes a duration as a number of seconds.
      *
-     * @param string $str
+     * @param string|null $str
      * @return string
      */
-    public static function normalize($str)
+    public static function normalize(?string $str = null): ?string
     {
         if (preg_match('/^(\d+):(\d+):(\d+)/', $str, $matches)) {
             $hours = (int)$matches[1];

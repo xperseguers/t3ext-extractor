@@ -27,11 +27,11 @@ class ColorSpace
     /**
      * Normalizes a color space for use in FAL.
      *
-     * @param string $str
+     * @param string|null $str
      * @return string
      * @throws \InvalidArgumentException
      */
-    public static function normalize($str)
+    public static function normalize(?string $str = null): ?string
     {
         if (is_array($str)) {
             throw new \InvalidArgumentException('String parameter expected, array given', 1454591450);
