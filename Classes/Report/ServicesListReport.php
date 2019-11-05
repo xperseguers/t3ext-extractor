@@ -64,9 +64,9 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      *
      * @return string The help content for this module.
      */
-    protected function renderHelp()
+    protected function renderHelp(): string
     {
-        $help = '<p class="help">' . $this->getLanguageService()->getLL('report_explanation', true) . '</p>';
+        $help = '<p class="help">' . $this->getLanguageService()->getLL('report_explanation') . '</p>';
         return $help;
     }
 
@@ -75,7 +75,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      *
      * @return string HTML to display
      */
-    protected function renderExtractorsList()
+    protected function renderExtractorsList(): string
     {
         $language = $this->getLanguageService();
         $header = '<h4>' . $language->getLL('extractors')  . '</h4>';
@@ -85,11 +85,11 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
 		<table cellspacing="1" cellpadding="2" border="0" class="' . $tableClass .'">
 		    <thead>
                 <tr class="t3-row-header">
-                    <td style="width: 35%">' . $language->getLL('class', true) . '</td>
-                    <td>' . $language->getLL('driver_restrictions', true) . '</td>
-                    <td>' . $language->getLL('priority', true) . '</td>
-                    <td>' . $language->getLL('execution_priority', true) . '</td>
-                    <td style="width: 35%">' . $language->getLL('file_types', true) . '</td>
+                    <td style="width: 35%">' . $language->getLL('class') . '</td>
+                    <td>' . $language->getLL('driver_restrictions') . '</td>
+                    <td>' . $language->getLL('priority') . '</td>
+                    <td>' . $language->getLL('execution_priority') . '</td>
+                    <td style="width: 35%">' . $language->getLL('file_types') . '</td>
                 </tr>
             </thead>
             <tbody>';
@@ -113,7 +113,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      * @param ExtractorInterface $extractor
      * @return string
      */
-    protected function renderExtractorRow(ExtractorInterface $extractor)
+    protected function renderExtractorRow(ExtractorInterface $extractor): string
     {
         $class = get_class($extractor);
         if (strpos($class, '\\') !== false) {
@@ -156,7 +156,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      * @param array $fileTypes
      * @return string HTML snippet
      */
-    protected function groupFileTypes(array $fileTypes)
+    protected function groupFileTypes(array $fileTypes): string
     {
         if ($fileTypes[0] === '*') {
             return '*';
@@ -184,7 +184,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      *
      * @return \TYPO3\CMS\Lang\LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): \TYPO3\CMS\Lang\LanguageService
     {
         return $GLOBALS['LANG'];
     }

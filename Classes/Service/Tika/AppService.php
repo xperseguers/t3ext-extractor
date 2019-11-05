@@ -93,6 +93,7 @@ class AppService extends AbstractService implements TikaServiceInterface
         }
 
         $fileTypes = array_unique($fileTypes);
+
         return $fileTypes;
     }
 
@@ -104,11 +105,11 @@ class AppService extends AbstractService implements TikaServiceInterface
     public function getJavaRuntimeInfo()
     {
         $cmd = CommandUtility::getCommand('java');
-        $info = array(
+        $info = [
             'path' => $cmd,
-        );
+        ];
 
-        $shellOutput = array();
+        $shellOutput = [];
         CommandUtility::exec($cmd . ' -version 2>&1', $shellOutput);
         if (!empty($shellOutput)) {
             if (preg_match('/^.*"(.+)"/', $shellOutput[0], $matches)) {
@@ -136,7 +137,7 @@ class AppService extends AbstractService implements TikaServiceInterface
             . ' -m --json'
             . ' ' . CommandUtility::escapeShellArgument($fileName);
 
-        $shellOutput = array();
+        $shellOutput = [];
         CommandUtility::exec($tikaCommand, $shellOutput);
 
         static::getLogger()->debug(
@@ -181,9 +182,7 @@ class AppService extends AbstractService implements TikaServiceInterface
             . ' -l'
             . ' ' . CommandUtility::escapeShellArgument($fileName);
 
-        $language = trim(CommandUtility::exec($tikaCommand));
-
-        return $language;
+        return trim(CommandUtility::exec($tikaCommand));
     }
 
     /**
@@ -191,15 +190,10 @@ class AppService extends AbstractService implements TikaServiceInterface
      *
      * @return string
      */
-    protected function getTikaJar()
+    protected function getTikaJar(): string
     {
-        if (version_compare(TYPO3_version, '8.0', '>=')) {
-            $tikaJar = is_file($this->settings['tika_jar_path'])
-                ? $this->settings['tika_jar_path']
-                : GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path']);
-        } else {
-            $tikaJar = GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false);
-        }
-        return $tikaJar;
+        return is_file($this->settings['tika_jar_path'])
+            ? $this->settings['tika_jar_path']
+            : GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path']);
     }
 }

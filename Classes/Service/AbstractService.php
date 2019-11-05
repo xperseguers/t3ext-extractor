@@ -39,7 +39,7 @@ abstract class AbstractService implements ServiceInterface
      */
     public function __construct()
     {
-        $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor']);
+        $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor'];
     }
 
     /**
@@ -47,6 +47,8 @@ abstract class AbstractService implements ServiceInterface
      *
      * @param \TYPO3\CMS\Core\Resource\File $file
      * @return array
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
     public function extractMetadata(File $file)
     {
@@ -66,6 +68,7 @@ abstract class AbstractService implements ServiceInterface
             'postMetaDataExtraction',
             [$file]
         );
+
         return $metadata;
     }
 
@@ -92,7 +95,7 @@ abstract class AbstractService implements ServiceInterface
      *
      * @return \TYPO3\CMS\Core\Log\Logger
      */
-    protected static function getLogger()
+    protected static function getLogger(): \TYPO3\CMS\Core\Log\Logger
     {
         /** @var \TYPO3\CMS\Core\Log\Logger $logger */
         static $logger = null;
@@ -108,7 +111,7 @@ abstract class AbstractService implements ServiceInterface
      *
      * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
-    protected function getSignalSlotDispatcher()
+    protected function getSignalSlotDispatcher(): Dispatcher
     {
         return GeneralUtility::makeInstance(Dispatcher::class);
     }

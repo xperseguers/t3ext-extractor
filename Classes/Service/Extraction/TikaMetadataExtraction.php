@@ -68,7 +68,7 @@ class TikaMetadataExtraction extends AbstractExtractionService
     {
         $tikaService = $this->getTikaService();
         $fileExtension = strtolower($file->getProperty('extension'));
-        return ($tikaService !== null && in_array($fileExtension, $this->supportedFileExtensions));
+        return ($tikaService !== null && in_array($fileExtension, $this->supportedFileExtensions, true));
     }
 
     /**
@@ -79,10 +79,11 @@ class TikaMetadataExtraction extends AbstractExtractionService
      * @param File $file
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
+     * @throws \Exception
      */
-    public function extractMetaData(File $file, array $previousExtractedData = array())
+    public function extractMetaData(File $file, array $previousExtractedData = [])
     {
-        $metadata = array();
+        $metadata = [];
 
         $extractedMetadata = $this->getTikaService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {
@@ -99,7 +100,7 @@ class TikaMetadataExtraction extends AbstractExtractionService
      *
      * @return \Causal\Extractor\Service\Tika\TikaServiceInterface
      */
-    protected function getTikaService()
+    protected function getTikaService(): \Causal\Extractor\Service\Tika\TikaServiceInterface
     {
         /** @var \Causal\Extractor\Service\Tika\TikaServiceInterface $tikaService */
         static $tikaService = null;

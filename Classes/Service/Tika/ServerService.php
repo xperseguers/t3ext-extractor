@@ -54,8 +54,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
      */
     public function getTikaVersion()
     {
-        $tikaVersion = $this->send('GET', '/version');
-        return $tikaVersion;
+        return $this->send('GET', '/version');
     }
 
     /**
@@ -76,8 +75,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
             }
         }
 
-        $fileTypes = array_unique($fileTypes);
-        return $fileTypes;
+        return array_unique($fileTypes);
     }
 
     /**
@@ -85,7 +83,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
      *
      * @return int -1 if host is down otherwise delay to connect to the Tika host
      */
-    public function ping()
+    public function ping(): int
     {
         $starttime = microtime(true);
         $fh = @fsockopen(
@@ -96,7 +94,6 @@ class ServerService extends AbstractService implements TikaServiceInterface
             5   // 5 seconds of timeout should be enough
         );
         $stoptime = microtime(true);
-        $status = 0;
 
         if (!$fh) {
             // Host is down
@@ -106,6 +103,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
             $status = ($stoptime - $starttime) * 1000;
             $status = floor($status);
         }
+
         return $status;
     }
 
@@ -118,9 +116,8 @@ class ServerService extends AbstractService implements TikaServiceInterface
     public function extractMetadataFromLocalFile($fileName)
     {
         $content = $this->send('PUT', '/meta', 'application/json', $fileName);
-        $metadata = json_decode($content, true);
 
-        return $metadata;
+        return json_decode($content, true);
     }
 
     /**
@@ -146,9 +143,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
      */
     public function detectLanguageFromLocalFile($fileName)
     {
-        $language = $this->send('PUT', '/language/stream', '', $fileName);
-
-        return $language;
+        return $this->send('PUT', '/language/stream', '', $fileName);
     }
 
     /**
@@ -160,7 +155,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
      * @param string $fileName
      * @return string
      */
-    protected function send($method, $resource, $accept = '', $fileName = '')
+    protected function send($method, $resource, $accept = '', $fileName = ''): string
     {
         // Initiate the connection
         $fh = @fsockopen(

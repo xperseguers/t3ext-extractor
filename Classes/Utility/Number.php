@@ -30,7 +30,7 @@ class Number
      * @param string $str
      * @return int
      */
-    public static function castInteger($str)
+    public static function castInteger($str): int
     {
         return (int)$str;
     }
@@ -42,7 +42,7 @@ class Number
      * @return string
      * @throws \InvalidArgumentException
      */
-    public static function extractIntegerAtEnd($str)
+    public static function extractIntegerAtEnd($str): string
     {
         if (is_array($str)) {
             throw new \InvalidArgumentException('String parameter expected, array given', 1454591285);
@@ -50,6 +50,7 @@ class Number
         if (preg_match('/(\d+)$/', $str, $matches)) {
             return (int)$matches[1];
         }
+
         return null;
     }
 
@@ -60,7 +61,7 @@ class Number
      * @return float
      * @throws \InvalidArgumentException
      */
-    public static function extractFloat($str)
+    public static function extractFloat($str): float
     {
         if (is_array($str)) {
             throw new \InvalidArgumentException('String parameter expected, array given', 1454591360);
@@ -72,6 +73,7 @@ class Number
         } else {
             $value = (float)$str;
         }
+
         return $value;
     }
 }

@@ -28,12 +28,12 @@ class MimeType
     /**
      * @var array
      */
-    protected static $mimeTypesMapping = array();
+    protected static $mimeTypesMapping = [];
 
     /**
      * @var array
      */
-    protected static $extensionsMapping = array();
+    protected static $extensionsMapping = [];
 
     /**
      * Returns an array of file extensions associated to a given mime type.
@@ -41,7 +41,7 @@ class MimeType
      * @param string $mimeType
      * @return array
      */
-    public static function getFileExtensions($mimeType)
+    public static function getFileExtensions($mimeType): array
     {
         if (empty(static::$mimeTypesMapping)) {
             static::initialize();
@@ -61,7 +61,7 @@ class MimeType
      * @param string $fileExtension
      * @return string
      */
-    public static function getMimeType($fileExtension)
+    public static function getMimeType($fileExtension): string
     {
         if (empty(static::$extensionsMapping)) {
             static::initialize();
@@ -86,7 +86,7 @@ class MimeType
         $fh = fopen($fileName, 'r');
         if (is_resource($fh)) {
             while (($buffer = fgets($fh, 1024)) !== false) {
-                if ($buffer{0} === '#') {
+                if (strpos($buffer, '#') === 0) {
                     continue;
                 }
                 list($mimeType, $extensions) = GeneralUtility::trimExplode("\t", $buffer, true);

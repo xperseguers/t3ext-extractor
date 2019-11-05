@@ -55,7 +55,7 @@ class PhpMetadataExtraction extends AbstractExtractionService
     public function canProcess(File $file)
     {
         $fileExtension = strtolower($file->getProperty('extension'));
-        return in_array($fileExtension, $this->supportedFileExtensions);
+        return in_array($fileExtension, $this->supportedFileExtensions, true);
     }
 
     /**
@@ -66,10 +66,11 @@ class PhpMetadataExtraction extends AbstractExtractionService
      * @param File $file
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
+     * @throws \Exception
      */
-    public function extractMetaData(File $file, array $previousExtractedData = array())
+    public function extractMetaData(File $file, array $previousExtractedData = [])
     {
-        $metadata = array();
+        $metadata = [];
 
         $extractedMetadata = $this->getPhpService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {
@@ -86,7 +87,7 @@ class PhpMetadataExtraction extends AbstractExtractionService
      *
      * @return \Causal\Extractor\Service\Php\PhpService
      */
-    protected function getPhpService()
+    protected function getPhpService(): \Causal\Extractor\Service\Php\PhpService
     {
         /** @var \Causal\Extractor\Service\Php\PhpService $phpService */
         static $phpService = null;

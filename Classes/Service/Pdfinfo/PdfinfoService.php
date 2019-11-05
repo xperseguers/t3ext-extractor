@@ -49,7 +49,7 @@ class PdfinfoService extends AbstractService
      */
     public function getSupportedFileExtensions()
     {
-        return array('pdf');
+        return ['pdf'];
     }
 
     /**
@@ -62,7 +62,7 @@ class PdfinfoService extends AbstractService
     {
         $pdfinfoCommand = $this->getPdfInfo() . ' -enc UTF-8 ' . CommandUtility::escapeShellArgument($fileName);
 
-        $shellOutput = array();
+        $shellOutput = [];
         CommandUtility::exec($pdfinfoCommand, $shellOutput);
 
         static::getLogger()->debug(
@@ -73,7 +73,7 @@ class PdfinfoService extends AbstractService
             ]
         );
 
-        $metadata = array();
+        $metadata = [];
         foreach ($shellOutput as $line) {
             list($key, $value) = GeneralUtility::trimExplode(':', $line, true, 2);
             $metadata[$key] = $value;
@@ -87,15 +87,12 @@ class PdfinfoService extends AbstractService
      *
      * @return string
      */
-    protected function getPdfInfo()
+    protected function getPdfInfo(): string
     {
-        if (version_compare(TYPO3_version, '8.0', '>=')) {
-            $pdfInfo = is_file($this->settings['tools_pdfinfo'])
-                ? $this->settings['tools_pdfinfo']
-                : GeneralUtility::getFileAbsFileName($this->settings['tools_pdfinfo']);
-        } else {
-            $pdfInfo = GeneralUtility::getFileAbsFileName($this->settings['tools_pdfinfo'], false);
-        }
+        $pdfInfo = is_file($this->settings['tools_pdfinfo'])
+            ? $this->settings['tools_pdfinfo']
+            : GeneralUtility::getFileAbsFileName($this->settings['tools_pdfinfo']);
+
         return $pdfInfo;
     }
 }

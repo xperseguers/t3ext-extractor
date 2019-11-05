@@ -28,10 +28,10 @@ class TikaLanguageDetector extends AbstractExtractionService
     /**
      * @var array
      */
-    protected $supportedFileExtensions = array(
+    protected $supportedFileExtensions = [
         'doc','docx','epub','htm','html','msg','odf','odt','pdf','ppt','pptx',
         'rtf','sxw','txt','xls','xlsx'
-    );
+    ];
 
     /**
      * @var integer
@@ -53,7 +53,7 @@ class TikaLanguageDetector extends AbstractExtractionService
     {
         $tikaService = $this->getTikaService();
         $fileExtension = strtolower($file->getProperty('extension'));
-        return ($tikaService !== null && in_array($fileExtension, $this->supportedFileExtensions));
+        return ($tikaService !== null && in_array($fileExtension, $this->supportedFileExtensions, true));
     }
 
     /**
@@ -77,7 +77,7 @@ class TikaLanguageDetector extends AbstractExtractionService
      *
      * @return \Causal\Extractor\Service\Tika\TikaServiceInterface
      */
-    protected function getTikaService()
+    protected function getTikaService(): \Causal\Extractor\Service\Tika\TikaServiceInterface
     {
         /** @var \Causal\Extractor\Service\Tika\TikaServiceInterface $tikaService */
         static $tikaService = null;

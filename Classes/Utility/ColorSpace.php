@@ -31,7 +31,7 @@ class ColorSpace
      * @return string
      * @throws \InvalidArgumentException
      */
-    public static function normalize($str)
+    public static function normalize($str): string
     {
         if (is_array($str)) {
             throw new \InvalidArgumentException('String parameter expected, array given', 1454591450);
@@ -55,6 +55,7 @@ class ColorSpace
                     break;
             }
         }
+
         return $str;
     }
 

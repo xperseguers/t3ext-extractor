@@ -28,12 +28,13 @@ class SimpleString
      * Trims a string (and also removes non-printable binary characters).
      *
      * @param string $str
-     * @return int
+     * @return string
      */
-    public static function trim($str)
+    public static function trim($str): string
     {
         // Remove non-printable characters (ASCII 0-31)
         $str = preg_replace('/[\x00-\x1F]/', '', $str);
-        return trim($str);
+
+        return trim($str) ?? '';
     }
 }

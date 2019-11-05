@@ -29,7 +29,7 @@ class Array_
      * @param string $glue
      * @return string
      */
-    public static function concatenate($pieces, $glue)
+    public static function concatenate($pieces, $glue): string
     {
         if (!is_array($pieces)) {
             return null;

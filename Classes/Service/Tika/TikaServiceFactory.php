@@ -37,7 +37,7 @@ class TikaServiceFactory
     public static function getTika($tikaService = '')
     {
         if (empty($tikaService)) {
-            $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor']);
+            $settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor'];
             $tikaService = $settings['tika_mode'];
         }
 

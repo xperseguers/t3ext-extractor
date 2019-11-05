@@ -14,7 +14,9 @@
 
 namespace Causal\Extractor\Em;
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -42,25 +44,30 @@ class MappingController extends AbstractConfigurationField
      */
     public function __construct()
     {
-        $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extensionKey]);
+        $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$this->extensionKey];
         if (!is_array($this->settings)) {
             $this->settings = [];
         }
+        ExtensionManagementUtility::loadExtLocalconf(true);
     }
 
     /**
      * Renders the mapping module.
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
+     * @param \TYPO3\CMS\Install\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public function render(array $params, $pObj)
     {
-        $resourcesPath = '../' . ExtensionManagementUtility::siteRelPath($this->extensionKey) . 'Resources/Public/';
+        $resourcesPath = '../' . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extensionKey)) . 'Resources/Public/';
 
-        $ajaxUrlAnalyze = BackendUtility::getAjaxUrl('extractor_analyze');
-        $ajaxUrlProcess = BackendUtility::getAjaxUrl('extractor_process');
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+//        $ajaxUrlAnalyze = BackendUtility::getAjaxUrl('extractor_analyze');
+        $ajaxUrlAnalyze = '';//$uriBuilder->buildUriFromRoute('ajax_extractor_analyze');
+//        $ajaxUrlProcess = BackendUtility::getAjaxUrl('extractor_process');
+        $ajaxUrlProcess = '';//$uriBuilder->buildUriFromRoute('ajax_extractor_process');
         $inlineJs = 'var extractorAnalyzeAction = \'' . $ajaxUrlAnalyze . '\';';
         $inlineJs .= 'var extractorProcessAction = \'' . $ajaxUrlProcess . '\';';
 
@@ -75,7 +82,7 @@ class MappingController extends AbstractConfigurationField
         $html = [];
         $html[] = $this->smartFormat($this->translate('settings.mapping_configuration.description'));
         $html[] = '<div class="tx-extractor">';
-        $html[] = '<table><tr><td>';
+//        $html[] = '<table cellpadding="10"><tr><td>';
         // Choose file
         $html[] = $this->getFileSelector();
         $html[] = '<div id="tx-extractor-preview"></div>';
@@ -83,7 +90,7 @@ class MappingController extends AbstractConfigurationField
         $html[] = '<p>' . $this->translate('settings.mapping_configuration.files', true) . '</p>';
         $html[] = '<ol></ol>';
         $html[] = '</div>';
-        $html[] = '</td><td>';
+//        $html[] = '</td><td>';
         // Service
         $html[] = $this->getServiceSelector();
         //  FAL Property
@@ -91,24 +98,24 @@ class MappingController extends AbstractConfigurationField
         // Metadata Property
         $label = $this->translate('settings.mapping_configuration.property', true);
         $html[] = '<label for="tx-extractor-property">' . $label . '</label>';
-        $html[] = '<input type="text" id="tx-extractor-property" readonly="readonly" />';
+        $html[] = '<input type="text" id="tx-extractor-property" readonly="readonly" class="form-control"/>';
         // Processor
         $html[] = $this->getProcessorSelector();
         // Sample Value
         $label = $this->translate('settings.mapping_configuration.sample', true);
         $html[] = '<label for="tx-extractor-sample">' . $label . '</label>';
-        $html[] = '<input type="text" id="tx-extractor-sample" readonly="readonly" />';
+        $html[] = '<input type="text" id="tx-extractor-sample" readonly="readonly" class="form-control"/>';
         // Output
         $label = $this->translate('settings.mapping_configuration.output', true);
         $html[] = '<label for="tx-extractor-output">' . $label . '</label>';
-        $html[] = '<input type="text" id="tx-extractor-output" readonly="readonly" />';
+        $html[] = '<input type="text" id="tx-extractor-output" readonly="readonly" class="form-control"/>';
         // JSON
         $label = $this->translate('settings.mapping_configuration.json', true);
         $html[] = '<label for="tx-extractor-json">' . $label . '</label>';
-        $html[] = '<textarea id="tx-extractor-json" rows="4"></textarea>';
+        $html[] = '<textarea id="tx-extractor-json" rows="4" class="form-control"></textarea>';
         $lagel = $this->translate('settings.mapping_configuration.json.copy', true);
-        $html[] = '<button id="tx-extractor-copy">' . $label . '</button>';
-        $html[] = '</td></tr></table>';
+        $html[] = '<button id="tx-extractor-copy" class="btn btn-default">' . $label . '</button>';
+//        $html[] = '</td></tr></table>';
         $html[] = '<pre id="tx-extractor-metadata"></pre>';
         $html[] = '</div>';
 
@@ -151,7 +158,7 @@ class MappingController extends AbstractConfigurationField
 
         $label = $this->translate('settings.mapping_configuration.chooseFile', true);
         $output = '<label for="tx-extractor-file">' . $label . '</label>';
-        $output .= '<select id="tx-extractor-file"><option value=""></option>';
+        $output .= '<select id="tx-extractor-file" class="form-control"><option value=""></option>';
 
         foreach ($files as $category => $f) {
             if (!empty($f)) {
@@ -207,11 +214,14 @@ class MappingController extends AbstractConfigurationField
      */
     protected function getFalPropertySelector()
     {
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $databaseConnection */
-        $databaseConnection = $GLOBALS['TYPO3_DB'];
+//        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $databaseConnection */
+//        $databaseConnection = $GLOBALS['TYPO3_DB'];
+        $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_file_metadata');
 
         $options = [];
-        $fields = $databaseConnection->admin_get_fields('sys_file_metadata');
+//        $fields = $databaseConnection->admin_get_fields('sys_file_metadata');
+        $fields = $databaseConnection->getSchemaManager()->listTableColumns('sys_file_metadata');
         foreach ($fields as $field => $_) {
             switch (true) {
                 case GeneralUtility::isFirstPartOfStr($field, 't3ver_'):
@@ -249,7 +259,7 @@ class MappingController extends AbstractConfigurationField
     {
         $label = $this->translate('settings.mapping_configuration.processor', true);
         $output = '<label for="tx-extractor-processor">' . $label . '</label>';
-        $output .= '<select id="tx-extractor-processor">';
+//        $output .= '<select id="tx-extractor-processor">';
 
         $processors = $GLOBALS['TYPO3_CONF_VARS']['EXT'][$this->extensionKey]['processors'];
         $options = array_combine($processors, $processors);
@@ -276,7 +286,7 @@ class MappingController extends AbstractConfigurationField
     protected function getHtmlSelect($id, $labelKey, array $options, $prependEmpty = false)
     {
         $output = '<label for="' . htmlspecialchars($id) . '">' . $this->translate($labelKey, true) . '</label>';
-        $output .= '<select id="' . htmlspecialchars($id) . '">';
+        $output .= '<select id="' . htmlspecialchars($id) . '" class="form-control">';
 
         if ($prependEmpty) {
             $output .= '<option value=""></option>';

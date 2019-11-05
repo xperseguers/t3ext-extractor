@@ -28,7 +28,7 @@ class Karaoke
      * @param array $data
      * @return string
      */
-    public static function extract($data)
+    public static function extract($data): string
     {
         if (!is_array($data) || $data[0] !== '@KMIDI KARAOKE FILE') {
             return null;
@@ -44,7 +44,7 @@ class Karaoke
         $length = count($data);
         for (; $i < $length; $i++) {
             $chunk = utf8_encode($data[$i]);
-            if ($chunk{0} === '/') {
+            if (strpos($chunk, '/') === 0) {
                 $chunk{0} = LF;
             } elseif ($chunk{0} === '\\') {
                 $chunk = LF . LF . substr($chunk, 1);

@@ -38,6 +38,8 @@ class FileUploadHook implements \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
      * @param array $result The results of all calls to the action handler
      * @param \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $pObj The parent object
      * @return void
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
     public function processData_postProcessAction(
         $action,
@@ -136,7 +138,7 @@ class FileUploadHook implements \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
      *
      * @return \TYPO3\CMS\Core\Log\Logger
      */
-    protected static function getLogger()
+    protected static function getLogger(): \TYPO3\CMS\Core\Log\Logger
     {
         /** @var \TYPO3\CMS\Core\Log\Logger $logger */
         static $logger = null;
@@ -152,7 +154,7 @@ class FileUploadHook implements \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
      *
      * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
-    protected function getSignalSlotDispatcher()
+    protected function getSignalSlotDispatcher(): Dispatcher
     {
         return GeneralUtility::makeInstance(Dispatcher::class);
     }

@@ -30,7 +30,7 @@ class ExtensionHelper
      * @param string $extension
      * @return string
      */
-    public static function getExtensionCategory($extension)
+    public static function getExtensionCategory($extension): string
     {
         switch ($extension) {
             case 'ai':
@@ -116,7 +116,7 @@ class ExtensionHelper
             case 'f4v':
             case 'flv':
             case 'm2v':
-            case 'm4p':
+//            case 'm4p': Already in 'audio' set
             case 'm4v':
             case 'mkv':
             case 'mov':

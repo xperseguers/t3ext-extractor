@@ -28,10 +28,32 @@ use Causal\Extractor\Service\Tika\TikaServiceFactory;
 class ConfigurationHelper extends AbstractConfigurationField
 {
     /**
+     * @var string The message severity class names
+     */
+    protected static $classes = [
+        FlashMessage::NOTICE => 'notice',
+        FlashMessage::INFO => 'info',
+        FlashMessage::OK => 'success',
+        FlashMessage::WARNING => 'warning',
+        FlashMessage::ERROR => 'danger'
+    ];
+
+    /**
+     * @var string The message severity icon names
+     */
+    protected static $icons = [
+        FlashMessage::NOTICE => 'lightbulb-o',
+        FlashMessage::INFO => 'info',
+        FlashMessage::OK => 'check',
+        FlashMessage::WARNING => 'exclamation',
+        FlashMessage::ERROR => 'times'
+    ];
+
+    /**
      * Creates an input field for the Tika Jar path and checks its validity.
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
+     * @param \TYPO3\CMS\Install\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
     public function createTikaJarPath(array $params, $pObj)
@@ -74,7 +96,7 @@ class ConfigurationHelper extends AbstractConfigurationField
      * Creates an input field for the Tika server host and checks its validity.
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
+     * @param \TYPO3\CMS\Install\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
     public function createTikaServerHost(array $params, $pObj)
@@ -122,7 +144,7 @@ class ConfigurationHelper extends AbstractConfigurationField
      * Creates an input field for an external tool and checks its validity.
      *
      * @param array $params Field information to be rendered
-     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
+     * @param \TYPO3\CMS\Install\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
     public function createToolInput(array $params, $pObj)
@@ -172,7 +194,7 @@ class ConfigurationHelper extends AbstractConfigurationField
      * Creates a checkbox.
      *
      * @param array $params
-     * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
+     * @param \TYPO3\CMS\Install\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
     public function createCheckboxForExtensionManager(array $params, $pObj)
@@ -191,12 +213,12 @@ class ConfigurationHelper extends AbstractConfigurationField
             $title = '<h4 class="alert-title">' . $flashMessage->getTitle() . '</h4>';
         }
         $html = '
-			<div class="alert ' . $flashMessage->getClass() . '">
+			<div class="alert ' . $this->getClass($flashMessage) . '">
 				<div class="media">
 					<div class="media-left">
 						<span class="fa-stack fa-lg">
 							<i class="fa fa-circle fa-stack-2x"></i>
-							<i class="fa fa-' . $flashMessage->getIconName() . ' fa-stack-1x"></i>
+							<i class="fa fa-' . $this->getIconName($flashMessage) . ' fa-stack-1x"></i>
 						</span>
 					</div>
 					<div class="media-body">
@@ -243,5 +265,29 @@ class ConfigurationHelper extends AbstractConfigurationField
             $html .= '</ul>';
         }
         return $html;
+    }
+
+    /**
+     * Gets the message severity class name
+     *
+     * @param FlashMessage $flashMessage
+     *
+     * @return string The message severity class name
+     */
+    protected function getClass(FlashMessage $flashMessage): string
+    {
+        return 'alert-' . self::$classes[$flashMessage->getSeverity()];
+    }
+
+    /**
+     * Gets the message severity icon name
+     *
+     * @param FlashMessage $flashMessage
+     *
+     * @return string The message severity icon name
+     */
+    protected function getIconName(FlashMessage $flashMessage): string
+    {
+        return self::$icons[$flashMessage->getSeverity()];
     }
 }

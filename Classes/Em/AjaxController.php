@@ -63,7 +63,7 @@ class AjaxController
                         $extractionService = GeneralUtility::makeInstance(Service\Extraction\ExifToolMetadataExtraction::class);
                         break;
                     case 'pdfinfo':
-                        $extractor = GeneralUtility::makeInstance(Service\Pdfinfo\PdfInfoService::class);
+                        $extractor = GeneralUtility::makeInstance(Service\Pdfinfo\PdfinfoService::class);
                         $extractionService = GeneralUtility::makeInstance(Service\Extraction\PdfinfoMetadataExtraction::class);
                         break;
                     case 'php':
@@ -86,7 +86,7 @@ class AjaxController
 
                 // Populate the possible mapping configuration file names
                 $mappingFileNames = $extractionService->getPotentialMappingFiles($file);
-                $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor']);
+                $settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor'];
                 if (isset($settings['mapping_base_directory'])) {
                     if (version_compare(TYPO3_version, '8.0', '>=')) {
                         $pathConfiguration = is_dir($this->settings['mapping_base_directory'])
@@ -94,8 +94,7 @@ class AjaxController
                             : GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory']);
                     } else {
                         $pathConfiguration = GeneralUtility::getFileAbsFileName(
-                            $this->settings['mapping_base_directory'],
-                            false
+                            $this->settings['mapping_base_directory']
                         );
                     }
                     foreach ($mappingFileNames as &$fileName) {
@@ -299,7 +298,7 @@ class AjaxController
                 $postProcessor = \Causal\Extractor\Utility\Gps::class . '::toDecimal';
                 break;
             case is_array($value):
-                $postProcessor = \Causal\Extractor\UtilityArray_::class . '::concatenate(\', \')';
+                $postProcessor = \Causal\Extractor\Utility\Array_::class . '::concatenate(\', \')';
                 break;
         }
 

@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class PhpService extends AbstractService
 {
     /** @var array */
-    protected $imageExtensions = array(
+    protected $imageExtensions = [
         'gif',      // IMAGETYPE_GIF
         'jpg',      // IMAGETYPE_JPEG
         'jpeg',     // IMAGETYPE_JPEG
@@ -39,18 +39,18 @@ class PhpService extends AbstractService
         'wbmp',     // IMAGETYPE_WBMP
         'xbm',      // IMAGETYPE_XBM
         'ico',      // IMAGETYPE_ICO
-    );
+    ];
 
     /** @var array */
-    protected $officeDocumentExtensions = array(
+    protected $officeDocumentExtensions = [
         'docx',
         'xlsx',
         'pptx',
         'ppsx',
-    );
+    ];
 
     /** @var array */
-    protected $getId3Extensions = array(
+    protected $getId3Extensions = [
         '3gp',
         'aa',
         'aac',
@@ -75,7 +75,7 @@ class PhpService extends AbstractService
         'wav',
         'wma',
         'wmv',
-    );
+    ];
 
     /**
      * Returns a list of supported file types.
@@ -88,7 +88,7 @@ class PhpService extends AbstractService
             $this->imageExtensions,
             $this->officeDocumentExtensions,
             $this->getId3Extensions,
-            array('pdf')
+            ['pdf']
         );
     }
 
@@ -103,10 +103,10 @@ class PhpService extends AbstractService
     {
         $extension = strtolower(substr($fileName, strrpos($fileName, '.') + 1));
         switch (true) {
-            case in_array($extension, $this->officeDocumentExtensions):
+            case in_array($extension, $this->officeDocumentExtensions, true):
                 $metadata = $this->extractMetadataFromOfficeDocument($fileName);
                 break;
-            case in_array($extension, $this->getId3Extensions):
+            case in_array($extension, $this->getId3Extensions, true):
                 $metadata = $this->extractMetadataWithGetId3($fileName);
                 break;
             case $extension === 'pdf':
@@ -116,8 +116,8 @@ class PhpService extends AbstractService
                 $metadata = $this->extractMetadataFromImage($fileName);
                 break;
         }
-
         static::getLogger()->debug('Metadata extracted', $metadata);
+
         return $metadata;
     }
 
@@ -127,11 +127,11 @@ class PhpService extends AbstractService
      * @param string $fileName Path to the file
      * @return array
      */
-    protected function extractMetadataFromOfficeDocument($fileName)
+    protected function extractMetadataFromOfficeDocument($fileName): array
     {
         static::getLogger()->debug('Extracting metadata from MS Office document');
 
-        $metadata = array();
+        $metadata = [];
 
         $zip = zip_open($fileName);
         if (is_resource($zip)) {
@@ -154,8 +154,9 @@ class PhpService extends AbstractService
      *
      * @param string $fileName Path to the file
      * @return array
+     * @throws \getid3_exception
      */
-    protected function extractMetadataWithGetId3($fileName)
+    protected function extractMetadataWithGetId3($fileName): array
     {
         static::getLogger()->debug('Extracting metadata with GetID3 library');
 
@@ -166,7 +167,7 @@ class PhpService extends AbstractService
         }
 
         $getID3 = new \getID3();
-        $getID3->setOption(array('encoding' => 'UTF-8'));
+        $getID3->setOption(['encoding' => 'UTF-8']);
 
         $metadata = $getID3->analyze($fileName);
         \getid3_lib::ksort_recursive($metadata);
@@ -252,7 +253,7 @@ class PhpService extends AbstractService
      * @param string $xmpXMLData
      * @return array
      */
-    private function parseXMPMetaXML($xmpXMLData)
+    private function parseXMPMetaXML($xmpXMLData): array
     {
         $xmpMetadata = [];
         $dom = new \DomDocument('1.0', 'UTF-8');
@@ -312,7 +313,7 @@ class PhpService extends AbstractService
      * @param string $buffer
      * @return array
      */
-    private function extractNativePDFInformation($buffer)
+    private function extractNativePDFInformation($buffer): array
     {
         $nativeData = [];
         // find pageNumber
@@ -344,7 +345,7 @@ class PhpService extends AbstractService
      * @param string $fileName Path to the file
      * @return array
      */
-    protected function extractMetadataFromPdf($fileName)
+    protected function extractMetadataFromPdf($fileName): array
     {
         static::getLogger()->debug('Extracting metadata from PDF');
         $metadata = [];
@@ -423,7 +424,7 @@ class PhpService extends AbstractService
      * @param string $fileName Path to the file
      * @return array
      */
-    protected function extractMetadataFromImage($fileName)
+    protected function extractMetadataFromImage($fileName): array
     {
         static::getLogger()->debug('Extracting metadata from image');
 
@@ -475,17 +476,17 @@ class PhpService extends AbstractService
      * @return array
      * @see \Causal\ImageAutoresize\Utility\ImageUtility::getMetadata()
      */
-    protected function getMetadata($fileName)
+    protected function getMetadata($fileName): array
     {
         $extension = strtolower(substr($fileName, strrpos($fileName, '.') + 1));
-        $metadata = array();
+        $metadata = [];
 
         if (!file_exists($fileName)) {
             // Early exit if the file to be analysed is in fact "missing" locally
             return $metadata;
         }
 
-        if (GeneralUtility::inList('jpg,jpeg,tif,tiff', $extension) && function_exists('exif_read_data')) {
+        if (function_exists('exif_read_data') && GeneralUtility::inList('jpg,jpeg,tif,tiff', $extension)) {
             $exif = @exif_read_data($fileName);
             if ($exif) {
                 $metadata = $exif;
@@ -494,13 +495,13 @@ class PhpService extends AbstractService
 
                 // Process the longitude/latitude/altitude
                 if (isset($metadata['GPSLatitude']) && is_array($metadata['GPSLatitude'])) {
-                    $reference = isset($metadata['GPSLatitudeRef']) ? $metadata['GPSLatitudeRef'] : 'N';
+                    $reference = $metadata['GPSLatitudeRef'] ?? 'N';
                     $decimal = static::rationalToDecimal($metadata['GPSLatitude']);
                     $decimal *= $reference === 'N' ? 1 : -1;
                     $metadata['GPSLatitudeDecimal'] = $decimal;
                 }
                 if (isset($metadata['GPSLongitude']) && is_array($metadata['GPSLongitude'])) {
-                    $reference = isset($metadata['GPSLongitudeRef']) ? $metadata['GPSLongitudeRef'] : 'E';
+                    $reference = $metadata['GPSLongitudeRef'] ?? 'E';
                     $decimal = static::rationalToDecimal($metadata['GPSLongitude']);
                     $decimal *= $reference === 'E' ? 1 : -1;
                     $metadata['GPSLongitudeDecimal'] = $decimal;
@@ -515,11 +516,11 @@ class PhpService extends AbstractService
                 }
             }
             // Try to extract IPTC data
-            $imageinfo = array();
+            $imageinfo = [];
             if (function_exists('iptcparse') && getimagesize($fileName, $imageinfo)) {
                 if (isset($imageinfo['APP13'])) {
                     $data = iptcparse($imageinfo['APP13']);
-                    $mapping = array(
+                    $mapping = [
                         '2#005' => 'Title',
                         '2#025' => 'Keywords',
                         '2#040' => 'Instructions',
@@ -537,7 +538,7 @@ class PhpService extends AbstractService
                         '2#116' => 'Copyright',
                         '2#120' => 'Description',
                         '2#122' => 'DescriptionAuthor',
-                    );
+                    ];
                     foreach ($mapping as $iptcKey => $metadataKey) {
                         if (isset($data[$iptcKey])) {
                             if ($metadataKey === 'Keywords') {
@@ -552,6 +553,7 @@ class PhpService extends AbstractService
                 }
             }
         }
+
         return $metadata;
     }
 
@@ -562,8 +564,11 @@ class PhpService extends AbstractService
      * @return string
      * @see \Causal\ImageAutoresize\Utility\ImageUtility::safeUtf8Encode()
      */
-    protected static function safeUtf8Encode($text)
+    protected static function safeUtf8Encode($text): string
     {
+        if ($text === null || $text === '') {
+            return '';
+        }
         if (function_exists('mb_detect_encoding')) {
             if (mb_detect_encoding($text, 'UTF-8', true) !== 'UTF-8') {
                 $text = utf8_encode($text);
@@ -575,6 +580,7 @@ class PhpService extends AbstractService
                 $text = $encodedText;
             }
         }
+
         return $text;
     }
 
@@ -585,7 +591,7 @@ class PhpService extends AbstractService
      * @return float
      * @see \Causal\ImageAutoresize\Utility\ImageUtility::rationaleToDecimal()
      */
-    protected static function rationalToDecimal(array $components)
+    protected static function rationalToDecimal(array $components): float
     {
         foreach ($components as $key => $value) {
             $rationalParts = explode('/', $value);
@@ -600,4 +606,3 @@ class PhpService extends AbstractService
         return $hours + ($minutes / 60) + ($seconds / 3600);
     }
 }
-

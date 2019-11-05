@@ -15,6 +15,7 @@
 namespace Causal\Extractor\Service\Extraction;
 
 use Causal\Extractor\Utility\ExtensionHelper;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -38,25 +39,25 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @var string
      * @abstract
      */
-    protected $serviceName = null;
+    protected $serviceName;
 
     /**
      * AbstractService constructor.
      */
     public function __construct()
     {
-        $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor']);
+        $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor'];
     }
 
     /**
      * @var array
      */
-    protected $supportedFileExtensions = array('__INVALID__');
+    protected $supportedFileExtensions = ['__INVALID__'];
 
     /**
      * @var array
      */
-    protected $supportedFileTypes = array();
+    protected $supportedFileTypes = [];
 
     /**
      * Priority in handling extraction.
@@ -82,7 +83,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      *
      * @return array
      */
-    public function getFileExtensionRestrictions()
+    public function getFileExtensionRestrictions(): array
     {
         return $this->supportedFileExtensions;
     }
@@ -101,9 +102,9 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     public function getDriverRestrictions()
     {
-        return array(
+        return [
             'Local',
-        );
+        ];
     }
 
     /**
@@ -140,18 +141,14 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @param array $types
      * @return array
      */
-    public function getPotentialMappingFiles(File $file, array &$types = null)
+    public function getPotentialMappingFiles(File $file, array &$types = null): array
     {
         $potentialFiles = [];
         $types = $this->extensionToServiceTypes($file->getExtension());
 
-        if (version_compare(TYPO3_version, '8.0', '>=')) {
-            $pathConfiguration = is_dir($this->settings['mapping_base_directory'])
-                ? $this->settings['mapping_base_directory']
-                : GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory']);
-        } else {
-            $pathConfiguration = GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory'], false);
-        }
+        $pathConfiguration = is_dir($this->settings['mapping_base_directory'])
+            ? $this->settings['mapping_base_directory']
+            : GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory']);
         if ($pathConfiguration === '' || !is_dir($pathConfiguration)) {
             $pathConfiguration = ExtensionManagementUtility::extPath('extractor') . 'Configuration/Services/';
         }
@@ -210,7 +207,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
 
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+                $hookObject = GeneralUtility::makeInstance($classRef);
                 if (!method_exists($hookObject, 'postProcessDataMapping')) {
                     throw new \Exception($classRef . ' must provide a method "postProcessDataMapping', 1425290629);
                 }
@@ -255,7 +252,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @param array $mapping
      * @return array
      */
-    protected function remapServiceOutput(array $data, array $mapping = null)
+    protected function remapServiceOutput(array $data, array $mapping = null): array
     {
         $output = [];
 
@@ -283,11 +280,11 @@ abstract class AbstractExtractionService implements ExtractorInterface
                 $parentValue = null;
                 $value = $data;
                 foreach ($keys as $key) {
-                    if (substr($key, 0, 7) === 'static:') {
+                    if (strpos($key, 'static:') === 0) {
                         $value = substr($key, 7);
                     } else {
                         $parentValue = $value;
-                        $value = isset($value[$key]) ? $value[$key] : null;
+                        $value = $value[$key] ?? null;
                     }
                     if ($value === null) {
                         break;
@@ -296,7 +293,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
                 if (isset($processor)) {
                     if (preg_match('/^([^(]+)(\((.*)\))?$/', $processor, $matches)) {
                         $processor = $matches[1];
-                        $parameters = array($value);
+                        $parameters = [$value];
                         if (isset($matches[3])) {
                             if ($matches[3]{0} === '\'') {
                                 $parameters[] = substr($matches[3], 1, -1);
@@ -358,16 +355,18 @@ abstract class AbstractExtractionService implements ExtractorInterface
             return;
         }
 
-        $database = static::getDatabaseConnection();
-
         // Fetch the uid associated to the corresponding sys_file_metadata record
         $table = 'sys_file_metadata';
-        $row = $database->exec_SELECTgetSingleRow(
-            'uid',
+        $database = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $row = $database->select(
+            ['uid'],
             $table,
-            'file=' . $file->getUid() . ' AND sys_language_uid=0'
-                . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table)
-        );
+            [
+                'file' => $file->getUid(),
+                'sys_language_uid' => 0
+            ]
+        )->fetch(\PDO::FETCH_ASSOC);
+
         if (!$row) {
             // An error occurred, cannot proceed!
             return;
@@ -375,19 +374,25 @@ abstract class AbstractExtractionService implements ExtractorInterface
         $fileMetadataUid = (int)$row['uid'];
 
         $table = 'sys_category';
-        $typo3Categories = $database->exec_SELECTgetRows(
-            'uid, title',
+        $database = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $typo3Categories = $database->select(
+            ['uid', 'title'],
             $table,
-            'sys_language_uid=0' . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table)
-        );
+            [
+                'sys_language_uid' => 0
+            ]
+        )->fetchAll(\PDO::FETCH_ASSOC);
 
         // Remove currently associated categories for this file
         $relation = 'sys_category_record_mm';
-        $database->exec_DELETEquery(
+        $database = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($relation);
+        $database->delete(
             $relation,
-            'uid_foreign=' . $fileMetadataUid
-                . ' AND tablenames=' . $database->fullQuoteStr('sys_file_metadata', $relation)
-                . ' AND fieldname=' . $database->fullQuoteStr('categories', $relation)
+            [
+                'uid_foreign' => $fileMetadataUid,
+                'tablenames' => 'sys_file_metadata',
+                'fieldname' => 'categories',
+            ]
         );
 
         $sorting = 1;
@@ -406,11 +411,12 @@ abstract class AbstractExtractionService implements ExtractorInterface
             }
         }
 
+        $database = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($relation);
         if (!empty($data)) {
-            $database->exec_INSERTmultipleRows(
+            $database->bulkInsert(
                 $relation,
-                ['uid_local', 'uid_foreign', 'tablenames', 'fieldname', 'sorting_foreign'],
-                $data
+                $data,
+                ['uid_local', 'uid_foreign', 'tablenames', 'fieldname', 'sorting_foreign']
             );
         }
     }
@@ -421,7 +427,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @param string $extension
      * @return string[]
      */
-    protected function extensionToServiceTypes($extension)
+    protected function extensionToServiceTypes($extension): array
     {
         // Normalize the extension
         $extension = strtolower($extension);
@@ -456,14 +462,6 @@ abstract class AbstractExtractionService implements ExtractorInterface
         $types[] = ExtensionHelper::getExtensionCategory($extension);
 
         return $types;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected static function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**

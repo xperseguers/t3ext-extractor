@@ -74,6 +74,7 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
      * @param File $file
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
+     * @throws \Exception
      */
     public function extractMetaData(File $file, array $previousExtractedData = array())
     {
@@ -94,7 +95,7 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
      *
      * @return \Causal\Extractor\Service\ExifTool\ExifToolService
      */
-    protected function getExifToolService()
+    protected function getExifToolService(): \Causal\Extractor\Service\ExifTool\ExifToolService
     {
         /** @var \Causal\Extractor\Service\ExifTool\ExifToolService $exifToolService */
         static $exifToolService = null;

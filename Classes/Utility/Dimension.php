@@ -30,7 +30,7 @@ class Dimension
      * @param string $str
      * @return string
      */
-    public static function extractWidth($str)
+    public static function extractWidth($str): string
     {
         $width = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
@@ -40,6 +40,7 @@ class Dimension
                 $width = round($matches[1]);
             }
         }
+
         return $width;
     }
 
@@ -49,7 +50,7 @@ class Dimension
      * @param string $str
      * @return string
      */
-    public static function extractHeight($str)
+    public static function extractHeight($str): \string
     {
         $height = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
@@ -59,6 +60,7 @@ class Dimension
                 $height = round($matches[2]);
             }
         }
+
         return $height;
     }
 
@@ -68,7 +70,7 @@ class Dimension
      * @param string $str
      * @return string
      */
-    public static function extractUnit($str)
+    public static function extractUnit($str): \string
     {
         $unit = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
@@ -80,6 +82,7 @@ class Dimension
                     break;
             }
         }
+
         return $unit;
     }
 
@@ -89,12 +92,11 @@ class Dimension
      * @param float $value
      * @return float
      */
-    protected static function pointsToMillimeters($value)
+    protected static function pointsToMillimeters($value): float
     {
         // 1 inch = 72 points
         $inches = $value / 72;
         // 1 inch = 2.54 cm
-        $millimeters = $inches * 25.4;
-        return $millimeters;
+        return $inches * 25.4;
     }
 }

@@ -28,7 +28,7 @@ class Duration
      * @param string $str
      * @return string
      */
-    public static function normalize($str)
+    public static function normalize($str): string
     {
         if (preg_match('/^(\d+):(\d+):(\d+)/', $str, $matches)) {
             $hours = (int)$matches[1];
@@ -36,6 +36,7 @@ class Duration
             $seconds = (int)$matches[3];
             return $hours * 3600 + $minutes * 60 + $seconds;
         }
+
         return null;
     }
 
@@ -45,9 +46,10 @@ class Duration
      * @param string $str
      * @return int
      */
-    public static function millisecondsToSeconds($str)
+    public static function millisecondsToSeconds($str): int
     {
         $milliseconds = (int)$str;
+
         return (int)($milliseconds / 1000);
     }
 }
