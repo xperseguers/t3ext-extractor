@@ -31,7 +31,7 @@ class ColorSpace
      * @return string
      * @throws \InvalidArgumentException
      */
-    public static function normalize($str): string
+    public static function normalize(string $str = null): ?string
     {
         if (is_array($str)) {
             throw new \InvalidArgumentException('String parameter expected, array given', 1454591450);

@@ -28,7 +28,7 @@ class Duration
      * @param string $str
      * @return string
      */
-    public static function normalize($str): string
+    public static function normalize($str = null): ?string
     {
         if (preg_match('/^(\d+):(\d+):(\d+)/', $str, $matches)) {
             $hours = (int)$matches[1];
