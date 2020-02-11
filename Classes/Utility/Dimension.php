@@ -45,9 +45,9 @@ class Dimension
      * Extracts the height from a dimension string for use in FAL.
      *
      * @param string $str
-     * @return string
+     * @return string|null
      */
-    public static function extractHeight($str)
+    public static function extractHeight($str): ?string
     {
         $height = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
@@ -64,9 +64,9 @@ class Dimension
      * Extracts the dimension unit from a dimension string for use in FAL.
      *
      * @param string $str
-     * @return string
+     * @return string|null
      */
-    public static function extractUnit($str)
+    public static function extractUnit($str): ?string
     {
         $unit = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
