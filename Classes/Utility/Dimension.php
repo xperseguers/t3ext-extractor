@@ -50,7 +50,7 @@ class Dimension
      * @param string $str
      * @return string
      */
-    public static function extractHeight($str): \string
+    public static function extractHeight($str): string
     {
         $height = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
@@ -70,7 +70,7 @@ class Dimension
      * @param string $str
      * @return string
      */
-    public static function extractUnit($str): \string
+    public static function extractUnit($str): string
     {
         $unit = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
