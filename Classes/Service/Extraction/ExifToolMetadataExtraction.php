@@ -98,16 +98,7 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
     protected function getExifToolService(): \Causal\Extractor\Service\ExifTool\ExifToolService
     {
         /** @var \Causal\Extractor\Service\ExifTool\ExifToolService $exifToolService */
-        static $exifToolService = null;
-
-        if ($exifToolService === null) {
-            try {
-                $exifToolService = GeneralUtility::makeInstance(\Causal\Extractor\Service\ExifTool\ExifToolService::class);
-            } catch (\RuntimeException $e) {
-                // Nothing to do
-            }
-        }
-
+        $exifToolService = GeneralUtility::makeInstance(\Causal\Extractor\Service\ExifTool\ExifToolService::class);
         return $exifToolService;
     }
 
@@ -119,11 +110,7 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
     protected static function getLogger()
     {
         /** @var \TYPO3\CMS\Core\Log\Logger $logger */
-        static $logger = null;
-        if ($logger === null) {
-            $logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
-        }
-
+        $logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
         return $logger;
     }
 }

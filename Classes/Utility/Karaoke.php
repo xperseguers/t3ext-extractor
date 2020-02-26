@@ -45,9 +45,9 @@ class Karaoke
         for (; $i < $length; $i++) {
             $chunk = utf8_encode($data[$i]);
             if (strpos($chunk, '/') === 0) {
-                $chunk{0} = LF;
+                $chunk{0} = PHP_EOL;
             } elseif ($chunk{0} === '\\') {
-                $chunk = LF . LF . substr($chunk, 1);
+                $chunk = PHP_EOL . PHP_EOL . substr($chunk, 1);
             }
             $buffer .= $chunk;
         }

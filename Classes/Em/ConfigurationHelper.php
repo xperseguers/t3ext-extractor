@@ -28,7 +28,7 @@ use Causal\Extractor\Service\Tika\TikaServiceFactory;
 class ConfigurationHelper extends AbstractConfigurationField
 {
     /**
-     * @var string The message severity class names
+     * @var array The message severity class names
      */
     protected static $classes = [
         FlashMessage::NOTICE => 'notice',
@@ -39,7 +39,7 @@ class ConfigurationHelper extends AbstractConfigurationField
     ];
 
     /**
-     * @var string The message severity icon names
+     * @var array The message severity icon names
      */
     protected static $icons = [
         FlashMessage::NOTICE => 'lightbulb-o',

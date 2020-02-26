@@ -113,3 +113,16 @@ typoscriptlint:
   tags:
     - docker
   allow_failure: true
+
+phpstan:
+  image: composer:1.6
+  stage: test
+  variables:
+    COMPOSER_CACHE_DIR: '.composer'
+    COMPOSER_ALLOW_SUPERUSER: 1
+  script:
+    - composer require --dev phpstan/phpstan phpstan/extension-installer saschaegerer/phpstan-typo3
+    - .Build/vendor/bin/phpstan analyse .
+  tags:
+    - docker
+  allow_failure: true

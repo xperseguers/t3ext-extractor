@@ -172,7 +172,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
         $groupedFileTypes = '';
         foreach ($groups as $group => $extensions) {
             sort($extensions);
-            $groupedFileTypes .= '<strong>' . $group . ':</strong> ' . implode(', ', $extensions) . LF . LF;
+            $groupedFileTypes .= '<strong>' . $group . ':</strong> ' . implode(', ', $extensions) . PHP_EOL . PHP_EOL;
         }
 
         $groupedFileTypes = nl2br(trim($groupedFileTypes));

@@ -79,5 +79,10 @@
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
       "web-dir": ".Build/Web"
     }
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^0.12.11",
+    "phpstan/extension-installer": "^1.0",
+    "saschaegerer/phpstan-typo3": "^0.13.1"
   }
 }

@@ -338,7 +338,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * Processes the categories.
      *
      * @param File $file
-     * @param array &$metadata
+     * @param array $metadata
      * @return void
      */
     protected function processCategories(File $file, array &$metadata)

@@ -18,8 +18,8 @@ use Causal\Extractor\Traits\ExtensionSettingsTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Causal\Extractor\Service;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -186,7 +186,7 @@ class AjaxController
      *
      * @param string $reference
      * @param string &$publicUrl
-     * @return File
+     * @return FileInterface|null
      */
     protected function getFile($reference, &$publicUrl)
     {
@@ -284,7 +284,7 @@ class AjaxController
 
         $html[] = str_repeat('  ', $indent) . ')';
 
-        return implode(LF, $html);
+        return implode(PHP_EOL, $html);
     }
 
     /**
