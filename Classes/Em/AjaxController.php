@@ -19,6 +19,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Causal\Extractor\Service;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -184,15 +186,15 @@ class AjaxController
      *
      * @param string $reference
      * @param string &$publicUrl
-     * @return \TYPO3\CMS\Core\Resource\File
+     * @return File
      */
     protected function getFile($reference, &$publicUrl)
     {
         $file = null;
         $extensionPrefix = 'EXT:extractor/Resources/Public/';
 
-        /** @var \TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory */
-        $resourceFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        /** @var ResourceFactory $resourceFactory */
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         if (GeneralUtility::isFirstPartOfStr($reference, $extensionPrefix)) {
             $fileName = substr($reference, strlen($extensionPrefix));
@@ -220,9 +222,9 @@ class AjaxController
             $name = PathUtility::basename($fileName);
             $extension = strtolower(substr($name, strrpos($name, '.') + 1));
 
-            /** @var \TYPO3\CMS\Core\Resource\File $file */
+            /** @var File $file */
             $file = GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Resource\File::class,
+                File::class,
                 [
                     'identifier' => '/' . $fileName,
                     'name' => $name,
@@ -264,17 +266,17 @@ class AjaxController
             $keyName = ($parent ? $parent . '|' : '') . $key;
             $processor = $this->suggestProcessor($value, $key);
             $propertyPath = $keyName . ($processor ? '->' . $processor : '');
-            $sample = is_array($value) ? json_encode(array_values($value)) : htmlspecialchars($value);
+            $sample = is_array($value) ? json_encode(array_values($value)) : htmlspecialchars($value, ENT_QUOTES | ENT_HTML5);
 
             $property = '\'<a class="tx-extractor-property" href="#"' .
-                ' data-property="' . htmlspecialchars($keyName) . '"' .
-                ' data-processor="' . htmlspecialchars($processor) . '"' .
-                ' data-sample=\'' . $sample . '\'>' . htmlspecialchars($key) . '</a>\'';
+                ' data-property="' . htmlspecialchars($keyName, ENT_QUOTES | ENT_HTML5) . '"' .
+                ' data-processor="' . htmlspecialchars($processor, ENT_QUOTES | ENT_HTML5) . '"' .
+                ' data-sample=\'' . $sample . '\'>' . htmlspecialchars($key, ENT_QUOTES | ENT_HTML5) . '</a>\'';
 
             if (is_array($value)) {
                 $value = $this->htmlizeMetadata($value, $indent + 1, $keyName);
             } else {
-                $value = '\'' . htmlspecialchars(str_replace('\'', '\\\'', $value)) . '\'';
+                $value = '\'' . htmlspecialchars(str_replace('\'', '\\\'', $value), ENT_QUOTES | ENT_HTML5) . '\'';
             }
 
             $html[] = str_repeat('  ', $indent + 1) . $property . ' => ' . $value . ',';
