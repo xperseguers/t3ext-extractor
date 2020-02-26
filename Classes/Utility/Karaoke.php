@@ -28,9 +28,9 @@ class Karaoke
      * @param array $data
      * @return string
      */
-    public static function extract($data): string
+    public static function extract(array $data): ?string
     {
-        if (!is_array($data) || $data[0] !== '@KMIDI KARAOKE FILE') {
+        if ($data[0] !== '@KMIDI KARAOKE FILE') {
             return null;
         }
 
