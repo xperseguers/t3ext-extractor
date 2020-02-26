@@ -4,3 +4,4 @@ composer.lock
 /.Build/*
 /typo3cms
 /Libraries/*
+/.idea
