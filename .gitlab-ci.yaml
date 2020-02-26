@@ -1,0 +1,116 @@
+stages:
+  - build
+  - test
+  - staging
+  - performance
+  - deploy
+  - dast
+  - production
+  - release
+
+include:
+  - template: Container-Scanning.gitlab-ci.yml
+  - template: DAST.gitlab-ci.yml
+  - template: Dependency-Scanning.gitlab-ci.yml
+  - template: License-Management.gitlab-ci.yml
+
+checkDeprecations:
+  image: docker.kay-strobach.de/docker/php:7.2
+  stage: test
+  variables:
+    SCANNER_RELEASE: "https://github.com/Tuurlijk/typo3scan/releases/download/1.6.3/typo3scan.phar"
+  script:
+    - curl -L $SCANNER_RELEASE --output typo3scan.phar
+    - php ./typo3scan.phar
+    - mkdir -p Build/Report/Deprecations
+    - php ./typo3scan.phar scan --target 9 --format junit DistributionPackages/ > Build/Report/Deprecations/junit.xml
+  artifacts:
+    reports:
+      junit: Build/Report/Deprecations/junit.xml
+    when: on_success
+    expire_in: 7 days
+    paths:
+      - Build
+
+securityTest:
+  image: docker.kay-strobach.de/docker/php:7.2
+  stage: test
+  script:
+    - security-checker security:check
+  tags:
+    - docker
+  allow_failure: true
+
+phploc:
+  image: docker.kay-strobach.de/docker/php:7.2
+  stage: test
+  script:
+    - phploc --count-tests DistributionPackages
+  tags:
+    - docker
+  allow_failure: true
+
+phpMd:
+  image: docker.kay-strobach.de/docker/php:7.2
+  stage: test
+  script:
+    - phpmd DistributionPackages text codesize,unusedcode,design,cleancode,controversial --ignore-violations-on-exit --suffixes php
+  tags:
+    - docker
+  allow_failure: true
+
+phpCS:
+  image: docker.kay-strobach.de/docker/php:7.2
+  stage: test
+  script:
+    - phpcs --standard=PSR2 --colors --report=junit DistributionPackages > junit.phpcs.xml || true
+  artifacts:
+    reports:
+      junit: "junit.phpcs.xml"
+  tags:
+    - docker
+
+phpCPD:
+  image: docker.kay-strobach.de/docker/php:7.2
+  stage: test
+  before_script:
+    - php -v
+  script:
+    - phpcpd DistributionPackages
+  tags:
+    - docker
+  allow_failure: true
+
+phplint:
+  image: docker.kay-strobach.de/docker/php:7.2
+  stage: test
+  before_script:
+    - php -v
+  script:
+    - parallel-lint DistributionPackages
+  tags:
+    - docker
+  allow_failure: true
+
+yamllint:
+  image: python:alpine3.7
+  stage: test
+  before_script:
+    - pip install yamllint==1.10.0
+  script:
+    - yamllint DistributionPackages
+  allow_failure: true
+
+typoscriptlint:
+  image: composer:1.6
+  stage: test
+  variables:
+    COMPOSER_CACHE_DIR: '.composer'
+    COMPOSER_ALLOW_SUPERUSER: 1
+  script:
+    - composer install --no-progress --no-ansi --no-interaction --ignore-platform-reqs
+    - ls -la
+    - vendor/bin/typoscript-lint -c .typoscript-lint.yaml
+  tags:
+    - docker
+  allow_failure: true
