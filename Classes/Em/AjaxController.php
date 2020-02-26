@@ -14,9 +14,11 @@
 
 namespace Causal\Extractor\Em;
 
+use Causal\Extractor\Traits\ExtensionSettingsTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Causal\Extractor\Service;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -28,6 +30,13 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class AjaxController
 {
+    use ExtensionSettingsTrait;
+
+    public function __construct()
+    {
+        $this->initSettings();
+    }
+
     /**
      * Renders the menu so that it can be returned as response to an AJAX call
      *
@@ -86,8 +95,7 @@ class AjaxController
 
                 // Populate the possible mapping configuration file names
                 $mappingFileNames = $extractionService->getPotentialMappingFiles($file);
-                $settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor'];
-                if (isset($settings['mapping_base_directory'])) {
+                if (isset($this->settings['mapping_base_directory'])) {
                     if (version_compare(TYPO3_version, '8.0', '>=')) {
                         $pathConfiguration = is_dir($this->settings['mapping_base_directory'])
                             ? $this->settings['mapping_base_directory']

@@ -15,6 +15,7 @@
 namespace Causal\Extractor\Service;
 
 use Causal\Extractor\Service\ServiceInterface;
+use Causal\Extractor\Traits\ExtensionSettingsTrait;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -29,17 +30,14 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
  */
 abstract class AbstractService implements ServiceInterface
 {
-    /**
-     * @var array
-     */
-    protected $settings;
+    use ExtensionSettingsTrait;
 
     /**
      * AbstractService constructor.
      */
     public function __construct()
     {
-        $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor'];
+        $this->initSettings();
     }
 
     /**

@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Em;
 
+use Causal\Extractor\Traits\ExtensionSettingsTrait;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -29,22 +30,14 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class MappingController extends AbstractConfigurationField
 {
-    /**
-     * @var string
-     */
-    protected $extensionKey = 'extractor';
-
-    /**
-     * @var array
-     */
-    protected $settings;
+    use ExtensionSettingsTrait;
 
     /**
      * MappingController constructor.
      */
     public function __construct()
     {
-        $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$this->extensionKey];
+        $this->initSettings();
         if (!is_array($this->settings)) {
             $this->settings = [];
         }

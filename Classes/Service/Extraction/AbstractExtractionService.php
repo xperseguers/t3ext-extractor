@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Service\Extraction;
 
+use Causal\Extractor\Traits\ExtensionSettingsTrait;
 use Causal\Extractor\Utility\ExtensionHelper;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
@@ -30,10 +31,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 abstract class AbstractExtractionService implements ExtractorInterface
 {
-    /**
-     * @var array
-     */
-    protected $settings;
+    use ExtensionSettingsTrait;
 
     /**
      * @var string
@@ -46,7 +44,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     public function __construct()
     {
-        $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor'];
+        $this->initSettings();
     }
 
     /**
