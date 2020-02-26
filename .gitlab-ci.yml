@@ -9,9 +9,8 @@ stages:
   - release
 
 include:
-  - template: Container-Scanning.gitlab-ci.yml
   - template: DAST.gitlab-ci.yml
-  - template: Dependency-Scanning.gitlab-ci.yml
+  #- template: Dependency-Scanning.gitlab-ci.yml
   - template: License-Management.gitlab-ci.yml
 
 checkDeprecations:
@@ -45,7 +44,7 @@ phploc:
   image: docker.kay-strobach.de/docker/php:7.2
   stage: test
   script:
-    - phploc --count-tests DistributionPackages
+    - phploc --count-tests .
   tags:
     - docker
   allow_failure: true
@@ -54,7 +53,7 @@ phpMd:
   image: docker.kay-strobach.de/docker/php:7.2
   stage: test
   script:
-    - phpmd DistributionPackages text codesize,unusedcode,design,cleancode,controversial --ignore-violations-on-exit --suffixes php
+    - phpmd . text codesize,unusedcode,design,cleancode,controversial --ignore-violations-on-exit --suffixes php
   tags:
     - docker
   allow_failure: true
@@ -63,7 +62,7 @@ phpCS:
   image: docker.kay-strobach.de/docker/php:7.2
   stage: test
   script:
-    - phpcs --standard=PSR2 --colors --report=junit DistributionPackages > junit.phpcs.xml || true
+    - phpcs --standard=PSR2 --colors --report=junit . > junit.phpcs.xml || true
   artifacts:
     reports:
       junit: "junit.phpcs.xml"
@@ -76,7 +75,7 @@ phpCPD:
   before_script:
     - php -v
   script:
-    - phpcpd DistributionPackages
+    - phpcpd .
   tags:
     - docker
   allow_failure: true
@@ -87,7 +86,7 @@ phplint:
   before_script:
     - php -v
   script:
-    - parallel-lint DistributionPackages
+    - parallel-lint .
   tags:
     - docker
   allow_failure: true
@@ -98,7 +97,7 @@ yamllint:
   before_script:
     - pip install yamllint==1.10.0
   script:
-    - yamllint DistributionPackages
+    - yamllint .
   allow_failure: true
 
 typoscriptlint:

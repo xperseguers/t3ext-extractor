@@ -1,0 +1,7 @@
+paths:
+  - DistributionPackages
+
+filePatterns:
+  - "*.ts"
+  - "setup.txt"
+  - "*.typoscript"
