@@ -562,9 +562,8 @@ class PhpService extends AbstractService
      *
      * @param string $text
      * @return string
-     * @see \Causal\ImageAutoresize\Utility\ImageUtility::safeUtf8Encode()
      */
-    protected static function safeUtf8Encode($text): string
+    protected static function safeUtf8Encode(string $text = null): string
     {
         if ($text === null || $text === '') {
             return '';
