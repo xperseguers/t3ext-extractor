@@ -30,7 +30,7 @@ class Number
      * @param string $str
      * @return int
      */
-    public static function castInteger($str)
+    public static function castInteger(?string $str): int
     {
         return (int)$str;
     }
@@ -39,14 +39,10 @@ class Number
      * Extracts an integer at the end of a string.
      *
      * @param string $str
-     * @return string
-     * @throws \InvalidArgumentException
+     * @return int|null
      */
-    public static function extractIntegerAtEnd($str)
+    public static function extractIntegerAtEnd(?string $str = null): ?int
     {
-        if (is_array($str)) {
-            throw new \InvalidArgumentException('String parameter expected, array given', 1454591285);
-        }
         if (preg_match('/(\d+)$/', $str, $matches)) {
             return (int)$matches[1];
         }
@@ -58,13 +54,9 @@ class Number
      *
      * @param string $str
      * @return float
-     * @throws \InvalidArgumentException
      */
-    public static function extractFloat($str)
+    public static function extractFloat(?string $str = null): float
     {
-        if (is_array($str)) {
-            throw new \InvalidArgumentException('String parameter expected, array given', 1454591360);
-        }
         if (preg_match('#^(\d+)/(\d+)$#', $str, $matches)) {
             $value = (int)$matches[1] / (float)$matches[2];
         } elseif (preg_match('/35 mm equivalent: (\d+\.\d+) mm/', $str, $matches)) {

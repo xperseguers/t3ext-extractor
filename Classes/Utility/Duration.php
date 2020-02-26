@@ -42,10 +42,10 @@ class Duration
     /**
      * Converts milliseconds to seconds (integer value).
      *
-     * @param string $str
+     * @param string|null $str
      * @return int
      */
-    public static function millisecondsToSeconds($str)
+    public static function millisecondsToSeconds(?string $str = null): int
     {
         $milliseconds = (int)$str;
         return (int)($milliseconds / 1000);

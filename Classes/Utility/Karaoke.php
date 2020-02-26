@@ -26,9 +26,9 @@ class Karaoke
      * Extracts karaoke data.
      *
      * @param array $data
-     * @return string
+     * @return string|null
      */
-    public static function extract($data)
+    public static function extract($data): ?string
     {
         if (!is_array($data) || $data[0] !== '@KMIDI KARAOKE FILE') {
             return null;

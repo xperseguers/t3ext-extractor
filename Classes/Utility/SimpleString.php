@@ -27,11 +27,15 @@ class SimpleString
     /**
      * Trims a string (and also removes non-printable binary characters).
      *
-     * @param string $str
-     * @return int
+     * @param string|null $str
+     * @return string|null
      */
-    public static function trim($str)
+    public static function trim(?string $str = null): ?string
     {
+        if (empty($str)) {
+            return $str;
+        }
+
         // Remove non-printable characters (ASCII 0-31)
         $str = preg_replace('/[\x00-\x1F]/', '', $str);
         return trim($str);

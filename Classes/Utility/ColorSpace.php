@@ -66,10 +66,10 @@ class ColorSpace
      * Uses a case insensitive comparison and returns the value from TCA if there's a match.
      * Otherwise it returns an empty string.
      *
-     * @param string $str
+     * @param string|null $str
      * @return string
      */
-    public static function verifyAndAdjustWithAllowedColorSpaces($str)
+    public static function verifyAndAdjustWithAllowedColorSpaces(?string $str = null): string
     {
         if (!isset($GLOBALS['TCA']['sys_file_metadata']['columns']['color_space']['config']['items'])) {
             return $str;
@@ -97,7 +97,7 @@ class ColorSpace
      * @param string $fileName
      * @return string|null
      */
-    public static function detect($fileName)
+    public static function detect(string $fileName): ?string
     {
         // Not yet implemented
         return null;

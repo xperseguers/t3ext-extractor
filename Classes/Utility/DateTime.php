@@ -25,15 +25,11 @@ class DateTime
     /**
      * Converts a date/time into its Unix timestamp.
      *
-     * @param string $str
-     * @return integer|null
-     * @throws \InvalidArgumentException
+     * @param string|null $str
+     * @return int|null
      */
-    public static function timestamp($str)
+    public static function timestamp(?string $str = null): ?int
     {
-        if (is_array($str)) {
-            throw new \InvalidArgumentException('String parameter expected, array given', 1454591417);
-        }
         if (preg_match('/^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}$/', $str)) {
             // PHP built-in format when reading EXIF
             list($date, $time) = explode(' ', $str, 2);

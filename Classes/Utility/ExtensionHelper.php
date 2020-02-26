@@ -28,7 +28,7 @@ class ExtensionHelper
      * @param string $extension
      * @return string
      */
-    public static function getExtensionCategory($extension)
+    public static function getExtensionCategory(string $extension): string
     {
         switch ($extension) {
             case 'ai':

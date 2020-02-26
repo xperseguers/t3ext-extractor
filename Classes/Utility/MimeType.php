@@ -38,10 +38,10 @@ class MimeType
     /**
      * Returns an array of file extensions associated to a given mime type.
      *
-     * @param string $mimeType
+     * @param string|null $mimeType
      * @return array
      */
-    public static function getFileExtensions($mimeType)
+    public static function getFileExtensions(?string $mimeType = null): array
     {
         if (empty(static::$mimeTypesMapping)) {
             static::initialize();
@@ -61,7 +61,7 @@ class MimeType
      * @param string $fileExtension
      * @return string
      */
-    public static function getMimeType($fileExtension)
+    public static function getMimeType(string $fileExtension): string
     {
         if (empty(static::$extensionsMapping)) {
             static::initialize();
@@ -80,7 +80,7 @@ class MimeType
      *
      * @return void
      */
-    private static function initialize()
+    private static function initialize(): void
     {
         $fileName = ExtensionManagementUtility::extPath('extractor') . 'Resources/Private/mime.types';
         $fh = fopen($fileName, 'r');

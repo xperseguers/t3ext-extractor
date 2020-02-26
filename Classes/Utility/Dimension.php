@@ -25,15 +25,15 @@ class Dimension
     /**
      * Extracts the width from a dimension string for use in FAL.
      *
-     * @param string $str
-     * @return string
+     * @param string|null $str
+     * @return string|null
      */
-    public static function extractWidth($str)
+    public static function extractWidth(?string $str = null): ?string
     {
         $width = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
             if ($matches[3] === 'pts') {
-                $width = round(static::pointsToMillimeters($matches[1]));
+                $width = round(static::pointsToMillimeters((float)$matches[1]));
             } else {
                 $width = round($matches[1]);
             }
@@ -44,15 +44,15 @@ class Dimension
     /**
      * Extracts the height from a dimension string for use in FAL.
      *
-     * @param string $str
+     * @param string|null $str
      * @return string|null
      */
-    public static function extractHeight($str): ?string
+    public static function extractHeight(?string $str = null): ?string
     {
         $height = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
             if ($matches[3] === 'pts') {
-                $height = round(static::pointsToMillimeters($matches[2]));
+                $height = round(static::pointsToMillimeters((float)$matches[2]));
             } else {
                 $height = round($matches[2]);
             }
@@ -63,10 +63,10 @@ class Dimension
     /**
      * Extracts the dimension unit from a dimension string for use in FAL.
      *
-     * @param string $str
+     * @param string|null $str
      * @return string|null
      */
-    public static function extractUnit($str): ?string
+    public static function extractUnit(?string $str = null): ?string
     {
         $unit = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
@@ -87,7 +87,7 @@ class Dimension
      * @param float $value
      * @return float
      */
-    protected static function pointsToMillimeters($value)
+    protected static function pointsToMillimeters(float $value): float
     {
         // 1 inch = 72 points
         $inches = $value / 72;
