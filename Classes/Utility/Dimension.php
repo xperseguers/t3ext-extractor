@@ -28,9 +28,9 @@ class Dimension
      * Extracts the width from a dimension string for use in FAL.
      *
      * @param string $str
-     * @return string
+     * @return float
      */
-    public static function extractWidth(string $str = null): string
+    public static function extractWidth(string $str = null): float
     {
         $width = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
@@ -48,9 +48,9 @@ class Dimension
      * Extracts the height from a dimension string for use in FAL.
      *
      * @param string $str
-     * @return string
+     * @return float
      */
-    public static function extractHeight(string $str = null): string
+    public static function extractHeight(string $str = null): float
     {
         $height = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
