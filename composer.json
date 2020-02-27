@@ -27,11 +27,11 @@
   ],
   "license": "GPL-2.0-or-later",
   "require": {
-    "php": "^7.1",
+    "php": "^7.2",
     "ext-dom": "*",
-    "typo3/cms-core": "^9.5",
+    "ext-json": "*",
     "james-heinrich/getid3": "^1.9.15",
-    "ext-json": "*"
+    "typo3/cms-core": "^9.5"
   },
   "autoload": {
     "psr-4": {
