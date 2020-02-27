@@ -30,7 +30,6 @@ $EM_CONF[$_EXTKEY] = [
     'version' => '1.7.0-dev',
     'constraints' => [
         'depends' => [
-            'php' => '7.1.0-7.4.99',
             'typo3' => '9.5.0-9.5.99',
             'filemetadata' => '',
         ],
