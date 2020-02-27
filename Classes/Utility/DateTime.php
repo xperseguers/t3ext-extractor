@@ -29,8 +29,11 @@ class DateTime
      * @return integer|null
      * @throws \InvalidArgumentException
      */
-    public static function timestamp(string $str): ?int
+    public static function timestamp(string $str = null): ?int
     {
+        if ($str === null) {
+            return null;
+        }
         if (preg_match('/^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}$/', $str)) {
             // PHP built-in format when reading EXIF
             list($date, $time) = explode(' ', $str, 2);
