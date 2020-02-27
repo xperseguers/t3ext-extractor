@@ -15,6 +15,7 @@
 namespace Causal\Extractor\Report;
 
 use Causal\Extractor\Utility\ExtensionHelper;
+use TYPO3\CMS\Core\LanguageService;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -182,9 +183,9 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
     /**
      * Returns the language service instance.
      *
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService(): \TYPO3\CMS\Lang\LanguageService
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
