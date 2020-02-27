@@ -1,0 +1,3 @@
+parameters:
+    autoload_files:
+        - %rootDir%/../../typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php
