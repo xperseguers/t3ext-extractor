@@ -15,6 +15,7 @@
 namespace Causal\Extractor\Em;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -207,11 +208,11 @@ class MappingController extends AbstractConfigurationField
      */
     protected function getFalPropertySelector()
     {
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $databaseConnection */
-        $databaseConnection = $GLOBALS['TYPO3_DB'];
-
         $options = [];
-        $fields = $databaseConnection->admin_get_fields('sys_file_metadata');
+        $fields = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_file_metadata')
+            ->getSchemaManager()
+            ->listTableColumns('sys_file_metadata');
         foreach ($fields as $field => $_) {
             switch (true) {
                 case GeneralUtility::isFirstPartOfStr($field, 't3ver_'):

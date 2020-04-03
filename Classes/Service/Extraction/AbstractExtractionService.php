@@ -15,6 +15,7 @@
 namespace Causal\Extractor\Service\Extraction;
 
 use Causal\Extractor\Utility\ExtensionHelper;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -358,36 +359,46 @@ abstract class AbstractExtractionService implements ExtractorInterface
             return;
         }
 
-        $database = static::getDatabaseConnection();
-
         // Fetch the uid associated to the corresponding sys_file_metadata record
-        $table = 'sys_file_metadata';
-        $row = $database->exec_SELECTgetSingleRow(
-            'uid',
-            $table,
-            'file=' . $file->getUid() . ' AND sys_language_uid=0'
-                . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table)
-        );
+        $row = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_file_metadata')
+            ->select(
+                ['uid'],
+                'sys_file_metadata',
+                [
+                    'file' => $file->getUid(),
+                    'sys_language_uid' => 0,
+                ]
+            )
+            ->fetch();
         if (!$row) {
             // An error occurred, cannot proceed!
             return;
         }
-        $fileMetadataUid = (int)$row['uid'];
+        $fileMetadataUid = $row['uid'];
 
-        $table = 'sys_category';
-        $typo3Categories = $database->exec_SELECTgetRows(
-            'uid, title',
-            $table,
-            'sys_language_uid=0' . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table)
-        );
+        $typo3Categories = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_category')
+            ->select(
+                ['uid', 'title'],
+                'sys_category',
+                [
+                    'sys_language_uid' => 0,
+                ]
+            )
+            ->fetchAll();
 
         // Remove currently associated categories for this file
-        $relation = 'sys_category_record_mm';
-        $database->exec_DELETEquery(
-            $relation,
-            'uid_foreign=' . $fileMetadataUid
-                . ' AND tablenames=' . $database->fullQuoteStr('sys_file_metadata', $relation)
-                . ' AND fieldname=' . $database->fullQuoteStr('categories', $relation)
+        $relationTable = 'sys_category_record_mm';
+        $tableConnection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($relationTable);
+        $tableConnection->delete(
+            $relationTable,
+            [
+                'uid_foreign' => $fileMetadataUid,
+                'tablenames' => 'sys_file_metadata',
+                'fieldname' => 'categories',
+            ]
         );
 
         $sorting = 1;
@@ -407,10 +418,10 @@ abstract class AbstractExtractionService implements ExtractorInterface
         }
 
         if (!empty($data)) {
-            $database->exec_INSERTmultipleRows(
-                $relation,
-                ['uid_local', 'uid_foreign', 'tablenames', 'fieldname', 'sorting_foreign'],
-                $data
+            $tableConnection->bulkInsert(
+                $relationTable,
+                $data,
+                ['uid_local', 'uid_foreign', 'tablenames', 'fieldname', 'sorting_foreign']
             );
         }
     }
@@ -456,14 +467,6 @@ abstract class AbstractExtractionService implements ExtractorInterface
         $types[] = ExtensionHelper::getExtensionCategory($extension);
 
         return $types;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected static function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
