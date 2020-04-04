@@ -86,7 +86,7 @@ class MimeType
         $fh = fopen($fileName, 'r');
         if (is_resource($fh)) {
             while (($buffer = fgets($fh, 1024)) !== false) {
-                if ($buffer{0} === '#') {
+                if (substr($buffer, 0, 1) === '#') {
                     continue;
                 }
                 list($mimeType, $extensions) = GeneralUtility::trimExplode("\t", $buffer, true);

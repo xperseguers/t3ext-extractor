@@ -83,7 +83,7 @@ class AppService extends AbstractService implements TikaServiceInterface
 
         $fileTypes = array();
         foreach ($shellOutput as $mimeType) {
-            if ($mimeType{0} === ' ') {
+            if (substr($mimeType, 0, 1) === ' ') {
                 continue;
             }
             $extensions = \Causal\Extractor\Utility\MimeType::getFileExtensions($mimeType);

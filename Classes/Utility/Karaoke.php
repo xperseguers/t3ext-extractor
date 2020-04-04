@@ -36,7 +36,7 @@ class Karaoke
 
         // Skip metadata
         $i = 1;
-        while ($data[$i]{0} === '@') {
+        while (substr($data[$i], 0, 1) === '@') {
             $i++;
         }
 
@@ -44,9 +44,9 @@ class Karaoke
         $length = count($data);
         for (; $i < $length; $i++) {
             $chunk = utf8_encode($data[$i]);
-            if ($chunk{0} === '/') {
-                $chunk{0} = LF;
-            } elseif ($chunk{0} === '\\') {
+            if (substr($chunk, 0, 1) === '/') {
+                $chunk = LF . substr($chunk, 1);
+            } elseif (substr($chunk, 0, 1) === '\\') {
                 $chunk = LF . LF . substr($chunk, 1);
             }
             $buffer .= $chunk;

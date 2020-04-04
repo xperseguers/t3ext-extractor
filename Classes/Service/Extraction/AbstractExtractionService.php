@@ -299,7 +299,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
                         $processor = $matches[1];
                         $parameters = array($value);
                         if (isset($matches[3])) {
-                            if ($matches[3]{0} === '\'') {
+                            if (substr($matches[3], 0, 1) === '\'') {
                                 $parameters[] = substr($matches[3], 1, -1);
                             } else {
                                 $fields = GeneralUtility::trimExplode(',', $matches[3]);

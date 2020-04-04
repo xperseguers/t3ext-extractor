@@ -150,7 +150,7 @@ class AjaxController
                 // Support for $matches[3] is currently *very* basic!
                 // @see \Causal\Extractor\Service\Extraction\AbstractExtractionService::remapServiceOutput
                 if ($matches[3]) {
-                    if ($matches[3]{0} === '\'') {
+                    if (substr($matches[3], 0, 1) === '\'') {
                         $parameters[] = substr($matches[3], 1, -1);
                     } else {
                         $parameters[] = $matches[3];
