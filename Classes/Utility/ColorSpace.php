@@ -55,7 +55,40 @@ class ColorSpace
                     break;
             }
         }
+
+        $str = self::verifyAndAdjustWithAllowedColorSpaces($str);
+
         return $str;
+    }
+
+    /**
+     * Check against allowed color spaces configured in TCA.
+     * Uses a case insensitive comparison and returns the value from TCA if there's a match.
+     * Otherwise it returns an empty string.
+     *
+     * @param string $str
+     * @return string
+     */
+    public static function verifyAndAdjustWithAllowedColorSpaces($str)
+    {
+        if (!isset($GLOBALS['TCA']['sys_file_metadata']['columns']['color_space']['config']['items'])) {
+            return $str;
+        }
+
+        $allowedColorSpaces = array_map(
+            function($item) {
+                return $item[1];
+            },
+            $GLOBALS['TCA']['sys_file_metadata']['columns']['color_space']['config']['items']
+        );
+
+        foreach ($allowedColorSpaces as $allowedColorSpace) {
+            if (trim(strtolower($allowedColorSpace)) === trim(strtolower($str))) {
+                return $allowedColorSpace;
+            }
+        }
+
+        return '';
     }
 
     /**
