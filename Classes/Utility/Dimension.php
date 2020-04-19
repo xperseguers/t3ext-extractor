@@ -26,16 +26,16 @@ class Dimension
      * Extracts the width from a dimension string for use in FAL.
      *
      * @param string|null $str
-     * @return string|null
+     * @return int|null
      */
-    public static function extractWidth(?string $str = null): ?string
+    public static function extractWidth(?string $str = null): ?int
     {
         $width = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
             if ($matches[3] === 'pts') {
-                $width = round(static::pointsToMillimeters((float)$matches[1]));
+                $width = (int)round(static::pointsToMillimeters((float)$matches[1]));
             } else {
-                $width = round($matches[1]);
+                $width = (int)round($matches[1]);
             }
         }
         return $width;
@@ -45,16 +45,16 @@ class Dimension
      * Extracts the height from a dimension string for use in FAL.
      *
      * @param string|null $str
-     * @return string|null
+     * @return int|null
      */
-    public static function extractHeight(?string $str = null): ?string
+    public static function extractHeight(?string $str = null): ?int
     {
         $height = null;
         if (preg_match('/^(\d+.?\d*) x (\d+.?\d*) (\S+)/', $str, $matches)) {
             if ($matches[3] === 'pts') {
-                $height = round(static::pointsToMillimeters((float)$matches[2]));
+                $height = (int)round(static::pointsToMillimeters((float)$matches[2]));
             } else {
-                $height = round($matches[2]);
+                $height = (int)round($matches[2]);
             }
         }
         return $height;
