@@ -563,11 +563,11 @@ class PhpService extends AbstractService
     /**
      * Safely converts some text to UTF-8.
      *
-     * @param string $text
-     * @return string
+     * @param string|null $text
+     * @return string|null
      * @see \Causal\ImageAutoresize\Utility\ImageUtility::safeUtf8Encode()
      */
-    protected static function safeUtf8Encode($text)
+    protected static function safeUtf8Encode(?string $text = null): ?string
     {
         if (function_exists('mb_detect_encoding')) {
             if (mb_detect_encoding($text, 'UTF-8', true) !== 'UTF-8') {
