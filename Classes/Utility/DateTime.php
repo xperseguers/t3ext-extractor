@@ -46,6 +46,6 @@ class DateTime
             $str .= '/01/01 00:00:01';
         }
         $timestamp = strtotime($str);
-        return $timestamp !== false ? $timestamp : null;
+        return ($timestamp !== false && $timestamp >= 0) ? $timestamp : null;
     }
 }
