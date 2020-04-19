@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Service\Tika;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -37,8 +38,13 @@ class TikaServiceFactory
     public static function getTika($tikaService = '')
     {
         if (empty($tikaService)) {
-            $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor']);
-            $tikaService = $settings['tika_mode'];
+            if (version_compare(TYPO3_version, '9.0', '<')) {
+                $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor'] ?? '') ?? [];
+                $tikaService = $settings['tika_mode'];
+            } else {
+                $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+                $tikaService = $extensionConfiguration->get('extractor', 'tika_mode');
+            }
         }
 
         switch ($tikaService) {

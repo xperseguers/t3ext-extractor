@@ -43,9 +43,10 @@ class MappingController extends AbstractConfigurationField
      */
     public function __construct()
     {
-        $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extensionKey]);
-        if (!is_array($this->settings)) {
-            $this->settings = [];
+        if (version_compare(TYPO3_version, '9.0', '<')) {
+            $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extensionKey] ?? '') ?? [];
+        } else {
+            $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$this->extensionKey] ?? [];
         }
     }
 

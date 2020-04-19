@@ -39,7 +39,11 @@ abstract class AbstractService implements ServiceInterface
      */
     public function __construct()
     {
-        $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor']);
+        if (version_compare(TYPO3_version, '9.0', '<')) {
+            $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor'] ?? '') ?? [];
+        } else {
+            $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor'] ?? [];
+        }
     }
 
     /**
