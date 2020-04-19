@@ -248,10 +248,6 @@ class MappingController extends AbstractConfigurationField
      */
     protected function getProcessorSelector()
     {
-        $label = $this->translate('settings.mapping_configuration.processor', true);
-        $output = '<label for="tx-extractor-processor">' . $label . '</label>';
-        $output .= '<select id="tx-extractor-processor">';
-
         $processors = $GLOBALS['TYPO3_CONF_VARS']['EXT'][$this->extensionKey]['processors'];
         $options = array_combine($processors, $processors);
 
