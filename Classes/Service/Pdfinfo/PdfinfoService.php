@@ -49,7 +49,7 @@ class PdfinfoService extends AbstractService
      */
     public function getSupportedFileExtensions()
     {
-        return array('pdf');
+        return ['pdf'];
     }
 
     /**
@@ -62,7 +62,7 @@ class PdfinfoService extends AbstractService
     {
         $pdfinfoCommand = $this->getPdfInfo() . ' -enc UTF-8 ' . CommandUtility::escapeShellArgument($fileName);
 
-        $shellOutput = array();
+        $shellOutput = [];
         CommandUtility::exec($pdfinfoCommand, $shellOutput);
 
         static::getLogger()->debug(
@@ -73,7 +73,7 @@ class PdfinfoService extends AbstractService
             ]
         );
 
-        $metadata = array();
+        $metadata = [];
         foreach ($shellOutput as $line) {
             list($key, $value) = GeneralUtility::trimExplode(':', $line, true, 2);
             $metadata[$key] = $value;

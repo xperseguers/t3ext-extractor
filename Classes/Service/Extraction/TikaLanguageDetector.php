@@ -28,10 +28,10 @@ class TikaLanguageDetector extends AbstractExtractionService
     /**
      * @var array
      */
-    protected $supportedFileExtensions = array(
-        'doc','docx','epub','htm','html','msg','odf','odt','pdf','ppt','pptx',
-        'rtf','sxw','txt','xls','xlsx'
-    );
+    protected $supportedFileExtensions = [
+        'doc', 'docx', 'epub', 'htm', 'html', 'msg', 'odf', 'odt', 'pdf', 'ppt', 'pptx',
+        'rtf', 'sxw', 'txt', 'xls', 'xlsx'
+    ];
 
     /**
      * @var integer
@@ -65,7 +65,7 @@ class TikaLanguageDetector extends AbstractExtractionService
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
      */
-    public function extractMetaData(File $file, array $previousExtractedData = array())
+    public function extractMetaData(File $file, array $previousExtractedData = [])
     {
         $metadata['language'] = $this->getTikaService()->detectLanguage($file);
 

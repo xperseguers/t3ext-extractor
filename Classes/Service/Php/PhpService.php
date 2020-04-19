@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class PhpService extends AbstractService
 {
     /** @var array */
-    protected $imageExtensions = array(
+    protected $imageExtensions = [
         'gif',      // IMAGETYPE_GIF
         'jpg',      // IMAGETYPE_JPEG
         'jpeg',     // IMAGETYPE_JPEG
@@ -39,18 +39,18 @@ class PhpService extends AbstractService
         'wbmp',     // IMAGETYPE_WBMP
         'xbm',      // IMAGETYPE_XBM
         'ico',      // IMAGETYPE_ICO
-    );
+    ];
 
     /** @var array */
-    protected $officeDocumentExtensions = array(
+    protected $officeDocumentExtensions = [
         'docx',
         'xlsx',
         'pptx',
         'ppsx',
-    );
+    ];
 
     /** @var array */
-    protected $getId3Extensions = array(
+    protected $getId3Extensions = [
         '3gp',
         'aa',
         'aac',
@@ -75,7 +75,7 @@ class PhpService extends AbstractService
         'wav',
         'wma',
         'wmv',
-    );
+    ];
 
     /**
      * Returns a list of supported file types.
@@ -88,7 +88,7 @@ class PhpService extends AbstractService
             $this->imageExtensions,
             $this->officeDocumentExtensions,
             $this->getId3Extensions,
-            array('pdf')
+            ['pdf']
         );
     }
 
@@ -131,7 +131,7 @@ class PhpService extends AbstractService
     {
         static::getLogger()->debug('Extracting metadata from MS Office document');
 
-        $metadata = array();
+        $metadata = [];
 
         $zip = zip_open($fileName);
         if (is_resource($zip)) {
@@ -166,7 +166,7 @@ class PhpService extends AbstractService
         }
 
         $getID3 = new \getID3();
-        $getID3->setOption(array('encoding' => 'UTF-8'));
+        $getID3->setOption(['encoding' => 'UTF-8']);
 
         $metadata = $getID3->analyze($fileName);
         \getid3_lib::ksort_recursive($metadata);
@@ -231,7 +231,7 @@ class PhpService extends AbstractService
                     } elseif (MathUtility::canBeInterpretedAsFloat($value)) {
                         $value = (float)$value;
                     }
-                    $tagName = $parentTitle.'_'.$childNode->tagName;
+                    $tagName = $parentTitle . '_' . $childNode->tagName;
                     if (!isset($xmpMetadata[$tagName])) {
                         $xmpMetadata[$tagName] = $value;
                     } else {
@@ -242,7 +242,7 @@ class PhpService extends AbstractService
                         $xmpMetadata[$tagName][] = $value;
                     }
                 } elseif ($subNodes->length > 0) { // go deeper
-                    $this->parseRDFXMPDataRecursive($subNodes, $xmpMetadata, $parentTitle.'_'.$childNode->tagName);
+                    $this->parseRDFXMPDataRecursive($subNodes, $xmpMetadata, $parentTitle . '_' . $childNode->tagName);
                 }
             }
         }
@@ -273,14 +273,14 @@ class PhpService extends AbstractService
         $xpath = new \DOMXPath($dom);
         $xpath->registerNamespace('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
         $baseNode = 'rdf:Description';
-        $nodes = $xpath->query('//'.$baseNode);
+        $nodes = $xpath->query('//' . $baseNode);
 
         if ($nodes->length > 0) {
             $this->parseRDFXMPDataRecursive($nodes, $xmpMetadata);
         }
 
         $sanitizedMetadata = [];
-        $baseKeySequenceToRemove = '_'.$baseNode.'_';
+        $baseKeySequenceToRemove = '_' . $baseNode . '_';
         $staticReplaceKeyMap = [
             'dc:creator_rdf:Seq_rdf:li' => 'xmp:creator',
             'dc:title_rdf:Alt_rdf:li' => 'xmp:title',
@@ -303,7 +303,7 @@ class PhpService extends AbstractService
                 $subKeyList = explode(':', $sanitizedKey);
                 $lastKeyIndex = count($subKeyList) - 1;
                 if ($lastKeyIndex >= 0) {
-                    $sanitizedKey = 'xmp:'.$subKeyList[$lastKeyIndex];
+                    $sanitizedKey = 'xmp:' . $subKeyList[$lastKeyIndex];
                 }
             }
 
@@ -372,7 +372,7 @@ class PhpService extends AbstractService
                     $this->extractXMPMetaRecursive($buffer, strlen($buffer), 0, $metaDataChunkLength);
                     if (!empty($metaDataChunkLength)) {
                         $metaDataLength[] = [
-                            'file_offset' =>  $currentPointerPosition,
+                            'file_offset' => $currentPointerPosition,
                             'locations' => $metaDataChunkLength
                         ];
                     }
@@ -383,7 +383,7 @@ class PhpService extends AbstractService
                     }
 
                     unset($buffer); // clear memory from scope
-                    if(!feof($fh)) {
+                    if (!feof($fh)) {
                         fseek($fh, -$staticOffsetRollback, SEEK_CUR);
                     }
                 } else {
@@ -398,7 +398,7 @@ class PhpService extends AbstractService
                 foreach ($possibleMetadataLocation['locations'] as $subMetadataLocation) {
                     $chunkOffset = $subMetadataLocation['offset'];
                     $metaContentLength = $subMetadataLocation['length'];
-                    $absoluteFileLocation = $fileOffset + $chunkOffset ;
+                    $absoluteFileLocation = $fileOffset + $chunkOffset;
                     fseek($fh, $absoluteFileLocation, SEEK_SET);
                     $metadataContent = fread($fh, $metaContentLength);
                     $metadataItem = $this->parseXMPMetaXML(trim($metadataContent));
@@ -411,8 +411,8 @@ class PhpService extends AbstractService
 
             // currently we only want the last found meta data
             $metaDataBlockCount = count($metadataItems);
-            if ($metaDataBlockCount > 0 && !empty($metadataItems[$metaDataBlockCount-1])) {
-                $item = $metadataItems[$metaDataBlockCount-1];
+            if ($metaDataBlockCount > 0 && !empty($metadataItems[$metaDataBlockCount - 1])) {
+                $item = $metadataItems[$metaDataBlockCount - 1];
                 foreach ($item as $key => $value) {
                     $metadata[$key] = $value;
                 }
@@ -483,7 +483,7 @@ class PhpService extends AbstractService
     protected function getMetadata($fileName)
     {
         $extension = strtolower(substr($fileName, strrpos($fileName, '.') + 1));
-        $metadata = array();
+        $metadata = [];
 
         if (!file_exists($fileName)) {
             // Early exit if the file to be analysed is in fact "missing" locally
@@ -520,11 +520,11 @@ class PhpService extends AbstractService
                 }
             }
             // Try to extract IPTC data
-            $imageinfo = array();
+            $imageinfo = [];
             if (function_exists('iptcparse') && getimagesize($fileName, $imageinfo)) {
                 if (isset($imageinfo['APP13'])) {
                     $data = iptcparse($imageinfo['APP13']);
-                    $mapping = array(
+                    $mapping = [
                         '2#005' => 'Title',
                         '2#025' => 'Keywords',
                         '2#040' => 'Instructions',
@@ -542,7 +542,7 @@ class PhpService extends AbstractService
                         '2#116' => 'Copyright',
                         '2#120' => 'Description',
                         '2#122' => 'DescriptionAuthor',
-                    );
+                    ];
                     foreach ($mapping as $iptcKey => $metadataKey) {
                         if (isset($data[$iptcKey])) {
                             if ($metadataKey === 'Keywords') {

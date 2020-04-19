@@ -65,13 +65,13 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
     {
         $assets = $this->getFixtureAssets('colorspace');
 
-        $provider = array();
+        $provider = [];
         foreach ($assets as $file => $fileName) {
             if (preg_match('/^colorspace-([a-z]+)/', $file, $matches)) {
-                $provider[$file] = array(
+                $provider[$file] = [
                     $fileName,
                     $matches[1]
-                );
+                ];
             }
         }
 
@@ -86,7 +86,7 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
      */
     public function extractMetadataFromOfficeDocument($fileName, array $expectedMetadata)
     {
-        $keys = array(
+        $keys = [
             'dc:title',
             'dc:subject',
             'dc:creator',
@@ -95,7 +95,7 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
             'cp:category',
             'cp:keywords',
             'dc:description',
-        );
+        ];
 
         $metadata = $this->service->extractMetadataFromLocalFile($fileName);
         foreach ($keys as $key) {
@@ -110,11 +110,11 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
     {
         $assets = $this->getFixtureAssets('msoffice');
 
-        $provider = array();
+        $provider = [];
         foreach ($assets as $file => $fileName) {
-            $provider[$file] = array(
+            $provider[$file] = [
                 $fileName,
-                array(
+                [
                     'dc:title' => 'The Title',
                     'dc:subject' => 'The Subject',
                     'dc:creator' => 'The Author',
@@ -123,8 +123,8 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
                     'cp:category' => 'The Category',
                     'cp:keywords' => 'The Keywords',
                     'dc:description' => 'The Comments',
-                ),
-            );
+                ],
+            ];
         }
 
         return $provider;
@@ -138,7 +138,7 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
      */
     public function extractMetadataFromPdf($fileName, array $expectedMetadata)
     {
-        $keys = array(
+        $keys = [
             'Author',
             'Title',
             'Subject',
@@ -148,7 +148,7 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
             'xmp:CreatorTool',
             'xmp:rights',
             'xmp:title',
-        );
+        ];
 
         $metadata = $this->service->extractMetadataFromLocalFile($fileName);
         foreach ($keys as $key) {
@@ -163,11 +163,11 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
     {
         $assets = $this->getFixtureAssets('pdf');
 
-        $provider = array();
+        $provider = [];
         foreach ($assets as $file => $fileName) {
-            $provider[$file] = array(
+            $provider[$file] = [
                 $fileName,
-                array(
+                [
                     'Author' => 'The Author',
                     'Title' => 'The Title',
                     'Subject' => 'The Subject',
@@ -177,8 +177,8 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
                     'xmp:CreatorTool' => 'Word',
                     'xmp:rights' => 'The Copyright',
                     'xmp:title' => 'The Title',
-                ),
-            );
+                ],
+            ];
         }
 
         return $provider;

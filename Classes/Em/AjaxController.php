@@ -35,7 +35,7 @@ class AjaxController
      * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function analyze(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
+    public function analyze(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $success = false;
         $html = '';
@@ -126,7 +126,7 @@ class AjaxController
      * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
+    public function process(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $ajaxObj->setContentFormat('json');
         $text = '';
@@ -146,7 +146,7 @@ class AjaxController
                     }
                     $sample = $value;
                 }
-                $parameters = array($sample);
+                $parameters = [$sample];
                 // Support for $matches[3] is currently *very* basic!
                 // @see \Causal\Extractor\Service\Extraction\AbstractExtractionService::remapServiceOutput
                 if ($matches[3]) {

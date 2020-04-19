@@ -52,12 +52,12 @@ abstract class AbstractExtractionService implements ExtractorInterface
     /**
      * @var array
      */
-    protected $supportedFileExtensions = array('__INVALID__');
+    protected $supportedFileExtensions = ['__INVALID__'];
 
     /**
      * @var array
      */
-    protected $supportedFileTypes = array();
+    protected $supportedFileTypes = [];
 
     /**
      * Priority in handling extraction.
@@ -102,9 +102,9 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     public function getDriverRestrictions()
     {
-        return array(
+        return [
             'Local',
-        );
+        ];
     }
 
     /**
@@ -215,11 +215,11 @@ abstract class AbstractExtractionService implements ExtractorInterface
                 if (!method_exists($hookObject, 'postProcessDataMapping')) {
                     throw new \Exception($classRef . ' must provide a method "postProcessDataMapping', 1425290629);
                 }
-                $hookData = array(
+                $hookData = [
                     'service' => $this->serviceName,
                     'types' => $types,
                     'mappingFileName' => $mappingFileName,
-                );
+                ];
                 $newMappingFileName = $hookObject->postProcessDataMapping($hookData, $this);
                 if ($newMappingFileName !== null) {
                     $mappingFileName = $newMappingFileName;
@@ -274,7 +274,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
             $falKey = $m['FAL'];
             $alternativeKeys = $m['DATA'];
             if (!is_array($alternativeKeys)) {
-                $alternativeKeys = array($alternativeKeys);
+                $alternativeKeys = [$alternativeKeys];
             }
 
             $value = null;
@@ -297,7 +297,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
                 if (isset($processor)) {
                     if (preg_match('/^([^(]+)(\((.*)\))?$/', $processor, $matches)) {
                         $processor = $matches[1];
-                        $parameters = array($value);
+                        $parameters = [$value];
                         if (isset($matches[3])) {
                             if (substr($matches[3], 0, 1) === '\'') {
                                 $parameters[] = substr($matches[3], 1, -1);
@@ -458,7 +458,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
                 break;
         }
 
-        $types = array();
+        $types = [];
 
         // Most-specific service type first
         $types[] = $extension;

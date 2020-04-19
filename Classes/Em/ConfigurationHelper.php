@@ -36,15 +36,15 @@ class ConfigurationHelper extends AbstractConfigurationField
      */
     public function createTikaJarPath(array $params, $pObj)
     {
-        $html = $this->createFormInputField(array(
+        $html = $this->createFormInputField([
             'name' => $params['fieldName'],
             'id' => 'em-' . $params['propertyName'],
             'class' => 'form-control',
             'placeholder' => '/path/to/tika-app-x.x.jar',
             'value' => $params['fieldValue'],
-        ));
+        ]);
 
-        $info = array();
+        $info = [];
 
         try {
             /** @var \Causal\Extractor\Service\Tika\AppService $tikaService */
@@ -79,16 +79,16 @@ class ConfigurationHelper extends AbstractConfigurationField
      */
     public function createTikaServerHost(array $params, $pObj)
     {
-        $html = $this->createFormInputField(array(
+        $html = $this->createFormInputField([
             'name' => $params['fieldName'],
             'id' => 'em-' . $params['propertyName'],
             'class' => 'form-control',
             'placeholder' => 'localhost',
             'value' => $params['fieldValue'],
-        ));
+        ]);
 
         if (!empty($params['fieldValue'])) {
-            $info = array();
+            $info = [];
             $success = false;
 
             try {
@@ -138,13 +138,13 @@ class ConfigurationHelper extends AbstractConfigurationField
             }
         }
 
-        $html = $this->createFormInputField(array(
+        $html = $this->createFormInputField([
             'name' => $params['fieldName'],
             'id' => 'em-' . $params['propertyName'],
             'class' => 'form-control',
             'placeholder' => '/path/to/' . $externalTool,
             'value' => $params['fieldValue'],
-        ));
+        ]);
 
         if (!empty($params['fieldValue']) && file_exists($params['fieldValue'])) {
             $cmd = $params['fieldValue'];
@@ -157,10 +157,10 @@ class ConfigurationHelper extends AbstractConfigurationField
                     break;
             }
 
-            $output = array();
+            $output = [];
             CommandUtility::exec($cmd, $output);
             if (!empty($output)) {
-                $info = array('Version' => $output[0]);
+                $info = ['Version' => $output[0]];
                 $html .= $this->createInfoBlock($info);
             }
         }

@@ -78,11 +78,11 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
     protected function renderExtractorsList()
     {
         $language = $this->getLanguageService();
-        $header = '<h4>' . $language->getLL('extractors')  . '</h4>';
+        $header = '<h4>' . $language->getLL('extractors') . '</h4>';
         $tableClass = 'table table-striped table-hover';
 
         $extractorsList = '
-		<table cellspacing="1" cellpadding="2" border="0" class="' . $tableClass .'">
+		<table cellspacing="1" cellpadding="2" border="0" class="' . $tableClass . '">
 		    <thead>
                 <tr class="t3-row-header">
                     <td style="width: 35%">' . $language->getLL('class', true) . '</td>
@@ -132,9 +132,9 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
             ? implode(', ', $extractor->getDriverRestrictions())
             : '*';
         if ($extractor instanceof \Causal\Extractor\Service\Extraction\AbstractExtractionService) {
-            $fileTypes = $extractor->getFileExtensionRestrictions() ?: array('*');
+            $fileTypes = $extractor->getFileExtensionRestrictions() ?: ['*'];
         } else {
-            $fileTypes = $extractor->getFileTypeRestrictions() ?: array('*');
+            $fileTypes = $extractor->getFileTypeRestrictions() ?: ['*'];
         }
 
         $serviceRow = '
@@ -162,7 +162,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
             return '*';
         }
 
-        $groups = array();
+        $groups = [];
         foreach ($fileTypes as $fileType) {
             $category = ExtensionHelper::getExtensionCategory($fileType);
             $groups[$category][] = $fileType;

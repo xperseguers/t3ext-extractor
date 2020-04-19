@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Extractor\Hook;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Extractor\Hook;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Extractor\Hook;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -44,7 +44,8 @@ class FileUploadHook implements \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
         array $cmdArr,
         array $result,
         \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $pObj
-    ) {
+    )
+    {
         if ($action === 'upload') {
             /** @var \TYPO3\CMS\Core\Resource\File[] $fileObjects */
             $fileObjects = array_pop($result);

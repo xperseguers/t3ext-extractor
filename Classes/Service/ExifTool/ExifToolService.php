@@ -57,13 +57,13 @@ class ExifToolService extends AbstractService
     {
         $exifToolCommand = $this->getExifTool() . ' -listr';
 
-        $shellOutput = array();
+        $shellOutput = [];
         CommandUtility::exec($exifToolCommand, $shellOutput);
 
         // Remove first line "Recognized file extensions:"
         array_shift($shellOutput);
 
-        $fileTypes = array();
+        $fileTypes = [];
         foreach ($shellOutput as $line) {
             $extensions = GeneralUtility::trimExplode(' ', strtolower($line), true);
             $fileTypes = array_merge($fileTypes, $extensions);
@@ -82,7 +82,7 @@ class ExifToolService extends AbstractService
     {
         $exifToolCommand = $this->getExifTool() . ' -j ' . CommandUtility::escapeShellArgument($fileName);
 
-        $shellOutput = array();
+        $shellOutput = [];
         CommandUtility::exec($exifToolCommand, $shellOutput);
 
         static::getLogger()->debug(

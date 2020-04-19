@@ -14,8 +14,6 @@
 
 namespace Causal\Extractor\Utility;
 
-use TYPO3\CMS\Core\Utility\MathUtility;
-
 /**
  * Dimension utility class.
  *

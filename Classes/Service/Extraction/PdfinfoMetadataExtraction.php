@@ -40,9 +40,9 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
      *
      * @var array
      */
-    protected $supportedFileTypes = array(
+    protected $supportedFileTypes = [
         \TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_APPLICATION,
-    );
+    ];
 
     /**
      * PdfinfoMetadataExtraction constructor.
@@ -78,9 +78,9 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
      */
-    public function extractMetaData(File $file, array $previousExtractedData = array())
+    public function extractMetaData(File $file, array $previousExtractedData = [])
     {
-        $metadata = array();
+        $metadata = [];
 
         $extractedMetadata = $this->getPdfinfoService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {

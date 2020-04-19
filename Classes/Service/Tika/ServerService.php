@@ -68,7 +68,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
         $content = $this->send('GET', '/mime-types', 'application/json');
         $mimeTypes = json_decode($content, true);
 
-        $fileTypes = array();
+        $fileTypes = [];
         foreach ($mimeTypes as $mimeType => $_) {
             $extensions = \Causal\Extractor\Utility\MimeType::getFileExtensions($mimeType);
             if (!empty($extensions)) {

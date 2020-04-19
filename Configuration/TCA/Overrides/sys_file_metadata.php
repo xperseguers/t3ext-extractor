@@ -2,9 +2,9 @@
 defined('TYPO3_MODE') || die();
 
 // Additional metadata
-$tca = array(
-    'types' => array(
-        TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+$tca = [
+    'types' => [
+        TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
             'showitem' => '
                     fileinfo, title, description, ranking, keywords,
                         --palette--;LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:palette.accessibility;20,
@@ -23,118 +23,118 @@ $tca = array(
                         color_space, white_balance_mode,
                         --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.metrics;50
                 ',
-        ),
-    ),
-    'palettes' => array(
-        'camera' => array(
+        ],
+    ],
+    'palettes' => [
+        'camera' => [
             'showitem' => 'camera_make, camera_model',
-        ),
-    ),
-    'columns' => array(
-        'camera_make' => array(
+        ],
+    ],
+    'columns' => [
+        'camera_make' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.camera_make',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
                 'readOnly' => true,
-            ),
-        ),
-        'camera_model' => array(
+            ],
+        ],
+        'camera_model' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.camera_model',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
                 'readOnly' => true,
-            ),
-        ),
-        'camera_lens' => array(
+            ],
+        ],
+        'camera_lens' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.camera_lens',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
                 'readOnly' => true,
-            ),
-        ),
-        'shutter_speed' => array(
+            ],
+        ],
+        'shutter_speed' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.shutter_speed',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '10',
                 'readOnly' => true,
-            ),
-        ),
-        'focal_length' => array(
+            ],
+        ],
+        'focal_length' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.focal_length',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '10',
                 'eval' => 'float',
                 'readOnly' => true,
-            ),
-        ),
-        'exposure_bias' => array(
+            ],
+        ],
+        'exposure_bias' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.exposure_bias',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '20',
                 'readOnly' => true,
-            ),
-        ),
-        'white_balance_mode' => array(
+            ],
+        ],
+        'white_balance_mode' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.white_balance_mode',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '20',
                 'readOnly' => true,
-            ),
-        ),
-        'iso_speed' => array(
+            ],
+        ],
+        'iso_speed' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.iso_speed',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '10',
                 'eval' => 'int',
                 'readOnly' => true,
-            ),
-        ),
-        'aperture' => array(
+            ],
+        ],
+        'aperture' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.aperture',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '10',
                 'eval' => 'float',
                 'readOnly' => true,
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];
 
 $GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['sys_file_metadata'], $tca);
 

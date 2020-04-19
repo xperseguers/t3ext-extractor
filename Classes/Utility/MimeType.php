@@ -28,12 +28,12 @@ class MimeType
     /**
      * @var array
      */
-    protected static $mimeTypesMapping = array();
+    protected static $mimeTypesMapping = [];
 
     /**
      * @var array
      */
-    protected static $extensionsMapping = array();
+    protected static $extensionsMapping = [];
 
     /**
      * Returns an array of file extensions associated to a given mime type.
@@ -47,7 +47,7 @@ class MimeType
             static::initialize();
         }
 
-        $extensions = array();
+        $extensions = [];
         if (isset(static::$mimeTypesMapping[strtolower($mimeType)])) {
             $extensions = static::$mimeTypesMapping[strtolower($mimeType)];
         }

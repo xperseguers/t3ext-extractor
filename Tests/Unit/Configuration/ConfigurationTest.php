@@ -42,12 +42,12 @@ class ConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function serviceProvider()
     {
-        return array(
-            'ExifTool' => array('ExifTool'),
-            'Pdfinfo' => array('Pdfinfo'),
-            'Php' => array('Php'),
-            'Tika' => array('Tika'),
-        );
+        return [
+            'ExifTool' => ['ExifTool'],
+            'Pdfinfo' => ['Pdfinfo'],
+            'Php' => ['Php'],
+            'Tika' => ['Tika'],
+        ];
     }
 
     /**

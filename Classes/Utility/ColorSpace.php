@@ -76,7 +76,7 @@ class ColorSpace
         }
 
         $allowedColorSpaces = array_map(
-            function($item) {
+            function ($item) {
                 return $item[1];
             },
             $GLOBALS['TCA']['sys_file_metadata']['columns']['color_space']['config']['items']

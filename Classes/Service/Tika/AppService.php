@@ -60,7 +60,7 @@ class AppService extends AbstractService implements TikaServiceInterface
             . ' -jar ' . CommandUtility::escapeShellArgument($this->getTikaJar())
             . ' --version';
 
-        $shellOutput = array();
+        $shellOutput = [];
         CommandUtility::exec($tikaCommand, $shellOutput);
         $version = $shellOutput[0];
 
@@ -78,10 +78,10 @@ class AppService extends AbstractService implements TikaServiceInterface
             . ' -jar ' . CommandUtility::escapeShellArgument($this->getTikaJar())
             . ' --list-supported-types';
 
-        $shellOutput = array();
+        $shellOutput = [];
         CommandUtility::exec($tikaCommand, $shellOutput);
 
-        $fileTypes = array();
+        $fileTypes = [];
         foreach ($shellOutput as $mimeType) {
             if (substr($mimeType, 0, 1) === ' ') {
                 continue;
@@ -104,11 +104,11 @@ class AppService extends AbstractService implements TikaServiceInterface
     public function getJavaRuntimeInfo()
     {
         $cmd = CommandUtility::getCommand('java');
-        $info = array(
+        $info = [
             'path' => $cmd,
-        );
+        ];
 
-        $shellOutput = array();
+        $shellOutput = [];
         CommandUtility::exec($cmd . ' -version 2>&1', $shellOutput);
         if (!empty($shellOutput)) {
             if (preg_match('/^.*"(.+)"/', $shellOutput[0], $matches)) {
@@ -136,7 +136,7 @@ class AppService extends AbstractService implements TikaServiceInterface
             . ' -m --json'
             . ' ' . CommandUtility::escapeShellArgument($fileName);
 
-        $shellOutput = array();
+        $shellOutput = [];
         CommandUtility::exec($tikaCommand, $shellOutput);
 
         static::getLogger()->debug(

@@ -35,7 +35,7 @@ class AbstractFunctionalTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $fixturesPath = ExtensionManagementUtility::extPath('extractor') . 'Tests/Fixtures/' . $type . '/';
         $files = GeneralUtility::getFilesInDir($fixturesPath);
 
-        $assets = array();
+        $assets = [];
         foreach ($files as $file) {
             $fileName = $fixturesPath . $file;
             $baseName = PathUtility::basename($fileName);

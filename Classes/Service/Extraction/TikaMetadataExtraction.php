@@ -80,9 +80,9 @@ class TikaMetadataExtraction extends AbstractExtractionService
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
      */
-    public function extractMetaData(File $file, array $previousExtractedData = array())
+    public function extractMetaData(File $file, array $previousExtractedData = [])
     {
-        $metadata = array();
+        $metadata = [];
 
         $extractedMetadata = $this->getTikaService()->extractMetadata($file);
         if (!empty($extractedMetadata)) {

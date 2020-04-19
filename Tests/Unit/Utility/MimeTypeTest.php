@@ -39,29 +39,29 @@ class MimeTypeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function mimeTypeProvider()
     {
-        return array(
-            'MPEG file' => array(
+        return [
+            'MPEG file' => [
                 'audio/mpeg',
-                array('mpga', 'mp2', 'mp2a', 'mp3', 'm2a', 'm3a'),
-            ),
-            'MS Word Document (docx)' => array(
+                ['mpga', 'mp2', 'mp2a', 'mp3', 'm2a', 'm3a'],
+            ],
+            'MS Word Document (docx)' => [
                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                array('docx'),
-            ),
-            'PDF file' => array(
+                ['docx'],
+            ],
+            'PDF file' => [
                 'application/pdf',
-                array('pdf'),
-            ),
+                ['pdf'],
+            ],
             // Invalid and empty mime type
-            'Invalid mime type' => array(
+            'Invalid mime type' => [
                 'INVALID-MIME-TYPE',
-                array()
-            ),
-            'Empty mime type' => array(
+                []
+            ],
+            'Empty mime type' => [
                 '',
-                array()
-            ),
-        );
+                []
+            ],
+        ];
     }
 
     /**
@@ -81,11 +81,11 @@ class MimeTypeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extensionProvider()
     {
-        return array(
-            'mp3' => array('mp3', 'audio/mpeg'),
-            'pdf' => array('pdf', 'application/pdf'),
-            'jpg' => array('jpg', 'image/jpeg'),
-        );
+        return [
+            'mp3' => ['mp3', 'audio/mpeg'],
+            'pdf' => ['pdf', 'application/pdf'],
+            'jpg' => ['jpg', 'image/jpeg'],
+        ];
     }
 
 }
