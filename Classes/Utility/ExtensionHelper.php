@@ -114,7 +114,6 @@ class ExtensionHelper
             case 'f4v':
             case 'flv':
             case 'm2v':
-            case 'm4p':
             case 'm4v':
             case 'mkv':
             case 'mov':
