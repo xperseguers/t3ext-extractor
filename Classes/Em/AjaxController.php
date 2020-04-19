@@ -102,7 +102,7 @@ class AjaxController
                 }
 
                 if (in_array(strtolower($file->getExtension()), ['jpg', 'jpeg', 'png', 'gif'])) {
-                    $preview = '<img src="' . $publicUrl . '" alt="" width="300" />';
+                    $preview = '<img src="' . $publicUrl . '" alt="" width="300" class="img-responsive" />';
                 }
             }
         }

@@ -14,7 +14,6 @@
 
 namespace Causal\Extractor\Em;
 
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -66,20 +65,14 @@ class MappingController extends AbstractConfigurationField
             $resourcesPath = '../' . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extensionKey)) . 'Resources/Public/';
         }
 
-        if (version_compare(TYPO3_branch, '9.0', '>=')) {
-            //$uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $ajaxUrlAnalyze = ''; //$uriBuilder->buildUriFromRoute('ajax_extractor_analyze');
-            $ajaxUrlProcess = ''; //$uriBuilder->buildUriFromRoute('ajax_extractor_process');
-        } else {
-            $ajaxUrlAnalyze = BackendUtility::getAjaxUrl('extractor_analyze');
-            $ajaxUrlProcess = BackendUtility::getAjaxUrl('extractor_process');
-        }
-        $inlineJs = 'var extractorAnalyzeAction = \'' . $ajaxUrlAnalyze . '\';';
-        $inlineJs .= 'var extractorProcessAction = \'' . $ajaxUrlProcess . '\';';
-
         $html = [];
 
         if (version_compare(TYPO3_version, '9.0', '<')) {
+            $ajaxUrlAnalyze = BackendUtility::getAjaxUrl('extractor_analyze');
+            $ajaxUrlProcess = BackendUtility::getAjaxUrl('extractor_process');
+            $inlineJs = 'var extractorAnalyzeAction = \'' . $ajaxUrlAnalyze . '\';';
+            $inlineJs .= 'var extractorProcessAction = \'' . $ajaxUrlProcess . '\';';
+
             $pageRenderer = $this->getPageRenderer();
             $inlineJs .= PHP_EOL . 'require(["TYPO3/CMS/Extractor/configuration"]);';
             $pageRenderer->addJsFile($resourcesPath . 'JavaScript/extractor.js');
@@ -87,21 +80,25 @@ class MappingController extends AbstractConfigurationField
         } else {
             $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/configuration.v9.js"></script>';
             $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/extractor.js"></script>';
+            $html[] = '<script type="text/javascript">';
+            $html[] = 'var extractorAnalyzeAction = top.TYPO3.settings.ajaxUrls["extractor_analyze"];';
+            $html[] = 'var extractorProcessAction = top.TYPO3.settings.ajaxUrls["extractor_process"];';
+            $html[] = '</script>';
         }
 
         $html[] = $this->smartFormat($this->translate('settings.mapping_configuration.description'));
         $html[] = '<div class="tx-extractor">';
         $html[] = '<div class="row">';
-        $html[] = '<div class="col-md-3">';
+        $html[] = '<div class="col-md-4">';
         // Choose file
         $html[] = $this->getFileSelector();
-        $html[] = '<div id="tx-extractor-preview"></div>';
+        $html[] = '<div id="tx-extractor-preview" style="margin:1em 0"></div>';
         $html[] = '<div id="tx-extractor-files">';
         $html[] = '<p>' . $this->translate('settings.mapping_configuration.files', true) . '</p>';
-        $html[] = '<ol></ol>';
+        $html[] = '<ol style="word-break: break-all"></ol>';
         $html[] = '</div>';
         $html[] = '</div>'; // <div class="col-md-3">
-        $html[] = '<div class="col-md-9">';
+        $html[] = '<div class="col-md-8">';
         // Service
         $html[] = $this->getServiceSelector();
         //  FAL Property
