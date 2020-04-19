@@ -4,7 +4,11 @@ defined('TYPO3_MODE') || die();
 $boot = function (string $_EXTKEY): void {
     $extractorRegistry = \TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance();
 
-    $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
+    if (version_compare(TYPO3_version, '9.0', '<')) {
+        $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? '') ?? [];
+    } else {
+        $settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$_EXTKEY] ?? [];
+    }
     if (is_array($settings)) {
         if (isset($settings['enable_tika']) && (bool)$settings['enable_tika']) {
             $extractorRegistry->registerExtractionService(\Causal\Extractor\Service\Extraction\TikaMetadataExtraction::class);
