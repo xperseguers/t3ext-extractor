@@ -297,7 +297,7 @@ class AjaxController
                 $postProcessor = \Causal\Extractor\Utility\Gps::class . '::toDecimal';
                 break;
             case is_array($value):
-                $postProcessor = \Causal\Extractor\UtilityArray_::class . '::concatenate(\', \')';
+                $postProcessor = \Causal\Extractor\Utility\Array_::class . '::concatenate(\', \')';
                 break;
         }
 
