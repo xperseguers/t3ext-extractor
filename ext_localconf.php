@@ -23,24 +23,6 @@ $boot = function (string $_EXTKEY): void {
             $extractorRegistry->registerExtractionService(\Causal\Extractor\Service\Extraction\PhpMetadataExtraction::class);
         }
     }
-
-    /* ===========================================================================
-        Register post-processors (only useful for mapping helper tool in EM)
-    =========================================================================== */
-    $GLOBALS['TYPO3_CONF_VARS']['EXT'][$_EXTKEY]['processors'] = [
-        'Causal\\Extractor\\Utility\\Array_::concatenate(\', \')',
-        'Causal\\Extractor\\Utility\\ColorSpace::normalize',
-        'Causal\\Extractor\\Utility\\DateTime::timestamp',
-        'Causal\\Extractor\\Utility\\Dimension::extractHeight',
-        'Causal\\Extractor\\Utility\\Dimension::extractWidth',
-        'Causal\\Extractor\\Utility\\Dimension::extractUnit',
-        'Causal\\Extractor\\Utility\\Duration::normalize',
-        'Causal\\Extractor\\Utility\\Gps::toDecimal',
-        'Causal\\Extractor\\Utility\\Number::castInteger',
-        'Causal\\Extractor\\Utility\\Number::extractFloat',
-        'Causal\\Extractor\\Utility\\Number::extractIntegerAtEnd',
-        'Causal\\Extractor\\Utility\\SimpleString::trim',
-    ];
 };
 
 $boot('extractor');

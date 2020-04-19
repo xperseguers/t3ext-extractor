@@ -303,7 +303,20 @@ CSS;
      */
     protected function getProcessorSelector(): string
     {
-        $processors = $GLOBALS['TYPO3_CONF_VARS']['EXT'][$this->extensionKey]['processors'] ?? [];
+        $processors = [
+            \Causal\Extractor\Utility\Array_::class . '::concatenate(\', \')',
+            \Causal\Extractor\Utility\ColorSpace::class . '::normalize',
+            \Causal\Extractor\Utility\DateTime::class . '::timestamp',
+            \Causal\Extractor\Utility\Dimension::class . '::extractHeight',
+            \Causal\Extractor\Utility\Dimension::class . '::extractWidth',
+            \Causal\Extractor\Utility\Dimension::class . '::extractUnit',
+            \Causal\Extractor\Utility\Duration::class . '::normalize',
+            \Causal\Extractor\Utility\Gps::class . '::toDecimal',
+            \Causal\Extractor\Utility\Number::class . '::castInteger',
+            \Causal\Extractor\Utility\Number::class . '::extractFloat',
+            \Causal\Extractor\Utility\Number::class . '::extractIntegerAtEnd',
+            \Causal\Extractor\Utility\SimpleString::class . '::trim',
+        ];
         $options = array_combine($processors, $processors);
 
         $output = $this->getHtmlSelect(
