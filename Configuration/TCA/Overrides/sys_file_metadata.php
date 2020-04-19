@@ -140,9 +140,12 @@ $GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['
 
 // Add category tab if categories column is present
 if (isset($GLOBALS['TCA']['sys_file_metadata']['columns']['categories'])) {
+    $locallangTca = version_compare(TYPO3_version, '9.0', '<')
+        ? 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf'
+        : 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf';
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'sys_file_metadata',
-        '--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category,categories'
+        '--div--;' . $locallangTca . ':sys_category.tabs.category,categories'
     );
 }
 
