@@ -66,7 +66,7 @@ class MappingController extends AbstractConfigurationField
         $inlineJs .= 'var extractorProcessAction = \'' . $ajaxUrlProcess . '\';';
 
         $pageRenderer = $this->getPageRenderer();
-        $inlineJs .= LF . 'require(["TYPO3/CMS/Extractor/configuration"]);';
+        $inlineJs .= PHP_EOL . 'require(["TYPO3/CMS/Extractor/configuration"]);';
         $pageRenderer->addJsFile($resourcesPath . 'JavaScript/extractor.js');
         $pageRenderer->addJsInlineCode($this->extensionKey, $inlineJs);
 
@@ -113,7 +113,7 @@ class MappingController extends AbstractConfigurationField
         $html[] = '<pre id="tx-extractor-metadata"></pre>';
         $html[] = '</div>';
 
-        return implode(LF, $html);
+        return implode(PHP_EOL, $html);
     }
 
     /**
