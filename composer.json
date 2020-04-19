@@ -29,7 +29,7 @@
   "require": {
     "php": ">= 7.2.0, <= 7.4.99",
     "ext-dom": "*",
-    "typo3/cms-core": "^8.7 || ^9.5",
+    "typo3/cms-core": "^8.7 || ^9.5 || ^10",
     "james-heinrich/getid3": "^1.9.15"
   },
   "autoload": {
@@ -40,15 +40,7 @@
   "replace": {
     "typo3-ter/extractor": "self.version"
   },
-  "config": {
-    "vendor-dir": ".Build/vendor",
-    "bin-dir": ".Build/bin"
-  },
   "scripts": {
-    "post-autoload-dump": [
-      "mkdir -p .Build/Web/typo3conf/ext/",
-      "[ -L .Build/Web/typo3conf/ext/extractor ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/extractor"
-    ],
     "extension-create-libs": [
       "mkdir -p Libraries/temp",
       "[ -f $HOME/.composer/vendor/bin/phar-composer ] || composer global require clue/phar-composer",
@@ -76,7 +68,6 @@
     "typo3/cms": {
       "extension-key": "extractor",
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
-      "web-dir": ".Build/Web"
     }
   }
 }

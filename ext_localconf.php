@@ -1,7 +1,7 @@
 <?php
 defined('TYPO3_MODE') || die();
 
-$boot = function ($_EXTKEY) {
+$boot = function (string $_EXTKEY): void {
     $extractorRegistry = \TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance();
 
     $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
@@ -43,5 +43,5 @@ $boot = function ($_EXTKEY) {
     ];
 };
 
-$boot($_EXTKEY);
+$boot('extractor');
 unset($boot);
