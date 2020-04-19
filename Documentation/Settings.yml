@@ -4,7 +4,7 @@
 
 ---
 conf.py:
-  copyright: 2014-2019
+  copyright: 2014-2020
   project: Metadata and Content Analysis Service
   version: 1.7
   release: 1.7.0-dev
@@ -21,6 +21,6 @@ conf.py:
   latex_show_pagerefs: True
   intersphinx_mapping:
     t3api:
-    - https://docs.typo3.org/typo3cms/CoreApiReference/
+    - https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/
     - null
 ...
