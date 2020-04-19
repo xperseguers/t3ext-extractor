@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Em;
 
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -59,10 +60,20 @@ class MappingController extends AbstractConfigurationField
      */
     public function render(array $params, $pObj)
     {
-        $resourcesPath = '../' . ExtensionManagementUtility::siteRelPath($this->extensionKey) . 'Resources/Public/';
+        if (version_compare(TYPO3_version, '9.0', '<')) {
+            $resourcesPath = '../' . ExtensionManagementUtility::siteRelPath($this->extensionKey) . 'Resources/Public/';
+        } else {
+            $resourcesPath = '../' . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extensionKey)) . 'Resources/Public/';
+        }
 
-        $ajaxUrlAnalyze = BackendUtility::getAjaxUrl('extractor_analyze');
-        $ajaxUrlProcess = BackendUtility::getAjaxUrl('extractor_process');
+        if (version_compare(TYPO3_branch, '9.0', '>=')) {
+            //$uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $ajaxUrlAnalyze = ''; //$uriBuilder->buildUriFromRoute('ajax_extractor_analyze');
+            $ajaxUrlProcess = ''; //$uriBuilder->buildUriFromRoute('ajax_extractor_process');
+        } else {
+            $ajaxUrlAnalyze = BackendUtility::getAjaxUrl('extractor_analyze');
+            $ajaxUrlProcess = BackendUtility::getAjaxUrl('extractor_process');
+        }
         $inlineJs = 'var extractorAnalyzeAction = \'' . $ajaxUrlAnalyze . '\';';
         $inlineJs .= 'var extractorProcessAction = \'' . $ajaxUrlProcess . '\';';
 
@@ -249,7 +260,7 @@ class MappingController extends AbstractConfigurationField
      */
     protected function getProcessorSelector()
     {
-        $processors = $GLOBALS['TYPO3_CONF_VARS']['EXT'][$this->extensionKey]['processors'];
+        $processors = $GLOBALS['TYPO3_CONF_VARS']['EXT'][$this->extensionKey]['processors'] ?? [];
         $options = array_combine($processors, $processors);
 
         $output = $this->getHtmlSelect(
