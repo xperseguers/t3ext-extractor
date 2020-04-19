@@ -16,6 +16,9 @@ namespace Causal\Extractor\Em;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -57,7 +60,7 @@ class MappingController extends AbstractConfigurationField
      * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
      * @return string
      */
-    public function render(array $params, $pObj)
+    public function render(array $params, $pObj): string
     {
         if (version_compare(TYPO3_version, '9.0', '<')) {
             $resourcesPath = '../' . ExtensionManagementUtility::siteRelPath($this->extensionKey) . 'Resources/Public/';
@@ -174,7 +177,7 @@ CSS;
      *
      * @return string
      */
-    protected function getFileSelector()
+    protected function getFileSelector(): string
     {
         $samplePath = 'EXT:' . $this->extensionKey . '/Resources/Public/Samples/';
         $sampleFiles = GeneralUtility::getFilesInDir(GeneralUtility::getFileAbsFileName($samplePath));
@@ -228,7 +231,7 @@ CSS;
      *
      * @return string
      */
-    protected function getServiceSelector()
+    protected function getServiceSelector(): string
     {
         $services = [
             'enable_tika' => ['tika', 'Apache Tika'],
@@ -258,7 +261,7 @@ CSS;
      *
      * @return string
      */
-    protected function getFalPropertySelector()
+    protected function getFalPropertySelector(): string
     {
         $options = [];
         $fields = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -298,7 +301,7 @@ CSS;
      *
      * @return string
      */
-    protected function getProcessorSelector()
+    protected function getProcessorSelector(): string
     {
         $processors = $GLOBALS['TYPO3_CONF_VARS']['EXT'][$this->extensionKey]['processors'] ?? [];
         $options = array_combine($processors, $processors);
@@ -322,7 +325,7 @@ CSS;
      * @param bool $prependEmpty
      * @return string
      */
-    protected function getHtmlSelect($id, $labelKey, array $options, $prependEmpty = false)
+    protected function getHtmlSelect(string $id, string $labelKey, array $options, bool $prependEmpty = false): string
     {
         $output = '<div class="form-group">';
         $output .= '<label for="' . htmlspecialchars($id) . '">' . $this->translate($labelKey, true) . '</label>';
@@ -347,7 +350,7 @@ CSS;
      * @param string $text
      * @return string
      */
-    protected function smartFormat($text)
+    protected function smartFormat(string $text): string
     {
         $lines = GeneralUtility::trimExplode(LF, $text);
         $output = '';
@@ -381,12 +384,13 @@ CSS;
     /**
      * Returns the default directory where user samples should be stored.
      *
-     * @return \TYPO3\CMS\Core\Resource\Folder
+     * @return Folder
+     * @throws \Exception
      */
-    protected function getDefaultFolder()
+    protected function getDefaultFolder(): Folder
     {
-        /** @var \TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory */
-        $resourceFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        /** @var ResourceFactory $resourceFactory */
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
         $defaultStorage = $resourceFactory->getDefaultStorage();
 
@@ -394,18 +398,16 @@ CSS;
             throw new \Exception('Ouch! Please edit storage "fileadmin/" and mark it as "default storage".', 1454413362);
         }
 
-        $folder = $defaultStorage->getDefaultFolder();
-        return $folder;
+        return $defaultStorage->getDefaultFolder();
     }
 
     /**
      * Returns current PageRenderer.
      *
-     * @return \TYPO3\CMS\Core\Page\PageRenderer
+     * @return PageRenderer
      */
-    protected function getPageRenderer()
+    protected function getPageRenderer(): PageRenderer
     {
-        $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
-        return $pageRenderer;
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }
