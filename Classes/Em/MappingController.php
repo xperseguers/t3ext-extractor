@@ -14,10 +14,12 @@
 
 namespace Causal\Extractor\Em;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -192,6 +194,23 @@ CSS;
             $folder = $this->getDefaultFolder();
         } catch (\Exception $e) {
             return $e->getMessage();
+        }
+
+        if (version_compare(TYPO3_version, '10.3', '>=')) {
+            // There's something odd going on. When fetching files within a folder (hereafter),
+            // \TYPO3\CMS\Core\Resource\Index\FileIndexRepository::getInstance() is called at
+            // some point but this method constructs the class without providing the necessary
+            // argument in constructor. This must not be a problem generally because this class
+            // is a singleton and it must be properly instantiated "somewhere" (I suspect the
+            // Symphony DI). But it is not properly instantiated within Extension Configuration
+            try {
+                $fileIndexRepository = FileIndexRepository::getInstance();
+            } catch (\ArgumentCountError $e) {
+                $fileIndexRepository = GeneralUtility::makeInstance(
+                    FileIndexRepository::class,
+                    GeneralUtility::getContainer()->get(EventDispatcherInterface::class)
+                );
+            }
         }
 
         $userFiles = $folder->getFiles();
