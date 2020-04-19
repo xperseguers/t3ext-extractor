@@ -70,7 +70,7 @@
     },
     "typo3/cms": {
       "extension-key": "extractor",
-      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "cms-package-dir": "{$vendor-dir}/typo3/cms"
     }
   }
 }
