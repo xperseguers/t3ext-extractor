@@ -66,6 +66,34 @@ class MappingController extends AbstractConfigurationField
         }
 
         $html = [];
+        $html[] = '<style type="text/css">';
+        $html[] = <<<CSS
+.tx-extractor a {
+    color: blue;
+}
+
+#tx-extractor-preview {
+    margin-top: 1em;
+}
+
+#tx-extractor-files {
+    margin-top: 1em;
+}
+
+#tx-extractor-files p {
+    font-weight: bold;
+}
+
+#tx-extractor-files ol {
+    padding-left: 1.3em;
+    word-break: break-all;
+}
+
+#tx-extractor-metadata {
+    margin-top: 2em;
+}
+CSS;
+        $html[] = '</style>';
 
         if (version_compare(TYPO3_version, '9.0', '<')) {
             $ajaxUrlAnalyze = BackendUtility::getAjaxUrl('extractor_analyze');
@@ -92,10 +120,10 @@ class MappingController extends AbstractConfigurationField
         $html[] = '<div class="col-md-4">';
         // Choose file
         $html[] = $this->getFileSelector();
-        $html[] = '<div id="tx-extractor-preview" style="margin:1em 0"></div>';
+        $html[] = '<div id="tx-extractor-preview"></div>';
         $html[] = '<div id="tx-extractor-files">';
         $html[] = '<p>' . $this->translate('settings.mapping_configuration.files', true) . '</p>';
-        $html[] = '<ol style="word-break: break-all"></ol>';
+        $html[] = '<ol></ol>';
         $html[] = '</div>';
         $html[] = '</div>'; // <div class="col-md-3">
         $html[] = '<div class="col-md-8">';
@@ -133,7 +161,7 @@ class MappingController extends AbstractConfigurationField
         $html[] = '<button id="tx-extractor-copy" class="btn btn-default">' . $label . '</button>';
         $html[] = '</div>'; // <div class="col-md-9">
         $html[] = '</div>'; // <div class="row">
-        $html[] = '<div class="row" style="margin-top:2em">';
+        $html[] = '<div class="row">';
         $html[] = '<div class="col-md-12"><pre id="tx-extractor-metadata"></pre></div>';
         $html[] = '</div>'; // <div class="row">
         $html[] = '</div>';
