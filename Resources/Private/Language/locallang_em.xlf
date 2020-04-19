@@ -108,7 +108,7 @@
                 <source>JSON:</source>
             </trans-unit>
             <trans-unit id="settings.mapping_configuration.json.copy">
-                <source>copy to clipboard</source>
+                <source>copy JSON to clipboard</source>
             </trans-unit>
         </body>
     </file>

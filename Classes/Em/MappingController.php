@@ -77,15 +77,18 @@ class MappingController extends AbstractConfigurationField
         $inlineJs = 'var extractorAnalyzeAction = \'' . $ajaxUrlAnalyze . '\';';
         $inlineJs .= 'var extractorProcessAction = \'' . $ajaxUrlProcess . '\';';
 
-        $pageRenderer = $this->getPageRenderer();
-        $inlineJs .= PHP_EOL . 'require(["TYPO3/CMS/Extractor/configuration"]);';
-        $pageRenderer->addJsFile($resourcesPath . 'JavaScript/extractor.js');
-        $pageRenderer->addJsInlineCode($this->extensionKey, $inlineJs);
-
-        $pageRenderer->addCssFile($resourcesPath . 'Css/select2.min.css');
-        $pageRenderer->addCssFile($resourcesPath . 'Css/configuration.css');
-
         $html = [];
+
+        if (version_compare(TYPO3_version, '9.0', '<')) {
+            $pageRenderer = $this->getPageRenderer();
+            $inlineJs .= PHP_EOL . 'require(["TYPO3/CMS/Extractor/configuration"]);';
+            $pageRenderer->addJsFile($resourcesPath . 'JavaScript/extractor.js');
+            $pageRenderer->addJsInlineCode($this->extensionKey, $inlineJs);
+        } else {
+            $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/configuration.v9.js"></script>';
+            $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/extractor.js"></script>';
+        }
+
         $html[] = $this->smartFormat($this->translate('settings.mapping_configuration.description'));
         $html[] = '<div class="tx-extractor">';
         $html[] = '<div class="row">';

@@ -1,6 +1,7 @@
 Extractor = {
 
-    copyToClipboard: function () {
+    copyToClipboard: function (e) {
+        e.preventDefault();
         $('#tx-extractor-json').select();
         document.execCommand('copy');
 
@@ -48,7 +49,7 @@ Extractor = {
         var property = $('#tx-extractor-property').val();
         var processor = $('#tx-extractor-processor').val();
 
-        if (processor != '') property += '->' + processor;
+        if (processor !== '') property += '->' + processor;
 
         jsonField.val("{\n  \"FAL\": \"" + falField.val() + "\",\n  \"DATA\": \"" + property.replace(/\\/g, '\\\\') + "\"\n}");
     },
