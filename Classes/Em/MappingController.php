@@ -88,7 +88,8 @@ class MappingController extends AbstractConfigurationField
         $html = [];
         $html[] = $this->smartFormat($this->translate('settings.mapping_configuration.description'));
         $html[] = '<div class="tx-extractor">';
-        $html[] = '<table><tr><td>';
+        $html[] = '<div class="row">';
+        $html[] = '<div class="col-md-3">';
         // Choose file
         $html[] = $this->getFileSelector();
         $html[] = '<div id="tx-extractor-preview"></div>';
@@ -96,33 +97,45 @@ class MappingController extends AbstractConfigurationField
         $html[] = '<p>' . $this->translate('settings.mapping_configuration.files', true) . '</p>';
         $html[] = '<ol></ol>';
         $html[] = '</div>';
-        $html[] = '</td><td>';
+        $html[] = '</div>'; // <div class="col-md-3">
+        $html[] = '<div class="col-md-9">';
         // Service
         $html[] = $this->getServiceSelector();
         //  FAL Property
         $html[] = $this->getFalPropertySelector();
         // Metadata Property
+        $html[] = '<div class="form-group">';
         $label = $this->translate('settings.mapping_configuration.property', true);
         $html[] = '<label for="tx-extractor-property">' . $label . '</label>';
-        $html[] = '<input type="text" id="tx-extractor-property" readonly="readonly" />';
+        $html[] = '<input type="text" id="tx-extractor-property" readonly="readonly" class="form-control" />';
+        $html[] = '</div>';
         // Processor
         $html[] = $this->getProcessorSelector();
         // Sample Value
+        $html[] = '<div class="form-group">';
         $label = $this->translate('settings.mapping_configuration.sample', true);
         $html[] = '<label for="tx-extractor-sample">' . $label . '</label>';
-        $html[] = '<input type="text" id="tx-extractor-sample" readonly="readonly" />';
+        $html[] = '<input type="text" id="tx-extractor-sample" readonly="readonly" class="form-control" />';
+        $html[] = '</div>';
         // Output
+        $html[] = '<div class="form-group">';
         $label = $this->translate('settings.mapping_configuration.output', true);
         $html[] = '<label for="tx-extractor-output">' . $label . '</label>';
-        $html[] = '<input type="text" id="tx-extractor-output" readonly="readonly" />';
+        $html[] = '<input type="text" id="tx-extractor-output" readonly="readonly" class="form-control" />';
+        $html[] = '</div>';
         // JSON
+        $html[] = '<div class="form-group">';
         $label = $this->translate('settings.mapping_configuration.json', true);
         $html[] = '<label for="tx-extractor-json">' . $label . '</label>';
-        $html[] = '<textarea id="tx-extractor-json" rows="4"></textarea>';
-        $lagel = $this->translate('settings.mapping_configuration.json.copy', true);
-        $html[] = '<button id="tx-extractor-copy">' . $label . '</button>';
-        $html[] = '</td></tr></table>';
-        $html[] = '<pre id="tx-extractor-metadata"></pre>';
+        $html[] = '<textarea id="tx-extractor-json" rows="4" class="form-control"></textarea>';
+        $html[] = '</div>';
+        $label = $this->translate('settings.mapping_configuration.json.copy', true);
+        $html[] = '<button id="tx-extractor-copy" class="btn btn-default">' . $label . '</button>';
+        $html[] = '</div>'; // <div class="col-md-9">
+        $html[] = '</div>'; // <div class="row">
+        $html[] = '<div class="row" style="margin-top:2em">';
+        $html[] = '<div class="col-md-12"><pre id="tx-extractor-metadata"></pre></div>';
+        $html[] = '</div>'; // <div class="row">
         $html[] = '</div>';
 
         return implode(PHP_EOL, $html);
@@ -164,7 +177,7 @@ class MappingController extends AbstractConfigurationField
 
         $label = $this->translate('settings.mapping_configuration.chooseFile', true);
         $output = '<label for="tx-extractor-file">' . $label . '</label>';
-        $output .= '<select id="tx-extractor-file"><option value=""></option>';
+        $output .= '<select id="tx-extractor-file" class="form-control"><option value=""></option>';
 
         foreach ($files as $category => $f) {
             if (!empty($f)) {
@@ -284,8 +297,9 @@ class MappingController extends AbstractConfigurationField
      */
     protected function getHtmlSelect($id, $labelKey, array $options, $prependEmpty = false)
     {
-        $output = '<label for="' . htmlspecialchars($id) . '">' . $this->translate($labelKey, true) . '</label>';
-        $output .= '<select id="' . htmlspecialchars($id) . '">';
+        $output = '<div class="form-group">';
+        $output .= '<label for="' . htmlspecialchars($id) . '">' . $this->translate($labelKey, true) . '</label>';
+        $output .= '<select id="' . htmlspecialchars($id) . '" class="form-control">';
 
         if ($prependEmpty) {
             $output .= '<option value=""></option>';
@@ -295,6 +309,7 @@ class MappingController extends AbstractConfigurationField
         }
 
         $output .= '</select>';
+        $output .= '</div>';
 
         return $output;
     }
