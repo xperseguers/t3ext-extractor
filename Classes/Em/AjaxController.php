@@ -126,7 +126,6 @@ class AjaxController
      */
     public function process(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $ajaxObj->setContentFormat('json');
         $text = '';
 
         if ($GLOBALS['BE_USER']->isAdmin()) {
