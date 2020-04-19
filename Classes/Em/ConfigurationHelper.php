@@ -29,32 +29,6 @@ class ConfigurationHelper extends AbstractConfigurationField
 {
 
     /**
-     * Message severity class names
-     *
-     * @var string[]
-     */
-    protected static $classes = [
-        FlashMessage::NOTICE => 'notice',
-        FlashMessage::INFO => 'info',
-        FlashMessage::OK => 'success',
-        FlashMessage::WARNING => 'warning',
-        FlashMessage::ERROR => 'danger'
-    ];
-
-    /**
-     * Message severity icon names
-     *
-     * @var string[]
-     */
-    protected static $icons = [
-        FlashMessage::NOTICE => 'lightbulb-o',
-        FlashMessage::INFO => 'info',
-        FlashMessage::OK => 'check',
-        FlashMessage::WARNING => 'exclamation',
-        FlashMessage::ERROR => 'times'
-    ];
-
-    /**
      * Creates an input field for the Tika Jar path and checks its validity.
      *
      * @param array $params Field information to be rendered
@@ -193,69 +167,6 @@ class ConfigurationHelper extends AbstractConfigurationField
         }
 
         return $html;
-    }
-
-    /**
-     * Creates a checkbox.
-     *
-     * @param array $params
-     * @param \TYPO3\CMS\Install\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
-     * @return string
-     */
-    public function createCheckboxForExtensionManager(array $params, $pObj)
-    {
-        list($title, $message) = GeneralUtility::trimExplode(':', $this->translate('settings.disabled'), true, 2);
-        /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-        $flashMessage = GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-            $message,
-            $title,
-            FlashMessage::INFO
-        );
-
-        $title = '';
-        if (!empty($flashMessage->getTitle())) {
-            $title = '<h4 class="alert-title">' . $flashMessage->getTitle() . '</h4>';
-        }
-        $html = '
-			<div class="alert ' . $this->getClass($flashMessage) . '">
-				<div class="media">
-					<div class="media-left">
-						<span class="fa-stack fa-lg">
-							<i class="fa fa-circle fa-stack-2x"></i>
-							<i class="fa fa-' . $this->getIconName($flashMessage) . ' fa-stack-1x"></i>
-						</span>
-					</div>
-					<div class="media-body">
-						' . $title . '
-						<div class="alert-message">' . $flashMessage->getMessage() . '</div>
-					</div>
-				</div>
-			</div>';
-
-        return $html;
-    }
-
-    /**
-     * Gets the message severity class name.
-     *
-     * @param FlashMessage $flashMessage
-     * @return string
-     */
-    protected function getClass(FlashMessage $flashMessage): string
-    {
-        return 'alert-' . static::$classes[$flashMessage->getSeverity()];
-    }
-
-    /**
-     * Gets the message severity icon name.
-     *
-     * @param FlashMessage $flashMessage
-     * @return string
-     */
-    protected function getIconName(FlashMessage $flashMessage): string
-    {
-        return static::$icons[$flashMessage->getSeverity()];
     }
 
     /**

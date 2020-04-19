@@ -24,14 +24,8 @@
             <trans-unit id="settings.enable_php">
                 <source>Native PHP: If ticked, native PHP code and libraries will be used to detect and extract metadata from your assets.</source>
             </trans-unit>
-            <trans-unit id="settings.auto_extract">
-                <source>Extract metadata after upload: If ticked, the metadata extraction will be invoked after uploading a file. You will not have to wait until the corresponding FAL scheduler task is run. BEWARE! Upload workflow will be slown-down and may put additional stress to your server.</source>
-            </trans-unit>
             <trans-unit id="settings.mapping_base_directory">
                 <source>Base directory for mapping: The metadata extraction requires mapping configuration files. By default these are provided in the Configuration/Services directory. If you wish to use a different mapping configuration, you can provide a different mapping configuration base directory.</source>
-            </trans-unit>
-            <trans-unit id="settings.disabled">
-                <source>Option is not available: This option is not available with this version of TYPO3 since it is natively supported.</source>
             </trans-unit>
             <trans-unit id="settings.tika_mode">
                 <source>Mode</source>

@@ -207,7 +207,6 @@ class MappingController extends AbstractConfigurationField
             'enable_php' => ['php', 'PHP'],
             'enable_tools_exiftool' => ['exiftool', 'exiftool'],
             'enable_tools_pdfinfo' => ['pdfinfo', 'pdfinfo'],
-
         ];
 
         $options = [];
