@@ -30,7 +30,7 @@ class Gps
      * @param string $reference ('N', 'S', 'E', 'W')
      * @return string DDD.DDDD
      */
-    public static function toDecimal(?string $str = null, string $reference = ''): ?string
+    public static function toDecimal(?string $str = null, ?string $reference = null): ?string
     {
         $decimal = null;
         if (!empty($reference)) {
