@@ -335,7 +335,7 @@ class MappingController extends AbstractConfigurationField
                 if (strpos($line, '__USERDIR__') !== false) {
                     try {
                         $userDirectory = $this->getDefaultFolder();
-                        $path = rtrim($userDirectory->getStorage()->getName(), '/') . $userDirectory->getIdentifier();
+                        $path = rtrim($userDirectory->getStorage()->getConfiguration()['basePath'], '/') . $userDirectory->getIdentifier();
                     } catch (\Exception $e) {
                         $path = 'fileadmin/user_upload/';
                     }
