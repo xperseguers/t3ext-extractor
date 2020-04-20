@@ -53,6 +53,11 @@ class MappingController extends AbstractConfigurationField
         } else {
             $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$this->extensionKey] ?? [];
         }
+
+        // By default Native PHP is enabled
+        if (!isset($this->settings['enable_php'])) {
+            $this->settings['enable_php'] = 1;
+        }
     }
 
     /**
