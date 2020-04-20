@@ -48,7 +48,10 @@ class MappingController extends AbstractConfigurationField
      */
     public function __construct()
     {
-        if (version_compare(TYPO3_version, '9.0', '<')) {
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '9.0', '<')) {
             $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extensionKey] ?? '') ?? [];
         } else {
             $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$this->extensionKey] ?? [];
@@ -69,7 +72,10 @@ class MappingController extends AbstractConfigurationField
      */
     public function render(array $params, $pObj): string
     {
-        if (version_compare(TYPO3_version, '9.0', '<')) {
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '9.0', '<')) {
             $resourcesPath = '../' . ExtensionManagementUtility::siteRelPath($this->extensionKey) . 'Resources/Public/';
         } else {
             $resourcesPath = '../' . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extensionKey)) . 'Resources/Public/';
@@ -105,7 +111,10 @@ class MappingController extends AbstractConfigurationField
 CSS;
         $html[] = '</style>';
 
-        if (version_compare(TYPO3_version, '9.0', '<')) {
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '9.0', '<')) {
             $ajaxUrlAnalyze = BackendUtility::getAjaxUrl('extractor_analyze');
             $ajaxUrlProcess = BackendUtility::getAjaxUrl('extractor_process');
             $inlineJs = 'var extractorAnalyzeAction = \'' . $ajaxUrlAnalyze . '\';';
@@ -201,7 +210,10 @@ CSS;
             return $e->getMessage();
         }
 
-        if (version_compare(TYPO3_version, '10.3', '>=')) {
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '10.3', '>=')) {
             // There's something odd going on. When fetching files within a folder (hereafter),
             // \TYPO3\CMS\Core\Resource\Index\FileIndexRepository::getInstance() is called at
             // some point but this method constructs the class without providing the necessary

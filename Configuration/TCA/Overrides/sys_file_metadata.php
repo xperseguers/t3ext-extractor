@@ -140,7 +140,10 @@ $GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['
 
 // Add category tab if categories column is present
 if (isset($GLOBALS['TCA']['sys_file_metadata']['columns']['categories'])) {
-    $locallangTca = version_compare(TYPO3_version, '9.0', '<')
+    $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+        ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+        : TYPO3_branch;
+    $locallangTca = version_compare($typo3Branch, '9.0', '<')
         ? 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf'
         : 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf';
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
