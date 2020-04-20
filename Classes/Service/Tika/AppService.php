@@ -193,13 +193,9 @@ class AppService extends AbstractService implements TikaServiceInterface
      */
     protected function getTikaJar()
     {
-        if (version_compare(TYPO3_version, '8.0', '>=')) {
-            $tikaJar = is_file($this->settings['tika_jar_path'])
-                ? $this->settings['tika_jar_path']
-                : GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path']);
-        } else {
-            $tikaJar = GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path'], false);
-        }
+        $tikaJar = is_file($this->settings['tika_jar_path'])
+            ? $this->settings['tika_jar_path']
+            : GeneralUtility::getFileAbsFileName($this->settings['tika_jar_path']);
         return $tikaJar;
     }
 }

@@ -109,13 +109,9 @@ class ExifToolService extends AbstractService
      */
     protected function getExifTool()
     {
-        if (version_compare(TYPO3_version, '8.0', '>=')) {
-            $exifTool = is_file($this->settings['tools_exiftool'])
-                ? $this->settings['tools_exiftool']
-                : GeneralUtility::getFileAbsFileName($this->settings['tools_exiftool']);
-        } else {
-            $exifTool = GeneralUtility::getFileAbsFileName($this->settings['tools_exiftool'], false);
-        }
+        $exifTool = is_file($this->settings['tools_exiftool'])
+            ? $this->settings['tools_exiftool']
+            : GeneralUtility::getFileAbsFileName($this->settings['tools_exiftool']);
         return $exifTool;
     }
 }

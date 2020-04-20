@@ -89,13 +89,9 @@ class PdfinfoService extends AbstractService
      */
     protected function getPdfInfo()
     {
-        if (version_compare(TYPO3_version, '8.0', '>=')) {
-            $pdfInfo = is_file($this->settings['tools_pdfinfo'])
-                ? $this->settings['tools_pdfinfo']
-                : GeneralUtility::getFileAbsFileName($this->settings['tools_pdfinfo']);
-        } else {
-            $pdfInfo = GeneralUtility::getFileAbsFileName($this->settings['tools_pdfinfo'], false);
-        }
+        $pdfInfo = is_file($this->settings['tools_pdfinfo'])
+            ? $this->settings['tools_pdfinfo']
+            : GeneralUtility::getFileAbsFileName($this->settings['tools_pdfinfo']);
         return $pdfInfo;
     }
 }

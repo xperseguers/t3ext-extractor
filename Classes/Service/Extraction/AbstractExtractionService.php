@@ -150,13 +150,9 @@ abstract class AbstractExtractionService implements ExtractorInterface
         $potentialFiles = [];
         $types = $this->extensionToServiceTypes($file->getExtension());
 
-        if (version_compare(TYPO3_version, '8.0', '>=')) {
-            $pathConfiguration = is_dir($this->settings['mapping_base_directory'])
-                ? $this->settings['mapping_base_directory']
-                : GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory']);
-        } else {
-            $pathConfiguration = GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory'], false);
-        }
+        $pathConfiguration = is_dir($this->settings['mapping_base_directory'])
+            ? $this->settings['mapping_base_directory']
+            : GeneralUtility::getFileAbsFileName($this->settings['mapping_base_directory']);
         if ($pathConfiguration === '' || !is_dir($pathConfiguration)) {
             $pathConfiguration = ExtensionManagementUtility::extPath('extractor') . 'Configuration/Services/';
         }
