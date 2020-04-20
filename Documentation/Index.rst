@@ -43,19 +43,13 @@ Metadata and Content Analysis Service
 
     :License:
         This document is published under the Open Publication License
-        available from http://www.opencontent.org/openpub/
+        available from https://www.opencontent.org/openpub/
 
     :Rendered:
         |today|
 
     The content of this document is related to TYPO3,
     a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
-
-
-    **Other version of this document**
-
-    :PDF:
-        https://docs.typo3.org/typo3cms/extensions/extractor/1.6.0/_pdf/
 
 
     **Table of Contents**
