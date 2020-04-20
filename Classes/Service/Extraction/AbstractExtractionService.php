@@ -333,6 +333,8 @@ abstract class AbstractExtractionService implements ExtractorInterface
             }
         }
 
+        $this->enforceStringLengths($output);
+
         static::getLogger()->debug(
             'Raw data remapped to FAL array',
             [
@@ -345,10 +347,32 @@ abstract class AbstractExtractionService implements ExtractorInterface
     }
 
     /**
+     * @param array $output
+     */
+    protected function enforceStringLengths(array &$output): void
+    {
+        $databaseFields = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_file_metadata')
+            ->getSchemaManager()
+            ->listTableColumns('sys_file_metadata');
+
+        foreach ($output as $key => $value) {
+            if (isset($databaseFields[$key])) {
+                $type = $databaseFields[$key]->getType()->getName();
+                $length = $databaseFields[$key]->getLength();
+                if ($type === 'string' && strlen($value) > $length) {
+                    // We need to truncate the extracted value for the database
+                    $output[$key] = substr($value, 0, $length);
+                }
+            }
+        }
+    }
+
+    /**
      * Processes the categories.
      *
      * @param File $file
-     * @param array &$metadata
+     * @param array $metadata
      * @return void
      */
     protected function processCategories(File $file, array &$metadata)
