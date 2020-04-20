@@ -16,6 +16,7 @@ namespace Causal\Extractor\Service\Php;
 
 use Causal\Extractor\Service\AbstractService;
 use Causal\Extractor\Utility\ColorSpace;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -160,9 +161,9 @@ class PhpService extends AbstractService
         static::getLogger()->debug('Extracting metadata with GetID3 library');
 
         // Require 3rd-party libraries, in case TYPO3 does not run in composer mode
-        $pharFileName = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extractor') . 'Libraries/james-heinrich-getid3.phar';
-        if (is_file($pharFileName)) {
-            @include 'phar://' . $pharFileName . '/vendor/autoload.php';
+        $autoloadFileName = ExtensionManagementUtility::extPath('extractor') . 'Libraries/vendor/autoload.php';
+        if (is_file($autoloadFileName)) {
+            include $autoloadFileName;
         }
 
         $getID3 = new \getID3();
