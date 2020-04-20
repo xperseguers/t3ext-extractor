@@ -12,7 +12,8 @@ Logging
 -------
 
 This extension makes use of the Logging system introduced in TYPO3 CMS 6.0. It is far more flexible than the old one
-writing to the "sys_log" table. Technical details may be found in the :ref:`TYPO3 Core API <t3api:logging>`.
+writing to the "sys_log" table. Technical details may be found in the
+`TYPO Core API documentation <https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Logging/Index.html>`__.
 
 As an administrator, what you should know is that the TYPO3 Logger forwards log records to "Writers", which persist the
 log record.
@@ -47,4 +48,6 @@ log entries with level "WARNING" or above to the system log, you may add followi
 	];
 
 .. hint::
-	Be sure to read :ref:`t3api:logging-configuration` to fine-tune your configuration on any production website.
+
+   Be sure to read `Configuration of the Logging System <https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Logging/Configuration/Index.html>`__
+   to fine-tune your configuration on any production website.
