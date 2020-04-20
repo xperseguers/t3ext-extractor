@@ -17,6 +17,8 @@ namespace Causal\Extractor\Em;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Causal\Extractor\Service;
+use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -33,11 +35,13 @@ class AjaxController
      * Renders the menu so that it can be returned as response to an AJAX call
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function analyze(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function analyze(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var ResponseInterface $response */
+        $response = func_num_args() === 2 ? func_get_arg(1) : null;
+
         $success = false;
         $html = '';
         $preview = '';
@@ -116,7 +120,14 @@ class AjaxController
             'html' => $html,
             'files' => $mappingFileNames,
         ];
-        $response->getBody()->write(json_encode($out));
+
+        if ($response !== null) {
+            $response->getBody()->write(json_encode($out));
+        } else {
+            // Behaviour in TYPO3 v9
+            $response = new JsonResponse($out);
+        }
+
         return $response;
     }
 
@@ -124,11 +135,12 @@ class AjaxController
      * Processes a sample value.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function process(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var ResponseInterface $response */
+        $response = func_num_args() === 2 ? func_get_arg(1) : null;
         $text = '';
 
         if ($GLOBALS['BE_USER']->isAdmin()) {
@@ -168,7 +180,14 @@ class AjaxController
             'success' => true,
             'text' => $text,
         ];
-        $response->getBody()->write(json_encode($out));
+
+        if ($response !== null) {
+            $response->getBody()->write(json_encode($out));
+        } else {
+            // Behaviour in TYPO3 v9
+            $response = new JsonResponse($out);
+        }
+
         return $response;
     }
 
