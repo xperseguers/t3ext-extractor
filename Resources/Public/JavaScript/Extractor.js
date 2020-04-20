@@ -89,7 +89,7 @@ Extractor = {
 
             // Prevent save action from configuration form
             return false;
-        })
+        });
     }
 
 };

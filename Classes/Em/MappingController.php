@@ -107,12 +107,12 @@ CSS;
             $inlineJs .= 'var extractorProcessAction = \'' . $ajaxUrlProcess . '\';';
 
             $pageRenderer = $this->getPageRenderer();
-            $inlineJs .= PHP_EOL . 'require(["TYPO3/CMS/Extractor/configuration"]);';
-            $pageRenderer->addJsFile($resourcesPath . 'JavaScript/extractor.js');
+            $inlineJs .= PHP_EOL . 'require(["TYPO3/CMS/Extractor/Configuration"]);';
+            $pageRenderer->addJsFile($resourcesPath . 'JavaScript/Extractor.js');
             $pageRenderer->addJsInlineCode($this->extensionKey, $inlineJs);
         } else {
-            $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/configuration.v9.js"></script>';
-            $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/extractor.js"></script>';
+            $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/Configuration.v9.js"></script>';
+            $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/Extractor.js"></script>';
             $html[] = '<script type="text/javascript">';
             $html[] = 'var extractorAnalyzeAction = top.TYPO3.settings.ajaxUrls["extractor_analyze"];';
             $html[] = 'var extractorProcessAction = top.TYPO3.settings.ajaxUrls["extractor_process"];';
