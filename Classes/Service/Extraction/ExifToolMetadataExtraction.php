@@ -59,7 +59,7 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
      * @param File $file
      * @return boolean
      */
-    public function canProcess(File $file)
+    protected function _canProcess(File $file): bool
     {
         $exifToolService = $this->getExifToolService();
         $fileExtension = strtolower($file->getProperty('extension'));

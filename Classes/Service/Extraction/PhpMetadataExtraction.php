@@ -52,7 +52,7 @@ class PhpMetadataExtraction extends AbstractExtractionService
      * @param File $file
      * @return boolean
      */
-    public function canProcess(File $file)
+    protected function _canProcess(File $file): bool
     {
         $fileExtension = strtolower($file->getProperty('extension'));
         return in_array($fileExtension, $this->supportedFileExtensions);

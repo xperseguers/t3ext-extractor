@@ -49,7 +49,7 @@ class TikaLanguageDetector extends AbstractExtractionService
      * @param File $file
      * @return boolean
      */
-    public function canProcess(File $file)
+    protected function _canProcess(File $file): bool
     {
         $tikaService = $this->getTikaService();
         $fileExtension = strtolower($file->getProperty('extension'));

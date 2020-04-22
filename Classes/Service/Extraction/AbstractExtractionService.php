@@ -142,6 +142,35 @@ abstract class AbstractExtractionService implements ExtractorInterface
     }
 
     /**
+     * Checks if the given file can be processed by this extractor.
+     *
+     * @param File $file
+     * @return bool
+     */
+    public function canProcess(File $file)
+    {
+        if ($file->getMetaData()->count() > 0) {
+            // There's a design flaw in FAL, moving a file should not reindex it
+            // because it will effectively lead to overriding any user-defined
+            // value by metadata extracted by any extractor again.
+            // We will do our small job to refuse to extract metadata if metadata
+            // are already present.
+            // See: https://forge.typo3.org/issues/91168
+            return false;
+        }
+
+        return $this->_canProcess($file);
+    }
+
+    /**
+     * Checks if the given file can be processed by this extractor.
+     *
+     * @param File $file
+     * @return bool
+     */
+    protected abstract function _canProcess(File $file): bool;
+
+    /**
      * Returns the potential mapping files.
      *
      * @param File $file

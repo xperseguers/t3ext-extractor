@@ -62,7 +62,7 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
      * @param File $file
      * @return boolean
      */
-    public function canProcess(File $file)
+    protected function _canProcess(File $file): bool
     {
         $pdfinfoService = $this->getPdfinfoService();
         $fileExtension = strtolower($file->getProperty('extension'));
