@@ -16,63 +16,63 @@
   {
     "FAL": "content_creation_date",
     "DATA": [
+      "xmp:CreateDate->Causal\\Extractor\\Utility\\DateTime::timestamp",
       "DateTime->Causal\\Extractor\\Utility\\DateTime::timestamp",
       "dcterms:created->Causal\\Extractor\\Utility\\DateTime::timestamp",
-      "CreationDate->Causal\\Extractor\\Utility\\DateTime::timestamp",
-      "xmp:CreateDate->Causal\\Extractor\\Utility\\DateTime::timestamp"
+      "CreationDate->Causal\\Extractor\\Utility\\DateTime::timestamp"
     ]
   },
   {
     "FAL": "content_modification_date",
     "DATA": [
+      "xmp:ModifyDate->Causal\\Extractor\\Utility\\DateTime::timestamp",
       "dcterms:modified->Causal\\Extractor\\Utility\\DateTime::timestamp",
-      "ModDate->Causal\\Extractor\\Utility\\DateTime::timestamp",
-      "xmp:ModifyDate->Causal\\Extractor\\Utility\\DateTime::timestamp"
+      "ModDate->Causal\\Extractor\\Utility\\DateTime::timestamp"
     ]
   },
   {
     "FAL": "creator",
     "DATA": [
+      "xmp:creator",
       "Artist",
       "Author",
       "dc:creator",
-      "xmp:creator",
       "IPTCCreator"
     ]
   },
   {
     "FAL": "creator_tool",
     "DATA": [
+      "xmp:CreatorTool",
       "Software",
       "Application",
-      "xmp:CreatorTool",
       "Producer"
     ]
   },
   {
     "FAL": "description",
     "DATA": [
+      "xmp:description",
       "ImageDescription",
       "IPTCDescription",
-      "dc:description",
-      "xmp:description"
+      "dc:description"
     ]
   },
   {
     "FAL": "keywords",
     "DATA": [
+      "xmp:Keywords",
       "IPTCKeywords",
       "cp:keywords",
-      "xmp:Keywords",
       "Keywords"
     ]
   },
   {
     "FAL": "__categories__",
     "DATA": [
+      "xmp:Keywords",
       "IPTCKeywords",
       "cp:keywords",
-      "xmp:Keywords",
       "Keywords"
     ]
   },
@@ -91,9 +91,9 @@
   {
     "FAL": "copyright",
     "DATA": [
+      "xmp:rights",
       "IPTCCopyright",
-      "Copyright",
-      "xmp:rights"
+      "Copyright"
     ]
   },
   {
@@ -118,9 +118,9 @@
   {
     "FAL": "title",
     "DATA": [
+      "xmp:title",
       "IPTCTitle",
       "dc:title",
-      "xmp:title",
       "Title"
     ]
   },
