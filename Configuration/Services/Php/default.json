@@ -2,6 +2,7 @@
   {
     "FAL": "caption",
     "DATA": [
+      "xmp:description",
       "IPTCCaption",
       "dc:subject",
       "Subject"
