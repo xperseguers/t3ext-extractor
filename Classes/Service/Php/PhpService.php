@@ -336,12 +336,53 @@ class PhpService extends AbstractService
         foreach ($matches as $match) {
             if (!empty($match[1]) && !empty($match[2])) {
                 $key = $match[1];
-                $value = $match[2];
+                $value = $this->decodeStringType($match[2]);
                 $nativeData[trim($key)] = trim($value);
             }
         }
 
         return $nativeData;
+    }
+
+    /**
+     * This is based on https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf
+     * page 86 and 16.
+     *
+     * @param string $str
+     * @return string
+     */
+    protected function decodeStringType(string $str): string
+    {
+        $out = '';
+
+        $length = strlen($str);
+        $i = 0;
+        while ($i < $length) {
+            $buffer = substr($str, $i, 1);
+            if (substr($buffer, 0, 1) === '\\') {
+                do {
+                    $nextChar = substr($str, ++$i, 1);
+                    if ($nextChar >= '0' && $nextChar <= '7') {
+                        // Octal digit
+                        $buffer .= $nextChar;
+                    } else {
+                        break;
+                    }
+                } while (strlen($buffer) < 4);  // safeguard
+                $buffer = chr(octdec(substr($buffer, 1)));
+            }
+            $out .= $buffer;
+            $i++;
+        }
+
+        $bom = chr(254) . chr(255);
+        if (substr($out, 0, 2) === $bom) {
+            // BOM detected, this is UTF-8, well in fact UTF-16 according to specification, page 85, §7.9.1
+            $out = substr($out, 2);
+            $out = mb_convert_encoding($out, 'UTF-8', 'UTF-16BE');
+        }
+
+        return $out;
     }
 
     /**

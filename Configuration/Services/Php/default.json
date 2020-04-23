@@ -20,7 +20,6 @@
       "dcterms:created->Causal\\Extractor\\Utility\\DateTime::timestamp",
       "CreationDate->Causal\\Extractor\\Utility\\DateTime::timestamp",
       "xmp:CreateDate->Causal\\Extractor\\Utility\\DateTime::timestamp"
-
     ]
   },
   {
