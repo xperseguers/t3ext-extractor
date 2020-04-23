@@ -14,12 +14,10 @@
 
 namespace Causal\Extractor\Em;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -115,13 +113,13 @@ CSS;
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
             : TYPO3_branch;
         if (version_compare($typo3Branch, '9.0', '<')) {
-            $ajaxUrlAnalyze = BackendUtility::getAjaxUrl('extractor_analyze');
-            $ajaxUrlProcess = BackendUtility::getAjaxUrl('extractor_process');
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $ajaxUrlAnalyze = (string)$uriBuilder->buildUriFromRoute('ajax_extractor_analyze');
+            $ajaxUrlProcess = (string)$uriBuilder->buildUriFromRoute('ajax_extractor_process');
             $inlineJs = 'var extractorAnalyzeAction = \'' . $ajaxUrlAnalyze . '\';';
             $inlineJs .= 'var extractorProcessAction = \'' . $ajaxUrlProcess . '\';';
-
-            $pageRenderer = $this->getPageRenderer();
             $inlineJs .= PHP_EOL . 'require(["TYPO3/CMS/Extractor/Configuration"]);';
+            $pageRenderer = $this->getPageRenderer();
             $pageRenderer->addJsFile($resourcesPath . 'JavaScript/Extractor.js');
             $pageRenderer->addJsInlineCode($this->extensionKey, $inlineJs);
         } else {
