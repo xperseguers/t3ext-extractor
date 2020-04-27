@@ -149,7 +149,15 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     public function canProcess(File $file)
     {
-        if ($file->getMetaData()->count() > 0) {
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '10.0', '<')) {
+            $metadata = $file->_getMetaData();
+        } else {
+            $metadata = $file->getMetaData();
+        }
+        if (count($metadata) > 0) {
             // There's a design flaw in FAL, moving a file should not reindex it
             // because it will effectively lead to overriding any user-defined
             // value by metadata extracted by any extractor again.
