@@ -157,12 +157,13 @@ abstract class AbstractExtractionService implements ExtractorInterface
         } else {
             $metadata = $file->getMetaData();
         }
-        if (count($metadata) > 0) {
+
+        if (!empty($metadata) && $metadata['crdate'] !== $metadata['tstamp']) {
             // There's a design flaw in FAL, moving a file should not reindex it
             // because it will effectively lead to overriding any user-defined
             // value by metadata extracted by any extractor again.
             // We will do our small job to refuse to extract metadata if metadata
-            // are already present.
+            // modification timestamp is different from creation timestamp
             // See: https://forge.typo3.org/issues/91168
             return false;
         }
