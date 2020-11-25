@@ -33,6 +33,75 @@
             <trans-unit id="sys_file_metadata.aperture">
                 <source>Aperture (f/)</source>
             </trans-unit>
+            <trans-unit id="sys_file_metadata.flash">
+                <source>Flash</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.0">
+                <source></source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.1">
+                <source>Flash</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.5">
+                <source>Flash, strobe return light not detected</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.7">
+                <source>Flash, strobe return light detected</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.9">
+                <source>Compulsory Flash</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.13">
+                <source>Compulsory Flash, Return light not detected</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.15">
+                <source>Compulsory Flash, Return light detected</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.16">
+                <source>No Flash</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.24">
+                <source>No Flash</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.25">
+                <source>Flash, Auto-Mode</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.29">
+                <source>Flash, Auto-Mode, Return light not detected</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.31">
+                <source>Flash, Auto-Mode, Return light detected</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.32">
+                <source>No Flash</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.65">
+                <source>Red Eye</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.69">
+                <source>Red Eye, Return light not detected</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.71">
+                <source>Red Eye, Return light detected</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.73">
+                <source>Red Eye, Compulsory Flash</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.77">
+                <source>Red Eye, Compulsory Flash, Return light not detected</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.79">
+                <source>Red Eye, Compulsory Flash, Return light detected</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.89">
+                <source>Red Eye, Auto-Mode</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.93">
+                <source>Red Eye, Auto-Mode, Return light not detected</source>
+            </trans-unit>
+            <trans-unit id="sys_file_metadata.flash.95">
+                <source>Red Eye, Auto-Mode, Return light detected</source>
+            </trans-unit>
 
             <!-- Labels backported from TYPO3 v7 LTS -->
             <trans-unit id="sys_file_metadata.unit.px">

@@ -160,5 +160,9 @@
   {
     "FAL": "aperture",
     "DATA": "FNumber->Causal\\Extractor\\Utility\\Number::extractFloat"
+  },
+  {
+    "FAL": "flash",
+    "DATA": "Flash"
   }
 ]
