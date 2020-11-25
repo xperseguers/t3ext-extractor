@@ -162,6 +162,10 @@
     "DATA": "Aperture"
   },
   {
+	"FAL": "flash",
+	"DATA": "Flash"
+  },
+  {
     "FAL": "__categories__",
     "DATA": "SupplementalCategories"
   }
