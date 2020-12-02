@@ -1,7 +1,7 @@
 <?php
 defined('TYPO3_MODE') || die();
 
-$boot = function (string $_EXTKEY): void {
+(static function (string $_EXTKEY) {
     $extractorRegistry = \TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance();
 
     $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
@@ -30,7 +30,4 @@ $boot = function (string $_EXTKEY): void {
             $extractorRegistry->registerExtractionService(\Causal\Extractor\Service\Extraction\PhpMetadataExtraction::class);
         }
     }
-};
-
-$boot('extractor');
-unset($boot);
+})('extractor');

@@ -1,7 +1,7 @@
 <?php
 defined('TYPO3_MODE') || die();
 
-$boot = function (string $_EXTKEY): void {
+(static function (string $_EXTKEY) {
     if (TYPO3_MODE === 'BE') {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['sv']['extractor'] = [
             'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_reports.xlf:report_title',
@@ -10,7 +10,4 @@ $boot = function (string $_EXTKEY): void {
             'report' => \Causal\Extractor\Report\ServicesListReport::class
         ];
     }
-};
-
-$boot('extractor');
-unset($boot);
+})('extractor');
