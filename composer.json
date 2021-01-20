@@ -32,7 +32,7 @@
     "ext-exif": "*",
     "ext-json": "*",
     "ext-zip": "*",
-    "typo3/cms-core": "^8.7 || ^9.5 || ^10",
+    "typo3/cms-core": "^8.7 || ^9.5 || ^10 || ^11",
     "james-heinrich/getid3": "^1.9.19"
   },
   "autoload": {
@@ -62,7 +62,8 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "1.7.x-dev"
+      "dev-master": "1.7.x-dev",
+      "dev-feature/TYPO3_v11": "1.8.x-dev"
     },
     "typo3/cms": {
       "extension-key": "extractor",
