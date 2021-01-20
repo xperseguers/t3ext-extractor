@@ -14,7 +14,10 @@
 
 namespace Causal\Extractor\Service;
 
+use Causal\Extractor\Resource\Event\AfterMetadataExtractedEvent;
 use Causal\Extractor\Service\ServiceInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -35,17 +38,28 @@ abstract class AbstractService implements ServiceInterface
     protected $settings;
 
     /**
-     * AbstractService constructor.
+     * @var EventDispatcherInterface
      */
-    public function __construct()
+    protected $eventDispatcher;
+
+    /**
+     * AbstractService constructor.
+     *
+     * @param EventDispatcherInterface|null $eventDispatcher
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher = null)
     {
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
             : TYPO3_branch;
         if (version_compare($typo3Branch, '9.0', '<')) {
-            $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor'] ?? '') ?? [];
+            $this->settings = unsercialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor'] ?? '') ?? [];
         } else {
             $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor'] ?? [];
+        }
+
+        if (version_compare($typo3Branch, '10.2', '>=')) {
+            $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
         }
     }
 
@@ -67,15 +81,23 @@ abstract class AbstractService implements ServiceInterface
         $localTempFilePath = $file->getForLocalProcessing(false);
         $metadata = $this->extractMetadataFromLocalFile($localTempFilePath);
         $this->cleanupTempFile($localTempFilePath, $file);
-        // Emit Signal after meta data has been extracted
-        $this->getSignalSlotDispatcher()->dispatch(
-            self::class,
-            'postMetaDataExtraction',
-            [
-                $file,
-                &$metadata
-            ]
-        );
+
+        // Emit Signal after metadata has been extracted
+        if ($this->eventDispatcher !== null) {
+            $event = new AfterMetadataExtractedEvent($file, $metadata);
+            $this->eventDispatcher->dispatch($event);
+            $metadata = $event->getMetadata();
+        } else {
+            $this->getSignalSlotDispatcher()->dispatch(
+                self::class,
+                'postMetaDataExtraction',
+                [
+                    $file,
+                    &$metadata
+                ]
+            );
+        }
+
         return $metadata;
     }
 
@@ -113,6 +135,7 @@ abstract class AbstractService implements ServiceInterface
      * Returns the SignalSlot dispatcher.
      *
      * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @deprecated since TYPO3 v10
      */
     protected function getSignalSlotDispatcher()
     {

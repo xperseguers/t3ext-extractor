@@ -15,6 +15,7 @@
 namespace Causal\Extractor\Service\Pdfinfo;
 
 use Causal\Extractor\Service\AbstractService;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -28,10 +29,11 @@ class PdfinfoService extends AbstractService
 {
     /**
      * PdfinfoService constructor.
+     * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct()
+    public function __construct(EventDispatcherInterface $eventDispatcher = null)
     {
-        parent::__construct();
+        parent::__construct($eventDispatcher);
 
         $pdfInfo = $this->getPdfInfo();
         if (!is_file($pdfInfo)) {

@@ -93,7 +93,10 @@ Signal after extraction
 
 Once the meta data has been extracted, a signal is emitted, which allows other
 extensions to process the file further. The Signal can be connected to a Slot as
-follows (e.g., in file ``ext_localconf.php`` of your extension).
+follows (e.g., in file file:`ext_localconf.php` of your extension).
+
+
+**Registration in TYPO3 v8 and v9**
 
 .. code-block:: php
 
@@ -118,11 +121,57 @@ method ``enhanceMetadata()`` in this class:
    <?php
    namespace VENDOR\MyExtension\Service;
 
-   use TYPO3\CMS\Core\Resource\File;
+   use TYPO3\CMS\Core\Resource\FileInterface;
 
    class Extractor
    {
-       public function enhanceMetadata(File $file, array &$metadata): void
+       public function enhanceMetadata(FileInterface $file, array &$metadata): void
+       {
+           // your code
+       }
+   }
+
+
+**Registration since TYPO3 v10**
+
+The signal slot dispatcher is deprecated since TYPO3 v10 and you should instead
+register a middleware by creating file :file:`Configuration/Services.yaml`
+within your extension:
+
+.. code-block:: yaml
+
+   services:
+     _defaults:
+       autowire: true
+       autoconfigure: true
+       public: false
+
+     VENDOR\MyExtension\EventListener\ExtractorEventListener:
+       tags:
+         - name: event.listener
+           identifier: 'causal/extractor'
+           method: 'postMetaDataExtraction'
+           event: Causal\Extractor\Resource\Event\AfterMetadataExtractedEvent
+
+.. caution::
+
+   Be sure to module Admin Tools > Maintenance and to flush the TYPO3 and PHP
+   Cache when you register middlewares.
+
+This requires a PHP class
+``\VENDOR\MyExtension\EventListener\ExtractorEventListener`` and a method
+``enhanceMetadata()`` in this class:
+
+.. code-block::php
+
+   <?php
+   namespace VENDOR\MyExtension\EventListener;
+
+   use Causal\Extractor\Resource\Event\AfterMetadataExtractedEvent;
+
+   class Extractor
+   {
+       public function postMetaDataExtraction(AfterMetadataExtractedEvent $event): void
        {
            // your code
        }
