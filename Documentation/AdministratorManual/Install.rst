@@ -98,6 +98,6 @@ External Tools
 
 This extension is capable of using external tools to extract metadata:
 
-- `exiftool <http://www.sno.phy.queensu.ca/~phil/exiftool/>`__ for files
-  containing EXIF, IPTC / XMP metadata;
-- `pdfinfo <http://linuxcommand.org/man_pages/pdfinfo1.html>`__ for PDF.
+- `exiftool <https://exiftool.org/>`__ for files containing EXIF, IPTC / XMP
+   metadata;
+- `pdfinfo <https://www.xpdfreader.com/pdfinfo-man.html>`__ for PDF.
