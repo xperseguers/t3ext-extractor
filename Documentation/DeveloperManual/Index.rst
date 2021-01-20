@@ -116,7 +116,7 @@ follows (e.g., in file file:`ext_localconf.php` of your extension).
 This requires a PHP class ``\VENDOR\MyExtension\Service\Extractor`` and a
 method ``enhanceMetadata()`` in this class:
 
-.. code-block::php
+.. code-block:: php
 
    <?php
    namespace VENDOR\MyExtension\Service;
@@ -162,7 +162,7 @@ This requires a PHP class
 ``\VENDOR\MyExtension\EventListener\ExtractorEventListener`` and a method
 ``enhanceMetadata()`` in this class:
 
-.. code-block::php
+.. code-block:: php
 
    <?php
    namespace VENDOR\MyExtension\EventListener;
