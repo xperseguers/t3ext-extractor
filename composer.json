@@ -53,6 +53,7 @@
     ],
     "extension-release": [
       "@extension-build",
+      "rm -rf .github",
       "rm -rf Tests/",
       "rm .gitignore"
     ],
