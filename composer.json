@@ -32,8 +32,8 @@
     "ext-exif": "*",
     "ext-json": "*",
     "ext-zip": "*",
-    "typo3/cms-core": "^8.7 || ^9.5 || ^10",
-    "james-heinrich/getid3": "^1.9.19"
+    "typo3/cms-core": "^8.7 || ^9.5 || ^10 || ^11",
+    "james-heinrich/getid3": "^1.9"
   },
   "autoload": {
     "psr-4": {
@@ -53,6 +53,7 @@
     ],
     "extension-release": [
       "@extension-build",
+      "rm -rf .github",
       "rm -rf Tests/",
       "rm .gitignore"
     ],

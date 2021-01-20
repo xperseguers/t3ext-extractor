@@ -170,6 +170,16 @@ $tca = [
                 'readOnly' => true,
             ],
         ],
+        'altitude' => [
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.altitude',
+            'config' => [
+                'type' => 'input',
+                'size' => '10',
+                'eval' => 'int',
+            ],
+        ],
     ],
 ];
 
@@ -188,6 +198,12 @@ if (isset($GLOBALS['TCA']['sys_file_metadata']['columns']['categories'])) {
         '--div--;' . $locallangTca . ':sys_category.tabs.category,categories'
     );
 }
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
+    'sys_file_metadata',
+    '30',
+    'altitude'
+);
 
 // Reapply possible changes to sys_file_metadata from extensions loaded *before* EXT:extractor
 $loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();

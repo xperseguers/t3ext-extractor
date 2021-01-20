@@ -15,6 +15,7 @@
 namespace Causal\Extractor\Service\Tika;
 
 use Causal\Extractor\Service\AbstractService;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,10 +31,11 @@ class AppService extends AbstractService implements TikaServiceInterface
 {
     /**
      * AppService constructor.
+     * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct()
+    public function __construct(EventDispatcherInterface $eventDispatcher = null)
     {
-        parent::__construct();
+        parent::__construct($eventDispatcher);
 
         $tikaJar = $this->getTikaJar();
         if (!is_file($tikaJar)) {

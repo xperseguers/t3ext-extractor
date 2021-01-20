@@ -16,6 +16,7 @@ namespace Causal\Extractor\Service\Tika;
 
 use Causal\Extractor\Service\AbstractService;
 use Causal\Extractor\Utility\MimeType;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,10 +31,11 @@ class ServerService extends AbstractService implements TikaServiceInterface
 {
     /**
      * ServerService constructor.
+     * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct()
+    public function __construct(EventDispatcherInterface $eventDispatcher = null)
     {
-        parent::__construct();
+        parent::__construct($eventDispatcher);
 
         if (empty($this->settings['tika_server_host'])) {
             throw new \RuntimeException(

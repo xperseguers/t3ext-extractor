@@ -15,6 +15,7 @@
 namespace Causal\Extractor\Service\ExifTool;
 
 use Causal\Extractor\Service\AbstractService;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -28,10 +29,12 @@ class ExifToolService extends AbstractService
 {
     /**
      * ExifToolService constructor.
+     *
+     * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct()
+    public function __construct(EventDispatcherInterface $eventDispatcher = null)
     {
-        parent::__construct();
+        parent::__construct($eventDispatcher);
 
         $exifTool = $this->getExifTool();
         if (!is_file($exifTool)) {

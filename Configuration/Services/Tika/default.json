@@ -91,6 +91,10 @@
     "DATA": "GPS Longitude->Causal\\Extractor\\Utility\\Gps::toDecimal(GPS Longitude Ref)"
   },
   {
+    "FAL": "altitude",
+    "DATA": "GPS Altitude->Causal\\Extractor\\Utility\\Number::extractFloat"
+  },
+  {
     "FAL": "ranking",
     "DATA": "Rating"
   },
