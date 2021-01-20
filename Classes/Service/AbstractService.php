@@ -71,7 +71,10 @@ abstract class AbstractService implements ServiceInterface
         $this->getSignalSlotDispatcher()->dispatch(
             self::class,
             'postMetaDataExtraction',
-            [$file]
+            [
+                $file,
+                &$metadata
+            ]
         );
         return $metadata;
     }
