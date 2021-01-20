@@ -13,7 +13,7 @@ Developer manual
 
 .. only:: html
 
-	This chapter describes some internals of this extension to let you extend it easily.
+   This chapter describes some internals of this extension to let you extend it easily.
 
 
 Assets such as PDF, images, documents, ... are uploaded to TYPO3. Metadata extraction services are called, one after
@@ -28,9 +28,9 @@ JSON-based configuration file is used. Those mapping configuration files can be 
 :file:`Configuration/Services/{Wrapper}/`.
 
 .. figure:: ../Images/workflow.png
-    :alt: Overview of the extraction of metadata in TYPO3
+   :alt: Overview of the extraction of metadata in TYPO3
 
-    Overview of the workflow of metadata extraction in TYPO3 when using this extension.
+   Overview of the workflow of metadata extraction in TYPO3 when using this extension.
 
 
 .. _developer-manual-json:
@@ -42,32 +42,32 @@ A mapping configuration file is of the form:
 
 .. code-block:: json
 
-    [
-      {
-        "FAL": "caption",
-        "DATA": "CaptionAbstract"
-      },
-      {
-        "FAL": "color_space",
-        "DATA": [
-          "ColorMode",
-          "ColorSpaceData",
-          "ColorSpace->Causal\\Extractor\\Utility\\ColorSpace::normalize"
-        ]
-      }
-    ]
+   [
+     {
+       "FAL": "caption",
+       "DATA": "CaptionAbstract"
+     },
+     {
+       "FAL": "color_space",
+       "DATA": [
+         "ColorMode",
+         "ColorSpaceData",
+         "ColorSpace->Causal\\Extractor\\Utility\\ColorSpace::normalize"
+       ]
+     }
+   ]
 
 FAL
-    This is the name (column) of the metadata in FAL.
+   This is the name (column) of the metadata in FAL.
 
 DATA
-    This is either a unique key or an array of ordered keys to be checked for content in the extracted metadata. In
-    addition, an arbitrary post-processor may be specified using the ``->`` array notation.
+   This is either a unique key or an array of ordered keys to be checked for content in the extracted metadata. In
+   addition, an arbitrary post-processor may be specified using the ``->`` array notation.
 
 .. figure:: ../Images/configuration-helper-tool.png
-    :alt: Configuration Helper Tool
+   :alt: Configuration Helper Tool
 
-    A configuration helper tool is available in Extension Manager.
+   A configuration helper tool is available in Extension Manager.
 
 
 .. _developer-manual-hook:
@@ -90,18 +90,33 @@ The Signal can be connected to a Slot as follows (e.g. in file ``ext_localconf.p
 
 .. code-block:: php
 
-    // Initiate SignalSlotDispatcher
-    $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-        'TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher'
-    );
+   // Initiate SignalSlotDispatcher
+   $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+       \TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class
+   );
 
-    // Connect the Signal "postMetaDataExtraction" to a Slot
-    $signalSlotDispatcher->connect(
-        'Causal\\Extractor\\Service\\AbstractService',
-        'postMetaDataExtraction',
-        'Vendor\\MyExtension\\Service\\SlotService',
-        'dispatch'
-    );
+   // Connect the Signal "postMetaDataExtraction" to a Slot
+   $signalSlotDispatcher->connect(
+       \Causal\Extractor\Service\AbstractService::class,
+       'postMetaDataExtraction',
+       \VENDOR\MyExtension\Service\Extractor::class,
+       'enhanceMetadata'
+   );
 
 This requires a PHP class ``\Vendor\MyExtension\Service\SlotService`` and a method ``dispatch()`` in this class.
-The FAL ``$storageRecord`` is passed as a parameter to the method.
+The FAL ``$storageRecord`` is passed as a parameter to the method:
+
+.. code-block::php
+
+   <?php
+   namespace VENDOR\MyExtension\Service;
+
+   use TYPO3\CMS\Core\Resource\File;
+
+   class Extractor
+   {
+       public function enhanceMetadata(File $file, array &$metadata): void
+       {
+           // your code
+       }
+   }
