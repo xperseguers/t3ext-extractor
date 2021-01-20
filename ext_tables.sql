@@ -12,5 +12,6 @@ CREATE TABLE sys_file_metadata (
   white_balance_mode varchar(255) DEFAULT '' NOT NULL,
   iso_speed int(11) unsigned DEFAULT '0' NOT NULL,
   aperture float unsigned DEFAULT '0' NOT NULL,
-  flash int(4) DEFAULT '0' NOT NULL
+  flash int(4) DEFAULT '0' NOT NULL,
+  altitude int(11) DEFAULT '0' NOT NULL
 );

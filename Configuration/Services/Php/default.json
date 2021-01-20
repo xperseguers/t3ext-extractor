@@ -106,6 +106,10 @@
     "DATA": "GPSLongitudeDecimal"
   },
   {
+    "FAL": "altitude",
+    "DATA": "GPSAltitude->Causal\\Extractor\\Utility\\Number::extractFloat"
+  },
+  {
     "FAL": "source",
     "DATA": [
       "FileSource->Causal\\Extractor\\Utility\\SimpleString::trim",
