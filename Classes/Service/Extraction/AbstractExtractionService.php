@@ -311,6 +311,8 @@ abstract class AbstractExtractionService implements ExtractorInterface
             return $output;
         }
 
+        $output['__category_uids__'] = $data['__category_uids__'] ?? null;
+
         foreach ($mapping as $m) {
             $falKey = $m['FAL'];
             $alternativeKeys = $m['DATA'];
@@ -415,13 +417,28 @@ abstract class AbstractExtractionService implements ExtractorInterface
     protected function processCategories(File $file, array &$metadata)
     {
         $categories = [];
+        $categoryUids = [];
         $key = '__categories__';
+        $keyUid = '__category_uids__';
         if (isset($metadata[$key])) {
             $categories = GeneralUtility::trimExplode(',', $metadata[$key], true);
             unset($metadata[$key]);
         }
-        if (empty($categories) || $file->getUid() === 0) {
+        if (isset($metadata[$keyUid])) {
+            $categoryUids = GeneralUtility::intExplode(',', $metadata[$keyUid], true);
+            unset($metadata[$keyUid]);
+        }
+
+        if ((empty($categories) && empty($categoryUids)) || $file->getUid() === 0) {
             return;
+        }
+
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '10.0', '>')) {
+            // Since TYPO3 v10, the sys_file_metadata record is not yet available at this point
+            $file->getMetaData()->save();
         }
 
         // Fetch the uid associated to the corresponding sys_file_metadata record
@@ -441,17 +458,8 @@ abstract class AbstractExtractionService implements ExtractorInterface
             return;
         }
         $fileMetadataUid = $row['uid'];
-
-        $typo3Categories = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('sys_category')
-            ->select(
-                ['uid', 'title'],
-                'sys_category',
-                [
-                    'sys_language_uid' => 0,
-                ]
-            )
-            ->fetchAll();
+        $sorting = 1;
+        $data = [];
 
         // Remove currently associated categories for this file
         $relationTable = 'sys_category_record_mm';
@@ -466,26 +474,50 @@ abstract class AbstractExtractionService implements ExtractorInterface
             ]
         );
 
-        $sorting = 1;
-        $data = [];
-        foreach ($categories as $category) {
-            foreach ($typo3Categories as $typo3Category) {
-                if ($typo3Category['title'] === $category) {
-                    $data[] = [
-                        'uid_local' => (int)$typo3Category['uid'],
-                        'uid_foreign' => $fileMetadataUid,
-                        'tablenames' => 'sys_file_metadata',
-                        'fieldname' => 'categories',
-                        'sorting_foreign' => $sorting++,
-                    ];
+        if (!empty($categories)) {
+            $typo3Categories = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_category')
+                ->select(
+                    ['uid', 'title'],
+                    'sys_category',
+                    [
+                        'sys_language_uid' => 0,
+                    ]
+                )
+                ->fetchAll();
+
+            foreach ($categories as $category) {
+                foreach ($typo3Categories as $typo3Category) {
+                    if ($typo3Category['title'] === $category
+                        || (string)$typo3Category['uid'] === $category
+                    ) {
+                        $categoryUid = (int)$typo3Category['uid'];
+                        $data[$categoryUid] = [
+                            'uid_local' => $categoryUid,
+                            'uid_foreign' => $fileMetadataUid,
+                            'tablenames' => 'sys_file_metadata',
+                            'fieldname' => 'categories',
+                            'sorting_foreign' => $sorting++,
+                        ];
+                    }
                 }
             }
+        }
+
+        foreach ($categoryUids as $categoryUid) {
+            $data[$categoryUid] = [
+                'uid_local' => $categoryUid,
+                'uid_foreign' => $fileMetadataUid,
+                'tablenames' => 'sys_file_metadata',
+                'fieldname' => 'categories',
+                'sorting_foreign' => $sorting++,
+            ];
         }
 
         if (!empty($data)) {
             $tableConnection->bulkInsert(
                 $relationTable,
-                $data,
+                array_values($data),
                 ['uid_local', 'uid_foreign', 'tablenames', 'fieldname', 'sorting_foreign']
             );
         }

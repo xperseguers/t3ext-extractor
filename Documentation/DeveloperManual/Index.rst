@@ -176,3 +176,25 @@ This requires a PHP class
            // your code
        }
    }
+
+.. _developer-manual-signal-categories:
+
+Associated TYPO3 categories
+"""""""""""""""""""""""""""
+
+By default TYPO3 categories are automatically assigned using keywords found in
+the metadata due to the mapping associating them to the special FAL field
+``__categories__``. This virtual field expects a comma-separated list of TYPO3
+category **titles**.
+
+Since version 2.1.0, we added another special FAL field ``__category_uids__``
+which works similarly but expecting a comma-separated list of category **uids**
+instead. One would use the signal/event and expand extracted metadata with a
+custom business logic.
+
+An real-life example is using the geographical coordinates latitude/longitude,
+send them to the
+`Google reverse geocoding service <https://developers.google.com/maps/documentation/geocoding/overview?hl=en_US#ReverseGeocoding>`__
+to translate them into a human-readable address and thus populating the fields
+"location", "region" and "country" and possibly assign geographical-related
+TYPO3 categories based on the API output.
