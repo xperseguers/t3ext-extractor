@@ -14,13 +14,14 @@
   {
     "FAL": "creator",
     "DATA": [
+      "Author",
       "Creator"
     ]
   },
   {
     "FAL": "creator_tool",
     "DATA": [
-      "Producer"
+      "Creator"
     ]
   },
   {
