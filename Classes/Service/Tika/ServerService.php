@@ -122,7 +122,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
         $content = $this->send('PUT', '/meta', 'application/json', $fileName);
         $metadata = json_decode($content, true);
 
-        return $metadata;
+        return $metadata ?? [];
     }
 
     /**
