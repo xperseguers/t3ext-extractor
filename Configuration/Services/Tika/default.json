@@ -167,6 +167,6 @@
   },
   {
     "FAL": "flash",
-    "DATA": "exif:Flash"
+    "DATA": "exif:Flash->Causal\\Extractor\\Utility\\Flash::normalize"
   }
 ]
