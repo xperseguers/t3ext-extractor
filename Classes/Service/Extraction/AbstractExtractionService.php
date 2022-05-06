@@ -251,8 +251,10 @@ abstract class AbstractExtractionService implements ExtractorInterface
             ]
         );
 
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'] as $classRef) {
+        if (array_key_exists('dataMappingHook', $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor']) && 
+            is_array($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor']['dataMappingHook'])
+        ) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor']['dataMappingHook'] as $classRef) {
                 $hookObject = GeneralUtility::makeInstance($classRef);
                 if (!method_exists($hookObject, 'postProcessDataMapping')) {
                     throw new \Exception($classRef . ' must provide a method "postProcessDataMapping', 1425290629);
@@ -323,7 +325,12 @@ abstract class AbstractExtractionService implements ExtractorInterface
 
             $value = null;
             foreach ($alternativeKeys as $dataKey) {
-                list($compoundKey, $processor) = explode('->', $dataKey);
+                if (str_contains($dataKey, '->')) {
+                    list($compoundKey, $processor) = explode('->', $dataKey);
+                } else {
+                    $compoundKey = $dataKey;
+                    unset($processor);
+                }
                 $keys = explode('|', $compoundKey);
                 $parentValue = null;
                 $value = $data;
@@ -348,7 +355,9 @@ abstract class AbstractExtractionService implements ExtractorInterface
                             } else {
                                 $fields = GeneralUtility::trimExplode(',', $matches[3]);
                                 foreach ($fields as $field) {
-                                    $parameters[] = $parentValue[$field];
+                                    if (array_key_exists($field, $parentValue)) {
+                                        $parameters[] = $parentValue[$field];
+                                    }
                                 }
                             }
                         }
