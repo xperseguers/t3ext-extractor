@@ -325,7 +325,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
 
             $value = null;
             foreach ($alternativeKeys as $dataKey) {
-                if (str_contains($dataKey, '->')) {
+                if (strpos($dataKey, '->') !== false) {
                     list($compoundKey, $processor) = explode('->', $dataKey);
                 } else {
                     $compoundKey = $dataKey;
