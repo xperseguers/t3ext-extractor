@@ -94,7 +94,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
             </thead>
             <tbody>';
 
-        $extractorRegistry = \TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance();
+        $extractorRegistry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::class);
         $extractors = $extractorRegistry->getExtractors();
         foreach ($extractors as $extractor) {
             $extractorsList .= $this->renderExtractorRow($extractor);

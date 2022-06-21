@@ -2,7 +2,7 @@
 defined('TYPO3_MODE') || die();
 
 (static function (string $_EXTKEY) {
-    $extractorRegistry = \TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance();
+    $extractorRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::class);
 
     $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
         ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
