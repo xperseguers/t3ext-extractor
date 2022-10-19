@@ -159,7 +159,7 @@
   },
   {
     "FAL": "iso_speed",
-    "DATA": "ISOSpeedRatings->Causal\\Extractor\\Utility\\Number::castInteger"
+    "DATA": "ISOSpeedRatings->Causal\\Extractor\\Utility\\Array_::concatenate(' ')->Causal\\Extractor\\Utility\\Number::castInteger"
   },
   {
     "FAL": "aperture",
