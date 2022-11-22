@@ -77,7 +77,7 @@ class PdfinfoService extends AbstractService
 
         $metadata = [];
         foreach ($shellOutput as $line) {
-            list($key, $value) = GeneralUtility::trimExplode(':', $line, true, 2);
+            list($key, $value) = GeneralUtility::trimExplode(':', $line, false, 2);
             $metadata[$key] = $value;
         }
 
