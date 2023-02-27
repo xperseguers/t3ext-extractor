@@ -55,10 +55,10 @@ class Number
      */
     public static function extractFloat(?string $str = null): float
     {
-        if (preg_match('#^(\d+)/(\d+)$#', $str, $matches)) {
+        if (preg_match('#^(\d+)/(\d+)$#', $str ?? '', $matches)) {
             $divisor = (float)$matches[2];
             $value = (int)$matches[1] / ($divisor > 0 ? $divisor : 1);
-        } elseif (preg_match('/35 mm equivalent: (\d+\.\d+) mm/', $str, $matches)) {
+        } elseif (preg_match('/35 mm equivalent: (\d+\.\d+) mm/', $str ?? '', $matches)) {
             $value = (float)$matches[1];
         } else {
             $value = (float)$str;
