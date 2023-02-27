@@ -14,8 +14,6 @@
 
 namespace Causal\Extractor\Utility;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Number utility class.
  *
@@ -58,7 +56,8 @@ class Number
     public static function extractFloat(?string $str = null): float
     {
         if (preg_match('#^(\d+)/(\d+)$#', $str, $matches)) {
-            $value = (int)$matches[1] / (float)$matches[2];
+            $divisor = (float)$matches[2];
+            $value = (int)$matches[1] / ($divisor > 0 ? $divisor : 1);
         } elseif (preg_match('/35 mm equivalent: (\d+\.\d+) mm/', $str, $matches)) {
             $value = (float)$matches[1];
         } else {
