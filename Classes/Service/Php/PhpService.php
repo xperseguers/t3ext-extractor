@@ -537,7 +537,9 @@ class PhpService extends AbstractService
             if ($exif) {
                 $metadata = $exif;
                 // Fix description coming from EXIF
-                $metadata['ImageDescription'] = static::safeUtf8Encode($metadata['ImageDescription']);
+                if (isset($metadata['ImageDescription'])) {
+                    $metadata['ImageDescription'] = static::safeUtf8Encode($metadata['ImageDescription']);
+                }
 
                 // Process the longitude/latitude/altitude
                 if (isset($metadata['GPSLatitude']) && is_array($metadata['GPSLatitude'])) {
@@ -612,7 +614,7 @@ class PhpService extends AbstractService
     protected static function safeUtf8Encode(?string $text = null): ?string
     {
         if (function_exists('mb_detect_encoding')) {
-            if (mb_detect_encoding($text, 'UTF-8', true) !== 'UTF-8') {
+            if (mb_detect_encoding($text ?? '', 'UTF-8', true) !== 'UTF-8') {
                 $text = utf8_encode($text);
             }
         } else {

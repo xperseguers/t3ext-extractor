@@ -251,7 +251,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
             ]
         );
 
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook']) ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'] as $classRef) {
                 $hookObject = GeneralUtility::makeInstance($classRef);
                 if (!method_exists($hookObject, 'postProcessDataMapping')) {
@@ -323,7 +323,12 @@ abstract class AbstractExtractionService implements ExtractorInterface
 
             $value = null;
             foreach ($alternativeKeys as $dataKey) {
-                list($compoundKey, $processor) = explode('->', $dataKey);
+                if (strpos($dataKey, '->') !== false) {
+                    [$compoundKey, $processor] = explode('->', $dataKey);
+                } else {
+                    $compoundKey = $dataKey;
+                    unset($processor);
+                }
                 $keys = explode('|', $compoundKey);
                 $parentValue = null;
                 $value = $data;
@@ -332,7 +337,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
                         $value = substr($key, 7);
                     } else {
                         $parentValue = $value;
-                        $value = isset($value[$key]) ? $value[$key] : null;
+                        $value = $value[$key] ?? null;
                     }
                     if ($value === null) {
                         break;
@@ -348,11 +353,17 @@ abstract class AbstractExtractionService implements ExtractorInterface
                             } else {
                                 $fields = GeneralUtility::trimExplode(',', $matches[3]);
                                 foreach ($fields as $field) {
-                                    $parameters[] = $parentValue[$field];
+                                    if (array_key_exists($field, $parentValue)) {
+                                        $parameters[] = $parentValue[$field];
+                                    }
                                 }
                             }
                         }
-                        $value = call_user_func_array($processor, $parameters);
+                        try {
+                            $value = call_user_func_array($processor, $parameters);
+                        } catch (\Exception $exception) {
+                            $value = $parameters[0];
+                        }
                     }
                 }
                 if ($value !== null) {
