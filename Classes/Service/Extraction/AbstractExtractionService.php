@@ -251,9 +251,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
             ]
         );
 
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook']) && 
-            is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'])
-        ) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook']) ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'] as $classRef) {
                 $hookObject = GeneralUtility::makeInstance($classRef);
                 if (!method_exists($hookObject, 'postProcessDataMapping')) {
@@ -326,7 +324,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
             $value = null;
             foreach ($alternativeKeys as $dataKey) {
                 if (strpos($dataKey, '->') !== false) {
-                    list($compoundKey, $processor) = explode('->', $dataKey);
+                    [$compoundKey, $processor] = explode('->', $dataKey);
                 } else {
                     $compoundKey = $dataKey;
                     unset($processor);
@@ -339,7 +337,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
                         $value = substr($key, 7);
                     } else {
                         $parentValue = $value;
-                        $value = isset($value[$key]) ? $value[$key] : null;
+                        $value = $value[$key] ?? null;
                     }
                     if ($value === null) {
                         break;
