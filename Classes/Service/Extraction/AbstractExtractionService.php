@@ -251,7 +251,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
             ]
         );
 
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook']) ?? null)) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extractor']['dataMappingHook'] as $classRef) {
                 $hookObject = GeneralUtility::makeInstance($classRef);
                 if (!method_exists($hookObject, 'postProcessDataMapping')) {
