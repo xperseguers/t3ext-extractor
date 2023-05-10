@@ -159,7 +159,7 @@
   },
   {
     "FAL": "iso_speed",
-    "DATA": "exif:IsoSpeedRatings"
+    "DATA": "exif:IsoSpeedRatings->Causal\\Extractor\\Utility\\Number::castInteger"
   },
   {
     "FAL": "aperture",
