@@ -27,7 +27,7 @@
   ],
   "license": "GPL-2.0-or-later",
   "require": {
-    "php": ">= 7.2.0, <= 8.1.99",
+    "php": ">= 7.2.0, <= 8.2.99",
     "ext-dom": "*",
     "ext-exif": "*",
     "ext-json": "*",
@@ -63,7 +63,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "2.2.x-dev"
+      "dev-master": "2.3.x-dev"
     },
     "typo3/cms": {
       "extension-key": "extractor",
