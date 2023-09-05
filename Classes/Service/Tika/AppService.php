@@ -163,7 +163,7 @@ class AppService extends AbstractService implements TikaServiceInterface
     public function detectLanguage(File $file)
     {
         $localTempFilePath = $file->getForLocalProcessing(false);
-        $language = $this->detectLanguageFromLocalFile($$localTempFilePath);
+        $language = $this->detectLanguageFromLocalFile($localTempFilePath);
         $this->cleanupTempFile($localTempFilePath, $file);
 
         return $language;
