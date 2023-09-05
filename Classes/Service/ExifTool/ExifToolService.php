@@ -98,7 +98,7 @@ class ExifToolService extends AbstractService
 
         $metadata = json_decode(implode('', $shellOutput), true);
 
-        if (is_array($metadata[0]['Creator'])) {
+        if (is_array($metadata[0]['Creator'] ?? null)) {
             $metadata[0]['Creator'] = end($metadata[0]['Creator']);
         }
 
