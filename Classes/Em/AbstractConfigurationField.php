@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Em;
 
+use Causal\Extractor\Utility\SimpleString;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -34,7 +35,7 @@ abstract class AbstractConfigurationField
      */
     protected function translate($id, $hsc = false, array $arguments = null)
     {
-        if (!GeneralUtility::isFirstPartOfStr($id, 'LLL:EXT:')) {
+        if (!SimpleString::isFirstPartOfStr($id, 'LLL:EXT:')) {
             $reference = 'LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:' . $id;
         } else {
             $reference = $id;
