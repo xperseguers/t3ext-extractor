@@ -103,22 +103,29 @@ class PhpService extends AbstractService
     public function extractMetadataFromLocalFile($fileName)
     {
         $extension = strtolower(substr($fileName, strrpos($fileName, '.') + 1));
-        switch (true) {
-            case in_array($extension, $this->officeDocumentExtensions):
-                $metadata = $this->extractMetadataFromOfficeDocument($fileName);
-                break;
-            case in_array($extension, $this->getId3Extensions):
-                $metadata = $this->extractMetadataWithGetId3($fileName);
-                break;
-            case $extension === 'pdf':
-                $metadata = $this->extractMetadataFromPdf($fileName);
-                break;
-            default:
-                $metadata = $this->extractMetadataFromImage($fileName);
-                break;
+
+        try {
+            switch (true) {
+                case in_array($extension, $this->officeDocumentExtensions):
+                    $metadata = $this->extractMetadataFromOfficeDocument($fileName);
+                    break;
+                case in_array($extension, $this->getId3Extensions):
+                    $metadata = $this->extractMetadataWithGetId3($fileName);
+                    break;
+                case $extension === 'pdf':
+                    $metadata = $this->extractMetadataFromPdf($fileName);
+                    break;
+                default:
+                    $metadata = $this->extractMetadataFromImage($fileName);
+                    break;
+            }
+
+            static::getLogger()->debug('Metadata extracted', $metadata);
+        } catch (\Exception $e) {
+            static::getLogger()->error('Error while extracting metadata from file', ['exception' => $e]);
+            $metadata = [];
         }
 
-        static::getLogger()->debug('Metadata extracted', $metadata);
         return $metadata;
     }
 
