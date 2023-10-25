@@ -40,4 +40,20 @@ class SimpleString
         $str = preg_replace('/[\x00-\x1F]/', '', $str);
         return trim($str);
     }
+
+
+    /**
+     * Returns true if the passed $haystack starts from the $needle string or false otherwise.
+     *
+     * @internal Calls `str_starts_with` on modern TYPO3 installations (TYPO3 10.4 or newer / PHP 8.0 or newer),
+     * falls back to GeneralUtility::isFirstPartOfStr() on legacy TYPO3 installations.
+     *
+     * @param string $haystack
+     * @param string $needle
+     * @return bool
+     */
+    public static function isFirstPartOfStr(string $haystack, string $needle): bool
+    {
+        return function_exists('str_starts_with') ? str_starts_with($haystack, $needle) : GeneralUtility::isFirstPartOfStr($haystack, $needle);
+    }
 }

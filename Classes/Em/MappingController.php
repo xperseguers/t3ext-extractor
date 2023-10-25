@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Em;
 
+use Causal\Extractor\Utility\SimpleString;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -284,10 +285,10 @@ CSS;
             ->listTableColumns('sys_file_metadata');
         foreach ($fields as $field => $_) {
             switch (true) {
-                case GeneralUtility::isFirstPartOfStr($field, 't3ver_'):
-                case GeneralUtility::isFirstPartOfStr($field, 't3_'):
-                case GeneralUtility::isFirstPartOfStr($field, 'l10n_'):
-                case GeneralUtility::isFirstPartOfStr($field, 'zzz_deleted_'):
+                case SimpleString::isFirstPartOfStr($field, 't3ver_'):
+                case SimpleString::isFirstPartOfStr($field, 't3_'):
+                case SimpleString::isFirstPartOfStr($field, 'l10n_'):
+                case SimpleString::isFirstPartOfStr($field, 'zzz_deleted_'):
                 case in_array($field, ['uid', 'pid', 'tstamp', 'crdate', 'cruser_id', 'file', 'sys_language_uid', 'fe_groups']):
                     // Nothing to do
                     break;

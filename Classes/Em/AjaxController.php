@@ -17,6 +17,7 @@ namespace Causal\Extractor\Em;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Causal\Extractor\Service;
+use Causal\Extractor\Utility\SimpleString;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -206,7 +207,7 @@ class AjaxController
         /** @var \TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory */
         $resourceFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
 
-        if (GeneralUtility::isFirstPartOfStr($reference, $extensionPrefix)) {
+        if (SimpleString::isFirstPartOfStr($reference, $extensionPrefix)) {
             $fileName = substr($reference, strlen($extensionPrefix));
             $recordData = [
                 'uid' => 0,
