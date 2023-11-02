@@ -7,7 +7,7 @@ conf.py:
   copyright: 2014-2023
   project: Metadata and Content Analysis Service
   version: 2.3
-  release: 2.3.0
+  release: 2.3.1
   latex_documents:
   - - Index
     - extractor.tex
