@@ -46,8 +46,12 @@
   },
   "scripts": {
     "extension-create-libs": [
-      "mkdir -p Libraries",
-      "if [ ! -d Libraries/vendor/james-heinrich ]; then cd Libraries && composer require james-heinrich/getid3=^1.9.19 && composer config classmap-authoritative true && composer config prepend-autoloader false && composer dump-autoload; fi"
+      "mkdir -p Libraries/temp",
+      "[ -f $HOME/.composer/vendor/bin/phar-composer ] || composer global require clue/phar-composer",
+      "if [ ! -f Libraries/getid3.phar ]; then cd Libraries/temp && composer require james-heinrich/getid3=^1.9.19 && composer config classmap-authoritative true && composer config prepend-autoloader false && composer dump-autoload; fi",
+      "[ -f Libraries/getid3.phar ] || $HOME/.composer/vendor/bin/phar-composer build Libraries/temp/ Libraries/getid3.phar",
+      "chmod -x Libraries/*.phar",
+      "rm -rf Libraries/temp"
     ],
     "extension-build": [
       "@extension-create-libs"
