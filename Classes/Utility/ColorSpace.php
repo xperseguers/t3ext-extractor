@@ -72,7 +72,7 @@ class ColorSpace
     public static function verifyAndAdjustWithAllowedColorSpaces(?string $str = null): string
     {
         if (!isset($GLOBALS['TCA']['sys_file_metadata']['columns']['color_space']['config']['items'])) {
-            return $str;
+            return $str ?? '';
         }
 
         $allowedColorSpaces = array_map(
