@@ -43,7 +43,15 @@ class Karaoke
         $buffer = '';
         $length = count($data);
         for (; $i < $length; $i++) {
-            $chunk = utf8_encode($data[$i]);
+            $chunk = $data[$i];
+            if (function_exists('mb_detect_encoding')) {
+                $sourceEncoding = mb_detect_encoding($chunk, mb_detect_order(), true);
+                if ($sourceEncoding !== 'UTF-8') {
+                    $chunk = mb_convert_encoding($chunk, 'UTF-8', $sourceEncoding);
+                }
+            } else {
+                $chunk = utf8_encode($chunk);
+            }
             if (substr($chunk, 0, 1) === '/') {
                 $chunk = LF . substr($chunk, 1);
             } elseif (substr($chunk, 0, 1) === '\\') {
