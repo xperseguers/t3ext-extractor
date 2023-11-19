@@ -168,9 +168,9 @@ class PhpService extends AbstractService
         static::getLogger()->debug('Extracting metadata with GetID3 library');
 
         // Require 3rd-party libraries, in case TYPO3 does not run in composer mode
-        $autoloadFileName = ExtensionManagementUtility::extPath('extractor') . 'Libraries/vendor/autoload.php';
-        if (is_file($autoloadFileName)) {
-            include $autoloadFileName;
+        $pharFileName = ExtensionManagementUtility::extPath('extractor') . 'Libraries/getid3.phar';
+        if (is_file($pharFileName)) {
+            @include 'phar://' . $pharFileName . '/vendor/autoload.php';
         }
 
         $getID3 = new \getID3();
