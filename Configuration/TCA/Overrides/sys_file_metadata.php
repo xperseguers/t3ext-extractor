@@ -212,7 +212,9 @@ foreach ($loadedExtensions as $extension) {
         break;
     }
     $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extension);
-    if (strpos($extensionPath, '/sysext/') === false) {
+    $isSystemExtension = strpos($extensionPath, '/sysext/') !== false
+        || strpos($extensionPath, '/vendor/typo3/cms-') !== false;
+    if (!$isSystemExtension) {
         $overrideTcaFileName = $extensionPath . 'Configuration/TCA/Overrides/sys_file_metadata.php';
         if (is_file($overrideTcaFileName)) {
             include($overrideTcaFileName);
