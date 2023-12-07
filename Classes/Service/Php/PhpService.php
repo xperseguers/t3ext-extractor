@@ -625,7 +625,7 @@ class PhpService extends AbstractService
     {
         if (function_exists('mb_detect_encoding')) {
             $sourceEncoding = mb_detect_encoding($text ?? '', mb_detect_order(), true);
-            if ($sourceEncoding !== 'UTF-8') {
+            if ($sourceEncoding && $sourceEncoding !== 'UTF-8') {
                 $text = mb_convert_encoding($text ?? '', 'UTF-8', $sourceEncoding);
             }
         } else {
