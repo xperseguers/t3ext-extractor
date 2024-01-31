@@ -4,10 +4,10 @@
 
 ---
 conf.py:
-  copyright: 2014-2023
+  copyright: 2014-2024
   project: Metadata and Content Analysis Service
   version: 2.4
-  release: 2.4.3
+  release: 2.4.4
   latex_documents:
   - - Index
     - extractor.tex
