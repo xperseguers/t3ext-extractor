@@ -17,11 +17,11 @@ namespace Causal\Extractor\Service\Extraction;
 use Causal\Extractor\Utility\CategoryHelper;
 use Causal\Extractor\Utility\ExtensionHelper;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Class AbstractExtractionService
@@ -150,6 +150,16 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     public function canProcess(File $file)
     {
+        // We never should process files that have been
+        // moved to the recycler folder
+        $parentFolder = $file->getParentFolder();
+        while ($parentFolder !== null) {
+            if ($parentFolder->getRole() === FolderInterface::ROLE_RECYCLER) {
+                return false;
+            }
+            $parentFolder = $parentFolder->getParentFolder();
+        }
+
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
             : TYPO3_branch;
