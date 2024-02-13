@@ -153,12 +153,13 @@ abstract class AbstractExtractionService implements ExtractorInterface
         // We never should process files that have been
         // moved to the recycler folder
         $parentFolder = $file->getParentFolder();
-        while ($parentFolder !== null) {
-            if ($parentFolder->getRole() === FolderInterface::ROLE_RECYCLER) {
+        do {
+            $parent = $parentFolder;
+            if ($parent->getRole() === FolderInterface::ROLE_RECYCLER) {
                 return false;
             }
-            $parentFolder = $parentFolder->getParentFolder();
-        }
+            $parentFolder = $parent->getParentFolder();
+        } while ($parent->getIdentifier() !== $parentFolder->getIdentifier());
 
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
