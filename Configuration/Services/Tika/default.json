@@ -163,7 +163,7 @@
   },
   {
     "FAL": "aperture",
-    "DATA": "exif:FNumber"
+    "DATA": "exif:FNumber->Causal\\Extractor\\Utility\\Number::extractFloat"
   },
   {
     "FAL": "flash",
