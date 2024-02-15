@@ -163,7 +163,7 @@
   },
   {
     "FAL": "aperture",
-    "DATA": "Aperture"
+    "DATA": "Aperture->Causal\\Extractor\\Utility\\Number::extractFloat"
   },
   {
 	"FAL": "flash",
