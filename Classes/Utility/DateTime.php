@@ -25,12 +25,15 @@ class DateTime
     /**
      * Converts a date/time into its Unix timestamp.
      *
-     * @param string|null $str
+     * @param string|array|null $str
      * @return int|null
      */
-    public static function timestamp(?string $str = null): ?int
+    public static function timestamp($str = null): ?int
     {
-        if ($str === null) {
+        if (is_array($str)) {
+            $str = implode(' ', $str);
+        }
+        if (!is_string($str)) {
             return null;
         }
         if (preg_match('/^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}$/', $str)) {
