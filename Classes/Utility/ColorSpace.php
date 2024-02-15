@@ -83,7 +83,7 @@ class ColorSpace
         );
 
         foreach ($allowedColorSpaces as $allowedColorSpace) {
-            if (trim(strtolower($allowedColorSpace)) === trim(strtolower($str))) {
+            if (strtolower(trim($allowedColorSpace)) === strtolower(trim($str))) {
                 return $allowedColorSpace;
             }
         }
