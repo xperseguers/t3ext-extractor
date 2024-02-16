@@ -17,6 +17,7 @@ namespace Causal\Extractor\Service\Extraction;
 use Causal\Extractor\Utility\CategoryHelper;
 use Causal\Extractor\Utility\ExtensionHelper;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\File;
@@ -150,16 +151,20 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     public function canProcess(File $file)
     {
-        // We never should process files that have been
-        // moved to the recycler folder
-        $parentFolder = $file->getParentFolder();
-        do {
-            $parent = $parentFolder;
-            if ($parent->getRole() === FolderInterface::ROLE_RECYCLER) {
-                return false;
-            }
-            $parentFolder = $parent->getParentFolder();
-        } while ($parent->getIdentifier() !== $parentFolder->getIdentifier());
+        // We never should/need to process files that have
+        // been moved to the recycler folder
+        try {
+            $parentFolder = $file->getParentFolder();
+            do {
+                $parent = $parentFolder;
+                if ($parent->getRole() === FolderInterface::ROLE_RECYCLER) {
+                    return false;
+                }
+                $parentFolder = $parent->getParentFolder();
+            } while ($parent->getIdentifier() !== $parentFolder->getIdentifier());
+        } catch (InsufficientFolderAccessPermissionsException $e) {
+            // Just go on, we cannot do anything about it
+        }
 
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
