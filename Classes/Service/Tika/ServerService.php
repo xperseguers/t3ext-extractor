@@ -120,9 +120,8 @@ class ServerService extends AbstractService implements TikaServiceInterface
     public function extractMetadataFromLocalFile($fileName)
     {
         $content = $this->send('PUT', '/meta', 'application/json', $fileName);
-        $metadata = json_decode($content, true);
-
-        return $metadata ?? [];
+        $metadata = empty($content) ? [] : json_decode($content, true);
+        return $metadata;
     }
 
     /**
