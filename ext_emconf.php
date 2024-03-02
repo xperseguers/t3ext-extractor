@@ -2,12 +2,6 @@
 
 /***************************************************************
  * Extension Manager/Repository config file for ext "extractor".
- *
- * Auto generated 17-10-2015 11:00
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = [
@@ -18,14 +12,11 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'Causal Sàrl',
     'author_email' => 'xavier@causal.ch',
     'state' => 'stable',
-    'uploadfolder' => 0,
-    'createDirs' => '',
-    'clearCacheOnLoad' => 0,
     'version' => '2.4.4',
     'constraints' => [
         'depends' => [
             'php' => '7.2.0-8.3.99',
-            'typo3' => '8.7.0-12.4.99',
+            'typo3' => '8.7.0-13.0.99',
             'filemetadata' => '',
         ],
         'conflicts' => [],
