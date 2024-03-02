@@ -2,7 +2,7 @@
 # Table structure for table 'sys_file_metadata'
 #
 CREATE TABLE sys_file_metadata (
-  copyright text,
+  copyright longtext,
   camera_make varchar(255) DEFAULT '' NOT NULL,
   camera_model varchar(255) DEFAULT '' NOT NULL,
   camera_lens varchar(255) DEFAULT '' NOT NULL,
