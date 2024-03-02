@@ -223,7 +223,7 @@ CSS;
 
         $label = $this->translate('settings.mapping_configuration.chooseFile', true);
         $output = '<label for="tx-extractor-file">' . $label . '</label>';
-        $output .= '<select id="tx-extractor-file" class="form-control"><option value=""></option>';
+        $output .= '<select id="tx-extractor-file" class="form-control form-select"><option value=""></option>';
 
         foreach ($files as $category => $f) {
             if (!empty($f)) {
@@ -367,7 +367,7 @@ CSS;
     {
         $output = '<div class="form-group">';
         $output .= '<label for="' . htmlspecialchars($id) . '">' . $this->translate($labelKey, true) . '</label>';
-        $output .= '<select id="' . htmlspecialchars($id) . '" class="form-control">';
+        $output .= '<select id="' . htmlspecialchars($id) . '" class="form-control form-select">';
 
         if ($prependEmpty) {
             $output .= '<option value=""></option>';
