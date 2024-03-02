@@ -72,7 +72,7 @@ DATA
 .. figure:: ../Images/configuration-helper-tool.png
    :alt: Configuration Helper Tool
 
-   A configuration helper tool is available in Extension Manager.
+   A configuration helper tool is available in Extension Manager, prior to TYPO3 v11.
 
 
 .. _developer-manual-hook:

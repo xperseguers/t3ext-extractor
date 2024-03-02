@@ -81,6 +81,16 @@ class MappingController extends AbstractConfigurationField
             $resourcesPath = '../' . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extensionKey)) . 'Resources/Public/';
         }
 
+        if (version_compare($typo3Branch, '11.0', '>=')) {
+            // JavaScript is not loaded anymore, we will need to find a trick/hack at some point!
+            $html = [];
+            $html[] = '<div class="alert alert-warning">';
+            $html[] = 'TYPO3 v11 and up do not support JavaScript in Extension Manager. Please configure on your own until we find a trick.';
+            $html[] = '</div>';
+
+            return implode(PHP_EOL, $html);
+        }
+
         $html = [];
         $html[] = '<style type="text/css">';
         $html[] = <<<CSS
