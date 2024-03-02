@@ -434,7 +434,12 @@ abstract class AbstractExtractionService implements ExtractorInterface
         }
         foreach ($output as $key => $value) {
             if (isset($databaseFields[$key])) {
-                $type = $databaseFields[$key]->getType()->getName();
+                $type = $databaseFields[$key]->getType();
+                if (version_compare($typo3Branch, '12.4', '>=')) {
+                    $typeName = $type->getTypeRegistry()->lookupName($type);
+                } else {
+                    $typeName = $type->getName();
+                }
                 $length = $databaseFields[$key]->getLength();
                 if ($type === 'string' && strlen($value) > $length) {
                     // We need to truncate the extracted value for the database
