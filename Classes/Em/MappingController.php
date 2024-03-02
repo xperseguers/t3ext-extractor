@@ -16,6 +16,7 @@ namespace Causal\Extractor\Em;
 
 use Causal\Extractor\Utility\SimpleString;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -53,7 +54,7 @@ class MappingController extends AbstractConfigurationField
         if (version_compare($typo3Branch, '9.0', '<')) {
             $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extensionKey] ?? '') ?? [];
         } else {
-            $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$this->extensionKey] ?? [];
+            $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extensionKey) ?? [];
         }
 
         // By default Native PHP is enabled

@@ -16,6 +16,7 @@ namespace Causal\Extractor\Service\Extraction;
 
 use Causal\Extractor\Utility\CategoryHelper;
 use Causal\Extractor\Utility\ExtensionHelper;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\FolderInterface;
@@ -54,7 +55,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
         if (version_compare($typo3Branch, '9.0', '<')) {
             $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor'] ?? '') ?? [];
         } else {
-            $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor'] ?? [];
+            $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extractor') ?? [];
         }
     }
 

@@ -17,6 +17,7 @@ namespace Causal\Extractor\Service;
 use Causal\Extractor\Resource\Event\AfterMetadataExtractedEvent;
 use Causal\Extractor\Service\ServiceInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -55,7 +56,7 @@ abstract class AbstractService implements ServiceInterface
         if (version_compare($typo3Branch, '9.0', '<')) {
             $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor'] ?? '') ?? [];
         } else {
-            $this->settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor'] ?? [];
+            $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extractor') ?? [];
         }
 
         if (version_compare($typo3Branch, '10.2', '>=')) {

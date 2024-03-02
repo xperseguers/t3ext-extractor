@@ -10,7 +10,7 @@ defined('TYPO3_MODE') || defined('TYPO3') || die();
     if (version_compare($typo3Branch, '9.0', '<')) {
         $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? '') ?? [];
     } else {
-        $settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$_EXTKEY] ?? [];
+        $settings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY) ?? [];
     }
     if (is_array($settings)) {
         if (isset($settings['enable_tika']) && (bool)$settings['enable_tika']) {

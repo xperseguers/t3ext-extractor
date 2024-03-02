@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Causal\Extractor\Service;
 use Causal\Extractor\Utility\SimpleString;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -98,7 +99,7 @@ class AjaxController
                 if (version_compare($typo3Branch, '9.0', '<')) {
                     $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor'] ?? '') ?? [];
                 } else {
-                    $settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extractor'] ?? [];
+                    $settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extractor') ?? [];
                 }
                 if (isset($settings['mapping_base_directory'])) {
                     $pathConfiguration = is_dir($this->settings['mapping_base_directory'])
