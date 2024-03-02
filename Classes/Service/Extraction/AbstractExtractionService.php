@@ -418,11 +418,20 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     protected function enforceStringLengths(array &$output): void
     {
-        $databaseFields = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('sys_file_metadata')
-            ->getSchemaManager()
-            ->listTableColumns('sys_file_metadata');
-
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '12.4', '>=')) {
+            $databaseFields = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_file_metadata')
+                ->createSchemaManager()
+                ->listTableColumns('sys_file_metadata');
+        } else {
+            $databaseFields = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_file_metadata')
+                ->getSchemaManager()
+                ->listTableColumns('sys_file_metadata');
+        }
         foreach ($output as $key => $value) {
             if (isset($databaseFields[$key])) {
                 $type = $databaseFields[$key]->getType()->getName();

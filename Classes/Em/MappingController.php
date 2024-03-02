@@ -279,10 +279,20 @@ CSS;
     protected function getFalPropertySelector(): string
     {
         $options = [];
-        $fields = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('sys_file_metadata')
-            ->getSchemaManager()
-            ->listTableColumns('sys_file_metadata');
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '12.4', '>=')) {
+            $fields = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_file_metadata')
+                ->createSchemaManager()
+                ->listTableColumns('sys_file_metadata');
+        } else {
+            $fields = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('sys_file_metadata')
+                ->getSchemaManager()
+                ->listTableColumns('sys_file_metadata');
+        }
         foreach ($fields as $field => $_) {
             switch (true) {
                 case SimpleString::isFirstPartOfStr($field, 't3ver_'):
