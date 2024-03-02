@@ -59,7 +59,7 @@ class CategoryHelper
         }
 
         // Fetch the uid associated to the corresponding sys_file_metadata record
-        $row = GeneralUtility::makeInstance(ConnectionPool::class)
+        $statement = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('sys_file_metadata')
             ->select(
                 ['uid'],
@@ -68,8 +68,12 @@ class CategoryHelper
                     'file' => $file->getUid(),
                     'sys_language_uid' => 0,
                 ]
-            )
-            ->fetch();
+            );
+        if (version_compare($typo3Branch, '10.0', '>')) {
+            $row = $statement->fetchAssociative();
+        } else {
+            $row = $statement->fetch();
+        }
         if (!$row) {
             // An error occurred, cannot proceed!
             return;
@@ -92,7 +96,7 @@ class CategoryHelper
         );
 
         if (!empty($categories)) {
-            $typo3Categories = GeneralUtility::makeInstance(ConnectionPool::class)
+            $statement = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('sys_category')
                 ->select(
                     ['uid', 'title'],
@@ -100,8 +104,12 @@ class CategoryHelper
                     [
                         'sys_language_uid' => 0,
                     ]
-                )
-                ->fetchAll();
+                );
+            if (version_compare($typo3Branch, '10.0', '>')) {
+                $typo3Categories = $statement->fetchAllAssociative();
+            } else {
+                $typo3Categories = $statement->fetchAll();
+            }
 
             foreach ($categories as $category) {
                 foreach ($typo3Categories as $typo3Category) {
