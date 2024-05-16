@@ -2,5 +2,10 @@
     {
       "FAL": "duration",
       "DATA": "duration->Causal\\Extractor\\Utility\\Number::castInteger"
+    },
+    {
+      "FAL": "description",
+      "DATA": "description"
     }
-]    
+]
+

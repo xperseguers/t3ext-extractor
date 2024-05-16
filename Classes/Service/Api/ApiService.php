@@ -65,11 +65,6 @@ class ApiService extends AbstractService
     {
         $fileName = $file->getForLocalProcessing(false);
         $extension = strtolower(substr($fileName, strrpos($fileName, '.') + 1));
-        
-        //ok
-        error_log("extension navn:");
-        
-        error_log($extension);
 
         try {
             switch (true) {
@@ -94,10 +89,6 @@ class ApiService extends AbstractService
             static::getLogger()->error('Error while extracting metadata from file', ['exception' => $e]);
             $metadata = [];
         }
-        
-        
-        error_log("metadate første tomme array:");
-        error_log(print_r($metadata, true));
         return $metadata;
     }
 
@@ -164,15 +155,61 @@ class ApiService extends AbstractService
         );
 
         $api_url = $this->settings['youtube_api_base'] . '?' . http_build_query($params);
-        
         $result = json_decode(@file_get_contents($api_url), true);
 
         if(empty($result['items'][0]['contentDetails'])) {
             return null;
         }
-        
         $duration = self::covTime($result['items'][0]['contentDetails']['duration']);
         $metadata['duration'] = $duration;
+
+        return $metadata;
+
+    }
+
+
+    /**
+     * Fetch metadata from a Vimeo video.
+     *
+     * @param \TYPO3\CMS\Core\Resource\File $file File object
+     * @return array
+     */
+    protected function extractMetadataFromVimeo($file)
+    {
+        static::getLogger()->debug('Fetching metadata from Vimeo API');
+        $metadata = [];
+
+        // Fetch online media id
+        $onlineMediaHelper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($file);
+        $videoId = $onlineMediaHelper->getOnlineMediaId($file);
+        
+        $params = array(
+            // 'fields' => 'duration',
+        );
+    
+        // Create a stream - setting headers for authentication
+        $opts = array(
+            'http'=>array(
+            'method'=>"GET",
+            'header'=>"cache-control: no-cache\r\n" .
+                        "authorization: Bearer ". $this->settings['vimeo_api_key'] ."\r\n"
+            )
+        );
+    
+        $context = stream_context_create($opts);
+
+        // Build URI with Params and open the file using the HTTP headers set above
+        $api_url = $this->settings['vimeo_api_base'] . $videoId . '?' . http_build_query($params);
+        $result = json_decode(@file_get_contents($api_url, false, $context), true);
+
+        // foreach($result as $key=>$value) {
+        //     error_log($key);
+        //     error_log(print_r($value, true));
+        // }
+        if(empty($result)) {
+            return [];
+        }
+        $metadata = $result;
 
         return $metadata;
 
