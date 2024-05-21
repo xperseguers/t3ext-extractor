@@ -15,20 +15,16 @@
 namespace Causal\Extractor\Service\Api;
 
 use Causal\Extractor\Service\AbstractService;
-use Causal\Extractor\Utility\ColorSpace;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
-
+// use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+// use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\File;
-
 use Causal\Extractor\Resource\Event\AfterMetadataExtractedEvent;
 
 /**
  * A ApiService service implementation.
  *
- * @author      --- <xavier@causal.ch>
+ * @author      Martin Kristensen <mkr@imh.dk> + Daniel Damm <dad@imh.dk>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class ApiService extends AbstractService
@@ -39,8 +35,6 @@ class ApiService extends AbstractService
         'vimeo',    // VIDEOTYPE_VIMEO
     ];
 
-
-    
 
     /**
      * Returns a list of supported file types.
@@ -53,6 +47,7 @@ class ApiService extends AbstractService
             $this->onlineExtensions
         );
     }
+
 
     /**
      * Takes a file reference and extracts its metadata.
@@ -68,15 +63,11 @@ class ApiService extends AbstractService
 
         try {
             switch (true) {
-                
-                // case in_array($extension, $this->getOnlineExtensions):
-                //     $metadata = $this->extractMetadataWithGetId3($fileName);
-                //     break;
                 case $extension === 'youtube':
-                    $metadata = $this->extractMetadataFromYoutube($file);
+                    $metadata['youtube'] = $this->extractMetadataFromYoutube($file);
                     break;
                 case $extension === 'vimeo':
-                    $metadata = $this->extractMetadataFromVimeo($file);
+                    $metadata['vimeo'] = $this->extractMetadataFromVimeo($file);
                     break;
                 default:
                     $metadata = [];
@@ -91,8 +82,6 @@ class ApiService extends AbstractService
         }
         return $metadata;
     }
-
-    
 
 
     /**
@@ -110,9 +99,7 @@ class ApiService extends AbstractService
                 'identifier' => $file->getCombinedIdentifier(),
             ]
         );
-        #$localTempFilePath = $file->getForLocalProcessing(false);
         $metadata = $this->extractMetadataFromLocalFile($file);
-        #$this->cleanupTempFile($localTempFilePath, $file);
 
         // Emit Signal after metadata has been extracted
         if ($this->eventDispatcher !== null) {
@@ -133,6 +120,7 @@ class ApiService extends AbstractService
         return $metadata;
     }
 
+
     /**
      * Fetch metadata from a youtube video.
      *
@@ -144,27 +132,21 @@ class ApiService extends AbstractService
         static::getLogger()->debug('Fetching metadata from Youtube API');
         $metadata = [];
 
-        // Fetch online media id
-        $onlineMediaHelper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($file);
-        $videoId = $onlineMediaHelper->getOnlineMediaId($file);
-        
         $params = array(
-            'part' => 'contentDetails,snippet', // snippet has description
-            'id' => $videoId,
+            'part' => 'contentDetails,snippet',
+            'id' => $this->getMediaId($file),
             'key' => $this->settings['youtube_api_key'],
         );
 
         $api_url = $this->settings['youtube_api_base'] . '?' . http_build_query($params);
         $result = json_decode(@file_get_contents($api_url), true);
 
-        if(empty($result['items'][0]['contentDetails'])) {
-            return null;
+        if(empty($result['items'][0])) {
+            return [];
         }
-        $duration = self::covTime($result['items'][0]['contentDetails']['duration']);
-        $metadata['duration'] = $duration;
+        $metadata = $result['items'][0];
 
         return $metadata;
-
     }
 
 
@@ -178,15 +160,7 @@ class ApiService extends AbstractService
     {
         static::getLogger()->debug('Fetching metadata from Vimeo API');
         $metadata = [];
-
-        // Fetch online media id
-        $onlineMediaHelper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($file);
-        $videoId = $onlineMediaHelper->getOnlineMediaId($file);
         
-        $params = array(
-            // 'fields' => 'duration',
-        );
-    
         // Create a stream - setting headers for authentication
         $opts = array(
             'http'=>array(
@@ -196,37 +170,30 @@ class ApiService extends AbstractService
             )
         );
     
-        $context = stream_context_create($opts);
-
         // Build URI with Params and open the file using the HTTP headers set above
-        $api_url = $this->settings['vimeo_api_base'] . $videoId . '?' . http_build_query($params);
-        $result = json_decode(@file_get_contents($api_url, false, $context), true);
+        $api_url = $this->settings['vimeo_api_base'] . $this->getMediaId($file);
+        $result = json_decode(@file_get_contents($api_url, false, stream_context_create($opts)), true);
 
-        // foreach($result as $key=>$value) {
-        //     error_log($key);
-        //     error_log(print_r($value, true));
-        // }
         if(empty($result)) {
             return [];
         }
         $metadata = $result;
 
         return $metadata;
-
     }
 
 
     /**
-     * Convert Youtube time
+     * Fetch online media id from file.
      *
-     * @param string $youtubeTime
+     * @param \TYPO3\CMS\Core\Resource\File $file File object
+     * @return string
      */
-    public function covTime($youtubeTime)
+    protected function getMediaId($file)
     {
-        $start = new \DateTime('@0'); // Unix epoch
-        $start->add(new \DateInterval($youtubeTime));
-        return $start->format('U');
+                $onlineMediaHelper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($file);
+                $mediaId = $onlineMediaHelper->getOnlineMediaId($file);
+
+                return $mediaId;
     }
-
 }
-

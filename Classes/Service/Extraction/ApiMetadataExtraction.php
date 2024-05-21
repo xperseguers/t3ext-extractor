@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * A service to extract metadata from files using API
  *
- * @author      Xavier Perseguers <xavier@causal.ch>
+ * @author      Martin Kristensen <mkr@imh.dk>
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class ApiMetadataExtraction extends AbstractExtractionService
@@ -73,8 +73,6 @@ class ApiMetadataExtraction extends AbstractExtractionService
 
         $extractedMetadata = $this->getApiService()->extractMetadata($file);
 
-        error_log(print_r($extractedMetadata, true));
-        
         if (!empty($extractedMetadata)) {
             $dataMapping = $this->getDataMapping($file);
             $metadata = $this->remapServiceOutput($extractedMetadata, $dataMapping);
