@@ -204,7 +204,7 @@ class PhpService extends AbstractService
                 $metaLen = (int)$matches[0][1];
                 if ($metaLen > 0) {
                     // skip $startSequence and stream "XML/Type/Metadata>>stream\r\n"
-                    $metaDataStartOffset = $nextStartPosition + 26;
+                    $metaDataStartOffset = $nextStartPosition + 27;
                     if ($buffer[$metaDataStartOffset] === "\r" && $buffer[$metaDataStartOffset + 1] === "\n") {
                         $metaDataStartOffset++;
                     }
