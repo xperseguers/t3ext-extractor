@@ -277,7 +277,8 @@ class PhpService extends AbstractService
         $dom->preserveWhiteSpace = false;
         $dom->substituteEntities = false;
 
-        if ('x:xmpmeta' !== $dom->documentElement->nodeName) {
+        if ($dom->documentElement === null
+            || 'x:xmpmeta' !== $dom->documentElement->nodeName) {
             return $xmpMetadata;
         }
 
