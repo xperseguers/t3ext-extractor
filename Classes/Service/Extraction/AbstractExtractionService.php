@@ -380,6 +380,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
                             $value = call_user_func_array($processor, $parameters);
                         } catch (\Exception $exception) {
                             $value = $parameters[0];
+                        } catch (\TypeError $exception) {
                         }
                     }
                 }
