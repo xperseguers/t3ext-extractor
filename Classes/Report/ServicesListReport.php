@@ -51,7 +51,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      *
      * @return string The status report as HTML
      */
-    public function getReport()
+    public function getReport(): string
     {
         $content = '';
         $content .= $this->renderHelp();
@@ -64,7 +64,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      *
      * @return string The help content for this module.
      */
-    protected function renderHelp()
+    protected function renderHelp(): string
     {
         $help = '<p class="help">' . $this->getLanguageService()->getLL('report_explanation', true) . '</p>';
         return $help;
@@ -75,7 +75,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      *
      * @return string HTML to display
      */
-    protected function renderExtractorsList()
+    protected function renderExtractorsList(): string
     {
         $language = $this->getLanguageService();
         $header = '<h4>' . $language->getLL('extractors') . '</h4>';
@@ -113,7 +113,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      * @param ExtractorInterface $extractor
      * @return string
      */
-    protected function renderExtractorRow(ExtractorInterface $extractor)
+    protected function renderExtractorRow(ExtractorInterface $extractor): string
     {
         $class = get_class($extractor);
         if (strpos($class, '\\') !== false) {
@@ -156,7 +156,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      * @param array $fileTypes
      * @return string HTML snippet
      */
-    protected function groupFileTypes(array $fileTypes)
+    protected function groupFileTypes(array $fileTypes): string
     {
         if ($fileTypes[0] === '*') {
             return '*';

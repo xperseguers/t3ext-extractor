@@ -77,7 +77,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      *
      * @return array
      */
-    public function getFileTypeRestrictions()
+    public function getFileTypeRestrictions(): array
     {
         return $this->supportedFileTypes;
     }
@@ -87,7 +87,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      *
      * @return array
      */
-    public function getFileExtensionRestrictions()
+    public function getFileExtensionRestrictions(): array
     {
         return $this->supportedFileExtensions;
     }
@@ -104,7 +104,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      *
      * @return array
      */
-    public function getDriverRestrictions()
+    public function getDriverRestrictions(): array
     {
         return [
             'Local',
@@ -121,7 +121,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      *
      * @return integer
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return max(1, min(100, $this->priority));
     }
@@ -133,7 +133,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      *
      * @return integer
      */
-    public function getExecutionPriority()
+    public function getExecutionPriority(): int
     {
         return $this->getPriority();
     }
@@ -144,7 +144,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @param File $file
      * @return bool
      */
-    public function canProcess(File $file)
+    public function canProcess(File $file): bool
     {
         // We never should/need to process files that have
         // been moved to the recycler folder
@@ -191,7 +191,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @param array $types
      * @return array
      */
-    public function getPotentialMappingFiles(File $file, array &$types = null)
+    public function getPotentialMappingFiles(File $file, ?array &$types = null): array
     {
         $potentialFiles = [];
         $types = $this->extensionToServiceTypes($file->getExtension());
@@ -233,7 +233,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @return array|null
      * @throws \Exception
      */
-    protected function getDataMapping(File $file)
+    protected function getDataMapping(File $file): ?array
     {
         $types = [];
         $mappingFiles = $this->getPotentialMappingFiles($file, $types);
@@ -302,7 +302,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @param array $mapping
      * @return array
      */
-    protected function remapServiceOutput(array $data, array $mapping = null)
+    protected function remapServiceOutput(array $data, ?array $mapping = null): array
     {
         $output = [];
 
@@ -453,7 +453,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @param string $extension
      * @return string[]
      */
-    protected function extensionToServiceTypes($extension)
+    protected function extensionToServiceTypes(string $extension): array
     {
         // Normalize the extension
         $extension = strtolower($extension);

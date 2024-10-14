@@ -55,7 +55,7 @@ class AppService extends AbstractService implements TikaServiceInterface
      *
      * @return string
      */
-    public function getTikaVersion()
+    public function getTikaVersion(): string
     {
         $version = '';
         $tikaCommand = CommandUtility::getCommand('java')
@@ -74,7 +74,7 @@ class AppService extends AbstractService implements TikaServiceInterface
      *
      * @return array
      */
-    public function getSupportedFileExtensions()
+    public function getSupportedFileExtensions(): array
     {
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -jar ' . CommandUtility::escapeShellArgument($this->getTikaJar())
@@ -130,7 +130,7 @@ class AppService extends AbstractService implements TikaServiceInterface
      * @param \TYPO3\CMS\Core\Resource\File $fileName
      * @return array
      */
-    public function extractMetadataFromLocalFile($fileName)
+    public function extractMetadataFromLocalFile(string $fileName): array
     {
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -Dfile.encoding=UTF8'
@@ -160,7 +160,7 @@ class AppService extends AbstractService implements TikaServiceInterface
      * @param \TYPO3\CMS\Core\Resource\File $file
      * @return string Language ISO code
      */
-    public function detectLanguage(File $file)
+    public function detectLanguage(File $file): string
     {
         $localTempFilePath = $file->getForLocalProcessing(false);
         $language = $this->detectLanguageFromLocalFile($localTempFilePath);
@@ -175,7 +175,7 @@ class AppService extends AbstractService implements TikaServiceInterface
      * @param string $fileName Path to the file
      * @return string
      */
-    public function detectLanguageFromLocalFile($fileName)
+    public function detectLanguageFromLocalFile(string $fileName): string
     {
         $tikaCommand = CommandUtility::getCommand('java')
             . ' -Dfile.encoding=UTF8'

@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Service\Extraction;
 
+use Causal\Extractor\Service\ExifTool\ExifToolService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -75,7 +76,7 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
      */
-    public function extractMetaData(File $file, array $previousExtractedData = [])
+    public function extractMetaData(File $file, array $previousExtractedData = []): array
     {
         $metadata = [];
 
@@ -94,14 +95,14 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
      *
      * @return \Causal\Extractor\Service\ExifTool\ExifToolService
      */
-    protected function getExifToolService()
+    protected function getExifToolService(): ExifToolService
     {
         /** @var \Causal\Extractor\Service\ExifTool\ExifToolService $exifToolService */
         static $exifToolService = null;
 
         if ($exifToolService === null) {
             try {
-                $exifToolService = GeneralUtility::makeInstance(\Causal\Extractor\Service\ExifTool\ExifToolService::class);
+                $exifToolService = GeneralUtility::makeInstance(ExifToolService::class);
             } catch (\RuntimeException $e) {
                 // Nothing to do
             }

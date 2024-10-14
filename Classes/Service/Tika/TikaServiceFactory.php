@@ -35,7 +35,7 @@ class TikaServiceFactory
      * @throws \InvalidArgumentException for unknown Tika service type
      * @throws \RuntimeException if the service cannot be instantiated
      */
-    public static function getTika(string $tikaService = '')
+    public static function getTika(string $tikaService = ''): TikaServiceInterface
     {
         if (empty($tikaService)) {
             $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
@@ -44,9 +44,9 @@ class TikaServiceFactory
 
         switch ($tikaService) {
             case 'jar':
-                return GeneralUtility::makeInstance(\Causal\Extractor\Service\Tika\AppService::class);
+                return GeneralUtility::makeInstance(AppService::class);
             case 'server':
-                return GeneralUtility::makeInstance(\Causal\Extractor\Service\Tika\ServerService::class);
+                return GeneralUtility::makeInstance(ServerService::class);
             default:
                 throw new \InvalidArgumentException(
                     'Unknown Tika service type "' . $tikaService . '". Must be one of "jar" or "server".',

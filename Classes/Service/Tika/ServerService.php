@@ -54,7 +54,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
      *
      * @return string
      */
-    public function getTikaVersion()
+    public function getTikaVersion(): string
     {
         $tikaVersion = $this->send('GET', '/version');
         return $tikaVersion;
@@ -65,7 +65,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
      *
      * @return array
      */
-    public function getSupportedFileExtensions()
+    public function getSupportedFileExtensions(): array
     {
         $content = $this->send('GET', '/mime-types', 'application/json');
         $mimeTypes = json_decode($content, true);
@@ -87,7 +87,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
      *
      * @return int -1 if host is down otherwise delay to connect to the Tika host
      */
-    public function ping()
+    public function ping(): int
     {
         $starttime = microtime(true);
         $fh = @fsockopen(
@@ -117,7 +117,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
      * @param string $file
      * @return array
      */
-    public function extractMetadataFromLocalFile($fileName)
+    public function extractMetadataFromLocalFile(string $fileName): array
     {
         $content = $this->send('PUT', '/meta', 'application/json', $fileName);
         $metadata = empty($content) ? [] : json_decode($content, true);
@@ -131,7 +131,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
      * @param \TYPO3\CMS\Core\Resource\File $file
      * @return string Language ISO code
      */
-    public function detectLanguage(File $file)
+    public function detectLanguage(File $file): string
     {
         $localTempFilePath = $file->getForLocalProcessing(false);
         $language = $this->detectLanguageFromLocalFile($localTempFilePath);
@@ -146,7 +146,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
      * @param string $fileName Path to the file
      * @return string
      */
-    public function detectLanguageFromLocalFile($fileName)
+    public function detectLanguageFromLocalFile(string $fileName): string
     {
         $language = $this->send('PUT', '/language/stream', '', $fileName);
 
@@ -160,9 +160,14 @@ class ServerService extends AbstractService implements TikaServiceInterface
      * @param string $resource
      * @param string $accept
      * @param string $fileName
-     * @return string
+     * @return string|null
      */
-    protected function send($method, $resource, $accept = '', $fileName = '')
+    protected function send(
+        string $method,
+        string $resource,
+        string $accept = '',
+        string $fileName = ''
+    ): ?string
     {
         // Initiate the connection
         $fh = @fsockopen(

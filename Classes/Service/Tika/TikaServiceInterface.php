@@ -32,7 +32,7 @@ interface TikaServiceInterface extends ServiceInterface
      *
      * @return string
      */
-    public function getTikaVersion();
+    public function getTikaVersion(): string;
 
     /**
      * Takes a file reference and detects its content's language.
@@ -40,7 +40,7 @@ interface TikaServiceInterface extends ServiceInterface
      * @param \TYPO3\CMS\Core\Resource\File $file
      * @return string Language ISO code
      */
-    public function detectLanguage(File $file);
+    public function detectLanguage(File $file): string;
 
     /**
      * Takes a file reference and detects its content's language.
@@ -48,5 +48,5 @@ interface TikaServiceInterface extends ServiceInterface
      * @param string $file Path to the file
      * @return string Language ISO code
      */
-    public function detectLanguageFromLocalFile($file);
+    public function detectLanguageFromLocalFile(string $file): string;
 }

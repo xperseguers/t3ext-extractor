@@ -83,7 +83,7 @@ class PhpService extends AbstractService
      *
      * @return array
      */
-    public function getSupportedFileExtensions()
+    public function getSupportedFileExtensions(): array
     {
         return array_merge(
             $this->imageExtensions,
@@ -100,7 +100,7 @@ class PhpService extends AbstractService
      * @return array
      * @see \Causal\ImageAutoresize\Utility\ImageUtility::getMetadata()
      */
-    public function extractMetadataFromLocalFile($fileName)
+    public function extractMetadataFromLocalFile(string $fileName): array
     {
         $extension = strtolower(substr($fileName, strrpos($fileName, '.') + 1));
 
@@ -188,7 +188,12 @@ class PhpService extends AbstractService
      * @param int $startPosition
      * @param array $metaDataLength
      */
-    private function extractXMPMetaRecursive($buffer, $bufferSize, $startPosition, &$metaDataLength)
+    private function extractXMPMetaRecursive(
+        string $buffer,
+        int $bufferSize,
+        int $startPosition,
+        array &$metaDataLength
+    ): void
     {
         // 'XML/Type/Metadata' in hex
         $startSequence = "\x58\x4D\x4C\x2F\x54\x79\x70\x65\x2F\x4D\x65\x74\x61\x64\x61\x74\x61";
@@ -227,7 +232,7 @@ class PhpService extends AbstractService
      * @param array $xmpMetadata
      * @param string $parentTitle
      */
-    private function parseRDFXMPDataRecursive($domNodeList, &$xmpMetadata, $parentTitle = '')
+    private function parseRDFXMPDataRecursive($domNodeList, array &$xmpMetadata, string $parentTitle = ''): void
     {
         /** @var \DOMNode $childNode */
         foreach ($domNodeList as $childNode) {
@@ -263,7 +268,7 @@ class PhpService extends AbstractService
      * @param string $xmpXMLData
      * @return array
      */
-    private function parseXMPMetaXML($xmpXMLData)
+    private function parseXMPMetaXML(string $xmpXMLData): array
     {
         // we don't support AES encrypted METADATA currently
         if (strpos($xmpXMLData, '<?xpacket') === false) {
@@ -329,7 +334,7 @@ class PhpService extends AbstractService
      * @param string $buffer
      * @return array
      */
-    private function extractNativePDFInformation($buffer)
+    private function extractNativePDFInformation(string $buffer): array
     {
         $nativeData = [];
         // find pageNumber
@@ -402,7 +407,7 @@ class PhpService extends AbstractService
      * @param string $fileName Path to the file
      * @return array
      */
-    protected function extractMetadataFromPdf($fileName)
+    protected function extractMetadataFromPdf(string $fileName): array
     {
         static::getLogger()->debug('Extracting metadata from PDF');
         $metadata = [];
@@ -481,7 +486,7 @@ class PhpService extends AbstractService
      * @param string $fileName Path to the file
      * @return array
      */
-    protected function extractMetadataFromImage($fileName)
+    protected function extractMetadataFromImage(string $fileName): array
     {
         static::getLogger()->debug('Extracting metadata from image');
 
@@ -533,7 +538,7 @@ class PhpService extends AbstractService
      * @return array
      * @see \Causal\ImageAutoresize\Utility\ImageUtility::getMetadata()
      */
-    protected function getMetadata($fileName)
+    protected function getMetadata(string $fileName): array
     {
         $extension = strtolower(substr($fileName, strrpos($fileName, '.') + 1));
         $metadata = [];
@@ -646,7 +651,7 @@ class PhpService extends AbstractService
      * @return float
      * @see \Causal\ImageAutoresize\Utility\ImageUtility::rationaleToDecimal()
      */
-    protected static function rationalToDecimal(array $components)
+    protected static function rationalToDecimal(array $components): float
     {
         foreach ($components as $key => $value) {
             $rationalParts = explode('/', $value);

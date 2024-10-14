@@ -60,7 +60,7 @@ abstract class AbstractService implements ServiceInterface
      * @param \TYPO3\CMS\Core\Resource\File $file
      * @return array
      */
-    public function extractMetadata(File $file)
+    public function extractMetadata(File $file): array
     {
         static::getLogger()->debug(
             'Extracting metadata',

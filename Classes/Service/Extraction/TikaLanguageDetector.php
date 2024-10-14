@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Service\Extraction;
 
+use Causal\Extractor\Service\Tika\TikaServiceInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -65,7 +66,7 @@ class TikaLanguageDetector extends AbstractExtractionService
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
      */
-    public function extractMetaData(File $file, array $previousExtractedData = [])
+    public function extractMetaData(File $file, array $previousExtractedData = []): array
     {
         $metadata['language'] = $this->getTikaService()->detectLanguage($file);
 
@@ -77,7 +78,7 @@ class TikaLanguageDetector extends AbstractExtractionService
      *
      * @return \Causal\Extractor\Service\Tika\TikaServiceInterface
      */
-    protected function getTikaService()
+    protected function getTikaService(): TikaServiceInterface
     {
         /** @var \Causal\Extractor\Service\Tika\TikaServiceInterface $tikaService */
         static $tikaService = null;

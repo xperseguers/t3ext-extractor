@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Service\Extraction;
 
+use Causal\Extractor\Service\Php\PhpService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -67,7 +68,7 @@ class PhpMetadataExtraction extends AbstractExtractionService
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
      */
-    public function extractMetaData(File $file, array $previousExtractedData = [])
+    public function extractMetaData(File $file, array $previousExtractedData = []): array
     {
         $metadata = [];
 
@@ -86,7 +87,7 @@ class PhpMetadataExtraction extends AbstractExtractionService
      *
      * @return \Causal\Extractor\Service\Php\PhpService
      */
-    protected function getPhpService()
+    protected function getPhpService(): PhpService
     {
         /** @var \Causal\Extractor\Service\Php\PhpService $phpService */
         static $phpService = null;

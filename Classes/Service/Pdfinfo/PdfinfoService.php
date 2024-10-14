@@ -31,7 +31,7 @@ class PdfinfoService extends AbstractService
      * PdfinfoService constructor.
      * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(?EventDispatcherInterface $eventDispatcher = null)
     {
         parent::__construct($eventDispatcher);
 
@@ -49,7 +49,7 @@ class PdfinfoService extends AbstractService
      *
      * @return array
      */
-    public function getSupportedFileExtensions()
+    public function getSupportedFileExtensions(): array
     {
         return ['pdf'];
     }
@@ -60,7 +60,7 @@ class PdfinfoService extends AbstractService
      * @param string $fileName Path to the file
      * @return array
      */
-    public function extractMetadataFromLocalFile($fileName)
+    public function extractMetadataFromLocalFile(string $fileName): array
     {
         $pdfinfoCommand = $this->getPdfInfo() . ' -enc UTF-8 ' . CommandUtility::escapeShellArgument($fileName);
 
@@ -89,7 +89,7 @@ class PdfinfoService extends AbstractService
      *
      * @return string
      */
-    protected function getPdfInfo()
+    protected function getPdfInfo(): string
     {
         $pdfInfo = is_file($this->settings['tools_pdfinfo'])
             ? $this->settings['tools_pdfinfo']

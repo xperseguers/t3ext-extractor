@@ -78,7 +78,7 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
      * @param array $previousExtractedData optional, contains the array of already extracted data
      * @return array
      */
-    public function extractMetaData(File $file, array $previousExtractedData = [])
+    public function extractMetaData(File $file, array $previousExtractedData = []): array
     {
         $metadata = [];
 
@@ -97,14 +97,14 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
      *
      * @return \Causal\Extractor\Service\Pdfinfo\PdfinfoService
      */
-    protected function getPdfinfoService()
+    protected function getPdfinfoService(): PhpinfoService
     {
         /** @var \Causal\Extractor\Service\Pdfinfo\PdfinfoService $pdfinfoService */
         static $pdfinfoService = null;
 
         if ($pdfinfoService === null) {
             try {
-                $pdfinfoService = GeneralUtility::makeInstance(\Causal\Extractor\Service\Pdfinfo\PdfinfoService::class);
+                $pdfinfoService = GeneralUtility::makeInstance(PdfinfoService::class);
             } catch (\RuntimeException $e) {
                 // Nothing to do
             }

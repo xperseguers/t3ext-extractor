@@ -32,7 +32,7 @@ class ExifToolService extends AbstractService
      *
      * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(?EventDispatcherInterface $eventDispatcher = null)
     {
         parent::__construct($eventDispatcher);
 
@@ -56,7 +56,7 @@ class ExifToolService extends AbstractService
      *
      * @return array
      */
-    public function getSupportedFileExtensions()
+    public function getSupportedFileExtensions(): array
     {
         $exifToolCommand = $this->getExifTool() . ' -listr';
 
@@ -81,7 +81,7 @@ class ExifToolService extends AbstractService
      * @param string $fileName Path to the file
      * @return array
      */
-    public function extractMetadataFromLocalFile($fileName)
+    public function extractMetadataFromLocalFile(string $fileName): array
     {
         $exifToolCommand = $this->getExifTool() . ' -j ' . CommandUtility::escapeShellArgument($fileName);
 
@@ -110,7 +110,7 @@ class ExifToolService extends AbstractService
      *
      * @return string
      */
-    protected function getExifTool()
+    protected function getExifTool(): string
     {
         $exifTool = is_file($this->settings['tools_exiftool'])
             ? $this->settings['tools_exiftool']

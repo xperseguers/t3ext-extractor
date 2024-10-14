@@ -30,7 +30,7 @@ interface ServiceInterface
      *
      * @return array
      */
-    public function getSupportedFileExtensions();
+    public function getSupportedFileExtensions(): array;
 
     /**
      * Takes a file reference and extracts its metadata.
@@ -38,7 +38,7 @@ interface ServiceInterface
      * @param \TYPO3\CMS\Core\Resource\File $file
      * @return array
      */
-    public function extractMetadata(File $file);
+    public function extractMetadata(File $file): array;
 
     /**
      * Takes a file reference and extracts its metadata.
@@ -46,5 +46,5 @@ interface ServiceInterface
      * @param string $fileName Path to a file
      * @return array
      */
-    public function extractMetadataFromLocalFile($fileName);
+    public function extractMetadataFromLocalFile(string $fileName): array;
 }
