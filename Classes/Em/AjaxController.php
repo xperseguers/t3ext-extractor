@@ -93,14 +93,7 @@ class AjaxController
 
                 // Populate the possible mapping configuration file names
                 $mappingFileNames = $extractionService->getPotentialMappingFiles($file);
-                $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-                    ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-                    : TYPO3_branch;
-                if (version_compare($typo3Branch, '9.0', '<')) {
-                    $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor'] ?? '') ?? [];
-                } else {
-                    $settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extractor') ?? [];
-                }
+                $settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extractor') ?? [];
                 if (isset($settings['mapping_base_directory'])) {
                     $pathConfiguration = is_dir($this->settings['mapping_base_directory'])
                         ? $this->settings['mapping_base_directory']

@@ -1,9 +1,7 @@
 <?php
-defined('TYPO3_MODE') || defined('TYPO3') || die();
+defined('TYPO3') || die();
 
-$typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-    ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-    : TYPO3_branch;
+use TYPO3\CMS\Core\Information\Typo3Version;
 
 // Additional metadata
 $tca = [
@@ -119,7 +117,7 @@ $tca = [
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.iso_speed',
-            'config' => version_compare($typo3Branch, '12.4', '>=')
+            'config' => (new Typo3Version())->getMajorVersion() >= 12
                 ? [
                     'type' => 'number',
                     'readOnly' => true,
@@ -152,7 +150,7 @@ $tca = [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'default' => '-1',
-                'items' => version_compare($typo3Branch, '12.4', '>=')
+                'items' => (new Typo3Version())->getMajorVersion() >= 12
                     ? [
                         ['label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.0', 'value' => '0'],
                         ['label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.1', 'value' => '1'],
@@ -208,7 +206,7 @@ $tca = [
             'exclude' => true,
             'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.altitude',
-            'config' => version_compare($typo3Branch, '12.4', '>=')
+            'config' => (new Typo3Version())->getMajorVersion() >= 12
                 ? [
                     'type' => 'number',
                 ]
@@ -225,15 +223,9 @@ $GLOBALS['TCA']['sys_file_metadata'] = array_replace_recursive($GLOBALS['TCA']['
 
 // Add category tab if categories column is present
 if (isset($GLOBALS['TCA']['sys_file_metadata']['columns']['categories'])) {
-    $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-        ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-        : TYPO3_branch;
-    $locallangTca = version_compare($typo3Branch, '9.0', '<')
-        ? 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf'
-        : 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf';
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'sys_file_metadata',
-        '--div--;' . $locallangTca . ':sys_category.tabs.category,categories'
+        '--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category,categories'
     );
 }
 

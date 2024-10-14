@@ -50,13 +50,8 @@ class CategoryHelper
             return;
         }
 
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '10.0', '>')) {
-            // Since TYPO3 v10, the sys_file_metadata record is not yet available at this point
-            $file->getMetaData()->save();
-        }
+        // Since TYPO3 v10, the sys_file_metadata record is not yet available at this point
+        $file->getMetaData()->save();
 
         // Fetch the uid associated to the corresponding sys_file_metadata record
         $statement = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -69,11 +64,7 @@ class CategoryHelper
                     'sys_language_uid' => 0,
                 ]
             );
-        if (version_compare($typo3Branch, '10.0', '>')) {
-            $row = $statement->fetchAssociative();
-        } else {
-            $row = $statement->fetch();
-        }
+        $row = $statement->fetchAssociative();
         if (!$row) {
             // An error occurred, cannot proceed!
             return;
@@ -105,11 +96,7 @@ class CategoryHelper
                         'sys_language_uid' => 0,
                     ]
                 );
-            if (version_compare($typo3Branch, '10.0', '>')) {
-                $typo3Categories = $statement->fetchAllAssociative();
-            } else {
-                $typo3Categories = $statement->fetchAll();
-            }
+            $typo3Categories = $statement->fetchAllAssociative();
 
             foreach ($categories as $category) {
                 foreach ($typo3Categories as $typo3Category) {

@@ -18,6 +18,7 @@ use Causal\Extractor\Utility\CategoryHelper;
 use Causal\Extractor\Utility\ExtensionHelper;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
@@ -49,14 +50,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     public function __construct()
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.0', '<')) {
-            $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor'] ?? '') ?? [];
-        } else {
-            $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extractor') ?? [];
-        }
+        $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extractor') ?? [];
     }
 
     /**
@@ -167,14 +161,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
             // Just go on, we cannot do anything about it
         }
 
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '10.0', '<')) {
-            $metadata = $file->_getMetaData();
-        } else {
-            $metadata = $file->getMetaData();
-        }
+        $metadata = $file->getMetaData();
 
         if (!empty($metadata) && $metadata['crdate'] !== $metadata['tstamp']) {
             // There's a design flaw in FAL, moving a file should not reindex it
@@ -420,10 +407,8 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     protected function enforceStringLengths(array &$output): void
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '12.4', '>=')) {
+        $typo3Version = (new Typo3Version())->getMajorVersion();
+        if ($typo3Version >= 12) {
             $databaseFields = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('sys_file_metadata')
                 ->createSchemaManager()
@@ -437,7 +422,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
         foreach ($output as $key => $value) {
             if (isset($databaseFields[$key])) {
                 $type = $databaseFields[$key]->getType();
-                if (version_compare($typo3Branch, '12.4', '>=')) {
+                if ($typo3Version >= 12) {
                     $typeName = $type->getTypeRegistry()->lookupName($type);
                 } else {
                     $typeName = $type->getName();

@@ -35,19 +35,11 @@ class TikaServiceFactory
      * @throws \InvalidArgumentException for unknown Tika service type
      * @throws \RuntimeException if the service cannot be instantiated
      */
-    public static function getTika($tikaService = '')
+    public static function getTika(string $tikaService = '')
     {
         if (empty($tikaService)) {
-            $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-                ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-                : TYPO3_branch;
-            if (version_compare($typo3Branch, '9.0', '<')) {
-                $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor'] ?? '') ?? [];
-                $tikaService = $settings['tika_mode'];
-            } else {
-                $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
-                $tikaService = $extensionConfiguration->get('extractor', 'tika_mode');
-            }
+            $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+            $tikaService = $extensionConfiguration->get('extractor', 'tika_mode');
         }
 
         switch ($tikaService) {

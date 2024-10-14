@@ -18,6 +18,7 @@ use Causal\Extractor\Utility\SimpleString;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -48,14 +49,7 @@ class MappingController extends AbstractConfigurationField
      */
     public function __construct()
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.0', '<')) {
-            $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extensionKey] ?? '') ?? [];
-        } else {
-            $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extensionKey) ?? [];
-        }
+        $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extensionKey) ?? [];
 
         // By default Native PHP is enabled
         if (!isset($this->settings['enable_php'])) {
@@ -72,16 +66,9 @@ class MappingController extends AbstractConfigurationField
      */
     public function render(array $params, $pObj): string
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.0', '<')) {
-            $resourcesPath = '../' . ExtensionManagementUtility::siteRelPath($this->extensionKey) . 'Resources/Public/';
-        } else {
-            $resourcesPath = '../' . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extensionKey)) . 'Resources/Public/';
-        }
+        $resourcesPath = '../' . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extensionKey)) . 'Resources/Public/';
 
-        if (version_compare($typo3Branch, '11.0', '>=')) {
+        if ((new Typo3Version())->getMajorVersion() >= 11) {
             // JavaScript is not loaded anymore, we will need to find a trick/hack at some point!
             $html = [];
             $html[] = '<div class="alert alert-warning">';
@@ -121,27 +108,12 @@ class MappingController extends AbstractConfigurationField
 CSS;
         $html[] = '</style>';
 
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.0', '<')) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $ajaxUrlAnalyze = (string)$uriBuilder->buildUriFromRoute('ajax_extractor_analyze');
-            $ajaxUrlProcess = (string)$uriBuilder->buildUriFromRoute('ajax_extractor_process');
-            $inlineJs = 'var extractorAnalyzeAction = \'' . $ajaxUrlAnalyze . '\';';
-            $inlineJs .= 'var extractorProcessAction = \'' . $ajaxUrlProcess . '\';';
-            $inlineJs .= PHP_EOL . 'require(["TYPO3/CMS/Extractor/Configuration"]);';
-            $pageRenderer = $this->getPageRenderer();
-            $pageRenderer->addJsFile($resourcesPath . 'JavaScript/Extractor.js');
-            $pageRenderer->addJsInlineCode($this->extensionKey, $inlineJs);
-        } else {
-            $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/Configuration.v9.js"></script>';
-            $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/Extractor.js"></script>';
-            $html[] = '<script type="text/javascript">';
-            $html[] = 'var extractorAnalyzeAction = top.TYPO3.settings.ajaxUrls["extractor_analyze"];';
-            $html[] = 'var extractorProcessAction = top.TYPO3.settings.ajaxUrls["extractor_process"];';
-            $html[] = '</script>';
-        }
+        $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/Configuration.v9.js"></script>';
+        $html[] = '<script type="text/javascript" src="' . $resourcesPath . 'JavaScript/Extractor.js"></script>';
+        $html[] = '<script type="text/javascript">';
+        $html[] = 'var extractorAnalyzeAction = top.TYPO3.settings.ajaxUrls["extractor_analyze"];';
+        $html[] = 'var extractorProcessAction = top.TYPO3.settings.ajaxUrls["extractor_process"];';
+        $html[] = '</script>';
 
         $html[] = $this->smartFormat($this->translate('settings.mapping_configuration.description'));
         $html[] = '<div class="tx-extractor">';
@@ -290,10 +262,7 @@ CSS;
     protected function getFalPropertySelector(): string
     {
         $options = [];
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '12.4', '>=')) {
+        if ((new Typo3Version())->getMajorVersion() >= 12) {
             $fields = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('sys_file_metadata')
                 ->createSchemaManager()
