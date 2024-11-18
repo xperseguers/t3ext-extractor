@@ -9,7 +9,6 @@
   {
     "FAL": "color_space",
     "DATA": [
-      "ColorMode",
       "ColorSpaceData",
       "ColorSpace->Causal\\Extractor\\Utility\\ColorSpace::normalize"
     ]
