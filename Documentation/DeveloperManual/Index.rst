@@ -54,7 +54,6 @@ A mapping configuration file is of the form:
      {
        "FAL": "color_space",
        "DATA": [
-         "ColorMode",
          "ColorSpaceData",
          "ColorSpace->Causal\\Extractor\\Utility\\ColorSpace::normalize"
        ]
