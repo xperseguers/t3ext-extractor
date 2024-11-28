@@ -48,7 +48,7 @@ abstract class AbstractService implements ServiceInterface
      *
      * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(?EventDispatcherInterface $eventDispatcher = null)
     {
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()

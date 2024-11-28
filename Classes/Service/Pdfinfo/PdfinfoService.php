@@ -31,7 +31,7 @@ class PdfinfoService extends AbstractService
      * PdfinfoService constructor.
      * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(?EventDispatcherInterface $eventDispatcher = null)
     {
         parent::__construct($eventDispatcher);
 

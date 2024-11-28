@@ -201,10 +201,10 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * Returns the potential mapping files.
      *
      * @param File $file
-     * @param array $types
+     * @param array|null $types
      * @return array
      */
-    public function getPotentialMappingFiles(File $file, array &$types = null)
+    public function getPotentialMappingFiles(File $file, ?array &$types = null)
     {
         $potentialFiles = [];
         $types = $this->extensionToServiceTypes($file->getExtension());
@@ -312,10 +312,10 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * Remaps $data coming from a service to a FAL-compliant array.
      *
      * @param array $data
-     * @param array $mapping
+     * @param array|null $mapping
      * @return array
      */
-    protected function remapServiceOutput(array $data, array $mapping = null)
+    protected function remapServiceOutput(array $data, ?array $mapping = null)
     {
         $output = [];
 

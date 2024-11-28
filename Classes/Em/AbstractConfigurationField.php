@@ -33,7 +33,7 @@ abstract class AbstractConfigurationField
      * @param array $arguments
      * @return string
      */
-    protected function translate($id, $hsc = false, array $arguments = null)
+    protected function translate(string $id, bool $hsc = false, ?array $arguments = null)
     {
         if (!SimpleString::isFirstPartOfStr($id, 'LLL:EXT:')) {
             $reference = 'LLL:EXT:extractor/Resources/Private/Language/locallang_em.xlf:' . $id;

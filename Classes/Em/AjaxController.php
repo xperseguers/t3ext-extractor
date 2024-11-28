@@ -268,7 +268,7 @@ class AjaxController
      * @param null|string $parent
      * @return mixed
      */
-    protected function htmlizeMetadata(array $metadata, int $indent = 0, $parent = null)
+    protected function htmlizeMetadata(array $metadata, int $indent = 0, ?string $parent = null)
     {
         $html = [];
 
