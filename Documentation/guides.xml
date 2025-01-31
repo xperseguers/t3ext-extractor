@@ -9,5 +9,5 @@
                edit-on-github-branch="master"
                edit-on-github="xperseguers/t3ext-extractor"
                typo3-core-preferred="stable"/>
-    <project title="Metadata and Content Analysis Service" release="2.5.1" version="2.5" copyright="2014-2024"/>
+    <project title="Metadata and Content Analysis Service" release="2.5.2" version="2.5" copyright="2014-2025"/>
 </guides>

@@ -28,7 +28,7 @@ Metadata and Content Analysis Service
    Metadata, Content Analysis, Tika, FAL, EXIF, IPTC, XMP, ID3
 
 :Copyright:
-   2014-2024
+   2014-2025
 
 :Author:
    Xavier Perseguers
