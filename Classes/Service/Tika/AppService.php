@@ -33,7 +33,7 @@ class AppService extends AbstractService implements TikaServiceInterface
      * AppService constructor.
      * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(?EventDispatcherInterface $eventDispatcher = null)
     {
         parent::__construct($eventDispatcher);
 
