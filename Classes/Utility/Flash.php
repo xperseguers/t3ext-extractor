@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class Flash
 {
     /**
-     * Normalize an EXIF flash value to its integer representation
+     * Normalizes an EXIF flash value to its integer representation.
      *
      * This is needed because some manufacturers store the description
      * of how the flash behaved instead of the integer value as given

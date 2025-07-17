@@ -25,7 +25,7 @@ class Number
     /**
      * Casts a string as an integer.
      *
-     * @param string $str
+     * @param string|null $str
      * @return int
      */
     public static function castInteger(?string $str): int
@@ -36,7 +36,7 @@ class Number
     /**
      * Extracts an integer at the end of a string.
      *
-     * @param string $str
+     * @param string|null $str
      * @return int|null
      */
     public static function extractIntegerAtEnd(?string $str = null): ?int
@@ -50,7 +50,7 @@ class Number
     /**
      * Extract a float from a string.
      *
-     * @param string $str
+     * @param string|null $str
      * @return float
      */
     public static function extractFloat(?string $str = null): float

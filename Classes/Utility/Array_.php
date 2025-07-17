@@ -27,7 +27,7 @@ class Array_
      *
      * @param array $pieces
      * @param string $glue
-     * @return string
+     * @return string|null
      */
     public static function concatenate($pieces, string $glue): ?string
     {

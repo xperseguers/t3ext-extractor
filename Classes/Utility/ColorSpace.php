@@ -28,14 +28,11 @@ class ColorSpace
      * Normalizes a color space for use in FAL.
      *
      * @param string|null $str
-     * @return string
+     * @return string|null
      * @throws \InvalidArgumentException
      */
     public static function normalize(?string $str = null): ?string
     {
-        if (is_array($str)) {
-            throw new \InvalidArgumentException('String parameter expected, array given', 1454591450);
-        }
         if (MathUtility::canBeInterpretedAsInteger($str)) {
             // See http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html
             switch ((int)$str) {
@@ -63,8 +60,8 @@ class ColorSpace
 
     /**
      * Check against allowed color spaces configured in TCA.
-     * Uses a case insensitive comparison and returns the value from TCA if there's a match.
-     * Otherwise it returns an empty string.
+     * Uses a case-insensitive comparison and returns the value from TCA if there's a match.
+     * Otherwise, it returns an empty string.
      *
      * @param string|null $str
      * @return string
@@ -76,7 +73,7 @@ class ColorSpace
         }
 
         $allowedColorSpaces = array_map(
-            function ($item) {
+            static function ($item) {
                 return $item[1] ?? '';
             },
             $GLOBALS['TCA']['sys_file_metadata']['columns']['color_space']['config']['items']
