@@ -29,5 +29,9 @@ defined('TYPO3_MODE') || defined('TYPO3') || die();
         if (!isset($settings['enable_php']) || (bool)$settings['enable_php']) {
             $extractorRegistry->registerExtractionService(\Causal\Extractor\Service\Extraction\PhpMetadataExtraction::class);
         }
+        // Mind the "!isset" in test below to be backward compatible
+        if (!isset($settings['enable_api']) || (bool)$settings['enable_api']) {
+            $extractorRegistry->registerExtractionService(\Causal\Extractor\Service\Extraction\ApiMetadataExtraction::class);
+        }
     }
 })('extractor');
