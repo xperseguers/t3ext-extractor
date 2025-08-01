@@ -49,5 +49,19 @@
       "id3v2|comments|title->Causal\\Extractor\\Utility\\Array_::concatenate(', ')",
       "quicktime|comments|title->Causal\\Extractor\\Utility\\Array_::concatenate(', ')"
     ]
+  },
+  {
+    "FAL": "height",
+    "DATA": [
+      "quicktime|video|resolution_y",
+      "video|resolution_y"
+    ]
+  },
+  {
+    "FAL": "width",
+    "DATA": [
+      "quicktime|video|resolution_x",
+      "video|resolution_x"
+    ]
   }
 ]
