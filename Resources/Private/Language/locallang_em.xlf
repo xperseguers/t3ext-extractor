@@ -12,6 +12,9 @@
             <trans-unit id="settings.category.tools">
                 <source>External Tools</source>
             </trans-unit>
+            <trans-unit id="settings.category.online">
+                <source>Online Media</source>
+            </trans-unit>
             <trans-unit id="settings.enable_tika">
                 <source>Apache Tika: If ticked, Apache Tika will be used to detect and extract metadata from your assets.</source>
             </trans-unit>
@@ -23,6 +26,9 @@
             </trans-unit>
             <trans-unit id="settings.enable_php">
                 <source>Native PHP: If ticked, native PHP code and libraries will be used to detect and extract metadata from your assets.</source>
+            </trans-unit>
+            <trans-unit id="settings.enable_api">
+                <source>API: If ticked, API code will be used to fetch metadata for your assets. Remember to fill out Online media tokens.</source>
             </trans-unit>
             <trans-unit id="settings.mapping_base_directory">
                 <source>Base directory for mapping: The metadata extraction requires mapping configuration files. By default these are provided in the Configuration/Services directory. If you wish to use a different mapping configuration, you can provide a different mapping configuration base directory.</source>
@@ -103,6 +109,24 @@
             </trans-unit>
             <trans-unit id="settings.mapping_configuration.json.copy">
                 <source>copy JSON to clipboard</source>
+            </trans-unit>
+            <trans-unit id="settings.online_youtube_api_key">
+                <source>Api key from Youtube : https://developers.google.com/youtube/v3/docs/</source>
+            </trans-unit>
+            <trans-unit id="settings.online_youtube_api_base">
+                <source>Baseurl for Youtube Api calls</source>
+            </trans-unit>
+            <trans-unit id="settings.online_youtube_thumbnail_base">
+                <source>Url for Youtube thumbnail provider</source>
+            </trans-unit>
+            <trans-unit id="settings.online_vimeo_api_key">
+                <source>Api key from Vimeo : https://developers.google.com/youtube/v3/docs/</source>
+            </trans-unit>
+            <trans-unit id="settings.online_vimeo_api_base">
+                <source>Baseurl for Vimeo Api calls</source>
+            </trans-unit>
+            <trans-unit id="settings.online_vimeo_thumbnail_base">
+                <source>Url for Vimeo thumbnail provider</source>
             </trans-unit>
         </body>
     </file>

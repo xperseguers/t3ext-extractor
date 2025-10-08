@@ -1,0 +1,22 @@
+[
+    {
+      "FAL": "duration",
+      "DATA": [
+        "youtube|contentDetails|duration->Causal\\Extractor\\Utility\\YoutubeTime::toSeconds",
+        "vimeo|duration->Causal\\Extractor\\Utility\\Number::castInteger"
+      ]
+    },
+    {
+      "FAL": "description",
+      "DATA": [
+        "youtube|snippet|description->Causal\\Extractor\\Utility\\SimpleString::trim",
+        "vimeo|description->Causal\\Extractor\\Utility\\SimpleString::trim"
+      ]
+    },
+    {
+      "FAL": "publisher",
+      "DATA": [
+        "vimeo|user|name->Causal\\Extractor\\Utility\\SimpleString::trim"
+      ]
+    }
+]
