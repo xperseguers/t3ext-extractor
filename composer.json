@@ -28,13 +28,13 @@
   ],
   "license": "GPL-2.0-or-later",
   "require": {
-    "php": ">= 7.2.0, <= 8.4.99",
+    "php": ">= 7.2.0, <= 8.5.99",
     "ext-dom": "*",
     "ext-exif": "*",
     "ext-json": "*",
     "ext-zip": "*",
-    "typo3/cms-core": "^8.7 || ^9.5 || ^10 || ^11 || ^12 || ^13",
-    "typo3/cms-filemetadata": "^8.7 || ^9.5 || ^10 || ^11 || ^12 || ^13",
+    "typo3/cms-core": "^8.7 || ^9.5 || ^10 || ^11 || ^12 || ^13 || 14.*.*@dev",
+    "typo3/cms-filemetadata": "^8.7 || ^9.5 || ^10 || ^11 || ^12 || ^13 || 14.*.*@dev",
     "james-heinrich/getid3": "^1.9"
   },
   "autoload": {
@@ -66,7 +66,8 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "2.5.x-dev"
+      "dev-master": "2.5.x-dev",
+      "dev-features/TYPO3v14": "2.6.x-dev"
     },
     "typo3/cms": {
       "extension-key": "extractor",
