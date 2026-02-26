@@ -205,7 +205,9 @@ $tempColumns = [
 		focal_length, camera_lens,
 		flash,
 		color_space, white_balance_mode,',
-    \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE,
+    version_compare($typo3Branch, '13.0', '<')
+        ? \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE
+        : \TYPO3\CMS\Core\Resource\FileType::IMAGE->value,
     'replace:color_space'
 );
 
