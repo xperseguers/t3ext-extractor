@@ -211,9 +211,6 @@ $tempColumns = [
 
 // Add category tab if categories column is present
 if (isset($GLOBALS['TCA']['sys_file_metadata']['columns']['categories'])) {
-    $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-        ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-        : TYPO3_branch;
     $locallangTca = version_compare($typo3Branch, '9.0', '<')
         ? 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf'
         : 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf';
