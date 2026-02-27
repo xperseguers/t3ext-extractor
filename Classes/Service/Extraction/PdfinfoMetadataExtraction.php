@@ -36,15 +36,6 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
     protected $serviceName = 'Pdfinfo';
 
     /**
-     * Only "application/pdf" is supported.
-     *
-     * @var array
-     */
-    protected $supportedFileTypes = [
-        \TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_APPLICATION,
-    ];
-
-    /**
      * PdfinfoMetadataExtraction constructor.
      */
     public function __construct()
@@ -54,6 +45,17 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
         if (($pdfinfoService = $this->getPdfinfoService()) !== null) {
             $this->supportedFileExtensions = $pdfinfoService->getSupportedFileExtensions();
         }
+
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+
+        // Only "application/pdf" is supported.
+        $this->supportedFileTypes = [
+            version_compare($typo3Branch, '13.0', '<')
+                ? \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION
+                : \TYPO3\CMS\Core\Resource\FileType::APPLICATION->value,
+        ];
     }
 
     /**
