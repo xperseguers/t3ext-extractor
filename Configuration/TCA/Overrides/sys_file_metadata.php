@@ -205,15 +205,14 @@ $tempColumns = [
 		focal_length, camera_lens,
 		flash,
 		color_space, white_balance_mode,',
-    \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE,
+    version_compare($typo3Branch, '13.0', '<')
+        ? \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE
+        : \TYPO3\CMS\Core\Resource\FileType::IMAGE->value,
     'replace:color_space'
 );
 
 // Add category tab if categories column is present
 if (isset($GLOBALS['TCA']['sys_file_metadata']['columns']['categories'])) {
-    $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-        ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-        : TYPO3_branch;
     $locallangTca = version_compare($typo3Branch, '9.0', '<')
         ? 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf'
         : 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf';

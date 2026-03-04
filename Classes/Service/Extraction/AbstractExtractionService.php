@@ -443,7 +443,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
                     $typeName = $type->getName();
                 }
                 $length = $databaseFields[$key]->getLength();
-                if ($type === 'string' && strlen($value) > $length) {
+                if ($typeName === 'string' && strlen($value) > $length) {
                     // We need to truncate the extracted value for the database
                     $output[$key] = substr($value, 0, $length);
                 }
