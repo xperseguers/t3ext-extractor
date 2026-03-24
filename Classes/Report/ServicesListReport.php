@@ -51,12 +51,32 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      *
      * @return string The status report as HTML
      */
-    public function getReport()
+    public function getReport(): string
     {
         $content = '';
         $content .= $this->renderHelp();
         $content .= $this->renderExtractorsList();
         return $content;
+    }
+
+    public function getIdentifier(): string
+    {
+        return 'extractors_list';
+    }
+
+    public function getTitle(): string
+    {
+        return $this->getLanguageService()->getLL('report_title', true);
+    }
+
+    public function getDescription(): string
+    {
+        return $this->getLanguageService()->getLL('report_description', true);
+    }
+
+    public function getIconIdentifier(): string
+    {
+        return 'actions-document-info';
     }
 
     /**
