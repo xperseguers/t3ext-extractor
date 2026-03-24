@@ -66,8 +66,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "2.5.x-dev",
-      "dev-features/TYPO3v14": "2.6.x-dev"
+      "dev-master": "2.6.x-dev"
     },
     "typo3/cms": {
       "extension-key": "extractor",

@@ -26,4 +26,4 @@ For PDF, external tool
 
 
 Read more in the
-`manual <https://docs.typo3.org/p/causal/extractor/master/en-us/>`__.
+`manual <https://docs.typo3.org/p/causal/extractor/main/en-us/>`__.
