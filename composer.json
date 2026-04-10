@@ -28,13 +28,13 @@
   ],
   "license": "GPL-2.0-or-later",
   "require": {
-    "php": ">= 7.4.0, <= 8.5.99",
+    "php": ">= 8.1.0, <= 8.5.99",
     "ext-dom": "*",
     "ext-exif": "*",
     "ext-json": "*",
     "ext-zip": "*",
-    "typo3/cms-core": "^8.7 || ^9.5 || ^10 || ^11 || ^12 || ^13 || 14.*.*@dev",
-    "typo3/cms-filemetadata": "^8.7 || ^9.5 || ^10 || ^11 || ^12 || ^13 || 14.*.*@dev",
+    "typo3/cms-core": "^12 || ^13 || 14.*.*@dev",
+    "typo3/cms-filemetadata": "^12 || ^13 || 14.*.*@dev",
     "james-heinrich/getid3": "^1.9"
   },
   "autoload": {
