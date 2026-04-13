@@ -14,6 +14,7 @@
 
 namespace Causal\Extractor\Service\Extraction;
 
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -46,15 +47,13 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
             $this->supportedFileExtensions = $pdfinfoService->getSupportedFileExtensions();
         }
 
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
+        $typo3Version = (new Typo3Version())->getMajorVersion();
 
         // Only "application/pdf" is supported.
         $this->supportedFileTypes = [
-            version_compare($typo3Branch, '13.0', '<')
-                ? \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION
-                : \TYPO3\CMS\Core\Resource\FileType::APPLICATION->value,
+            $typo3Version >= 13
+                ? \TYPO3\CMS\Core\Resource\FileType::APPLICATION->value
+                : \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION,
         ];
     }
 

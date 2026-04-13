@@ -1,9 +1,7 @@
 <?php
-defined('TYPO3_MODE') || defined('TYPO3') || die();
+defined('TYPO3') || die();
 
-$typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-    ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-    : TYPO3_branch;
+$typo3Version = (new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion();
 
 $tempColumns = [
     'camera_make' => [
@@ -89,15 +87,8 @@ $tempColumns = [
         'l10n_mode' => 'exclude',
         'l10n_display' => 'defaultAsReadonly',
         'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.iso_speed',
-        'config' => version_compare($typo3Branch, '12.4', '>=') 
-        ? [
+        'config' => [
             'type' => 'number',
-            'readOnly' => true,
-        ] 
-        : [
-            'type' => 'input',
-            'size' => '10',
-            'eval' => 'int',
             'readOnly' => true,
         ],
     ],
@@ -122,8 +113,7 @@ $tempColumns = [
             'type' => 'select',
             'renderType' => 'selectSingle',
             'default' => '-1',
-            'items' => version_compare($typo3Branch, '12.4', '>=') 
-            ? [
+            'items' => [
                 ['label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.0', 'value' => '0'],
                 ['label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.1', 'value' => '1'],
                 ['label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.5', 'value' => '5'],
@@ -146,30 +136,6 @@ $tempColumns = [
                 ['label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.89', 'value' => '89'],
                 ['label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.93', 'value' => '93'],
                 ['label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.95', 'value' => '95'],
-            ]
-            : [
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.0', '0'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.1', '1'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.5', '5'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.7', '7'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.9', '9'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.13', '13'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.15', '15'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.16', '16'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.24', '24'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.25', '25'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.29', '29'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.31', '31'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.32', '32'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.65', '65'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.69', '69'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.71', '71'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.73', '73'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.77', '77'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.79', '79'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.89', '89'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.93', '93'],
-                ['LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.flash.95', '95'],
             ],
             'readOnly' => true,
         ],
@@ -178,14 +144,8 @@ $tempColumns = [
         'exclude' => true,
         'l10n_mode' => 'exclude',
         'label' => 'LLL:EXT:extractor/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.altitude',
-        'config' => version_compare($typo3Branch, '12.4', '>=') 
-        ? [
+        'config' => [
             'type' => 'number',
-        ] 
-        : [
-            'type' => 'input',
-            'size' => '10',
-            'eval' => 'int',
         ],
     ],
 ];
@@ -205,20 +165,17 @@ $tempColumns = [
 		focal_length, camera_lens,
 		flash,
 		color_space, white_balance_mode,',
-    version_compare($typo3Branch, '13.0', '<')
-        ? \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE
-        : \TYPO3\CMS\Core\Resource\FileType::IMAGE->value,
+    $typo3Version >= 13
+        ? \TYPO3\CMS\Core\Resource\FileType::IMAGE->value
+        : \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE,
     'replace:color_space'
 );
 
 // Add category tab if categories column is present
 if (isset($GLOBALS['TCA']['sys_file_metadata']['columns']['categories'])) {
-    $locallangTca = version_compare($typo3Branch, '9.0', '<')
-        ? 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf'
-        : 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf';
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
         'sys_file_metadata',
-        '--div--;' . $locallangTca . ':sys_category.tabs.category,categories'
+        '--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category,categories'
     );
 }
 

@@ -49,14 +49,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     public function __construct()
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.0', '<')) {
-            $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['extractor'] ?? '') ?? [];
-        } else {
-            $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extractor') ?? [];
-        }
+        $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extractor') ?? [];
     }
 
     /**
@@ -167,14 +160,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
             // Just go on, we cannot do anything about it
         }
 
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '10.0', '<')) {
-            $metadata = $file->_getMetaData();
-        } else {
-            $metadata = $file->getMetaData();
-        }
+        $metadata = $file->getMetaData();
 
         if (!empty($metadata) && $metadata['crdate'] !== $metadata['tstamp']) {
             // There's a design flaw in FAL, moving a file should not reindex it
@@ -420,28 +406,14 @@ abstract class AbstractExtractionService implements ExtractorInterface
      */
     protected function enforceStringLengths(array &$output): void
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '12.4', '>=')) {
-            $databaseFields = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('sys_file_metadata')
-                ->createSchemaManager()
-                ->listTableColumns('sys_file_metadata');
-        } else {
-            $databaseFields = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('sys_file_metadata')
-                ->getSchemaManager()
-                ->listTableColumns('sys_file_metadata');
-        }
+        $databaseFields = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('sys_file_metadata')
+            ->createSchemaManager()
+            ->listTableColumns('sys_file_metadata');
         foreach ($output as $key => $value) {
             if (isset($databaseFields[$key])) {
                 $type = $databaseFields[$key]->getType();
-                if (version_compare($typo3Branch, '12.4', '>=')) {
-                    $typeName = $type->getTypeRegistry()->lookupName($type);
-                } else {
-                    $typeName = $type->getName();
-                }
+                $typeName = $type->getTypeRegistry()->lookupName($type);
                 $length = $databaseFields[$key]->getLength();
                 if ($typeName === 'string' && strlen($value) > $length) {
                     // We need to truncate the extracted value for the database

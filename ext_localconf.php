@@ -1,17 +1,10 @@
 <?php
-defined('TYPO3_MODE') || defined('TYPO3') || die();
+defined('TYPO3') || die();
 
 (static function (string $_EXTKEY) {
     $extractorRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::class);
 
-    $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-        ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-        : TYPO3_branch;
-    if (version_compare($typo3Branch, '9.0', '<')) {
-        $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY] ?? '') ?? [];
-    } else {
-        $settings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY) ?? [];
-    }
+    $settings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY) ?? [];
     if (is_array($settings)) {
         if (isset($settings['enable_tika']) && (bool)$settings['enable_tika']) {
             $extractorRegistry->registerExtractionService(\Causal\Extractor\Service\Extraction\TikaMetadataExtraction::class);
