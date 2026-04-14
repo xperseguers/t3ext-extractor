@@ -566,7 +566,7 @@ class PhpService extends AbstractService
                     $metadata['GPSLongitudeDecimal'] = $decimal;
                 }
                 if (isset($metadata['GPSAltitude'])) {
-                    $rationalParts = explode('/', $metadata['GPSAltitude']);
+                    $rationalParts = explode('/', (string)$metadata['GPSAltitude']);
                     if (!empty($rationalParts[1])) {
                         $metadata['GPSAltitudeDecimal'] = $rationalParts[0] / $rationalParts[1];
                     } else {
@@ -649,7 +649,7 @@ class PhpService extends AbstractService
     protected static function rationalToDecimal(array $components)
     {
         foreach ($components as $key => $value) {
-            $rationalParts = explode('/', $value);
+            $rationalParts = explode('/', (string)$value);
             if (!empty($rationalParts[1])) {
                 $components[$key] = $rationalParts[0] / $rationalParts[1];
             } else {
