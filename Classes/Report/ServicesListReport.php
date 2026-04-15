@@ -29,14 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
 {
     /**
-     * Constructor for class \Causal\Extractor\Report\ServicesListReport
-     */
-    public function __construct()
-    {
-        $this->getLanguageService()->includeLLFile('EXT:extractor/Resources/Private/Language/locallang_reports.xlf');
-    }
-
-    /**
      * This method renders the report
      *
      * @return string The status report as HTML
@@ -55,12 +47,12 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
 
     public function getTitle(): string
     {
-        return $this->getLanguageService()->getLL('report_title', true);
+        return $this->translate('report_title');
     }
 
     public function getDescription(): string
     {
-        return $this->getLanguageService()->getLL('report_description', true);
+        return $this->translate('report_description');
     }
 
     public function getIconIdentifier(): string
@@ -75,7 +67,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      */
     protected function renderHelp(): string
     {
-        $help = '<p class="help">' . $this->getLanguageService()->getLL('report_explanation', true) . '</p>';
+        $help = '<p class="help">' . htmlspecialchars($this->translate('report_explanation')) . '</p>';
         return $help;
     }
 
@@ -86,19 +78,18 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
      */
     protected function renderExtractorsList(): string
     {
-        $language = $this->getLanguageService();
-        $header = '<h4>' . $language->getLL('extractors') . '</h4>';
+        $header = '<h4>' . htmlspecialchars($this->translate('extractors')) . '</h4>';
         $tableClass = 'table table-striped table-hover';
 
         $extractorsList = '
 		<table cellspacing="1" cellpadding="2" border="0" class="' . $tableClass . '">
 		    <thead>
                 <tr class="t3-row-header">
-                    <td style="width: 35%">' . $language->getLL('class', true) . '</td>
-                    <td>' . $language->getLL('driver_restrictions', true) . '</td>
-                    <td>' . $language->getLL('priority', true) . '</td>
-                    <td>' . $language->getLL('execution_priority', true) . '</td>
-                    <td style="width: 35%">' . $language->getLL('file_types', true) . '</td>
+                    <td style="width: 35%">' . htmlspecialchars($this->translate('class')) . '</td>
+                    <td>' . htmlspecialchars($this->translate('driver_restrictions')) . '</td>
+                    <td>' . htmlspecialchars($this->translate('priority')) . '</td>
+                    <td>' . htmlspecialchars($this->translate('execution_priority')) . '</td>
+                    <td style="width: 35%">' . htmlspecialchars($this->translate('file_types')) . '</td>
                 </tr>
             </thead>
             <tbody>';
@@ -188,10 +179,15 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
         return $groupedFileTypes;
     }
 
+    protected function translate(string $key): string
+    {
+        return $this->getLanguageService()->sL('LLL:EXT:extractor/Resources/Private/Language/locallang_reports.xlf:' . $key);
+    }
+
     /**
      * Returns the language service instance.
      *
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @return \TYPO3\CMS\Core\Localization\LanguageService
      */
     protected function getLanguageService()
     {
