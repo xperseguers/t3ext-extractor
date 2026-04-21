@@ -491,7 +491,7 @@ class PhpService extends AbstractService
         // Try to extract additional metadata
         if (($imageSize = getimagesize($fileName)) !== false) {
             $colorSpace = null;
-            switch ($imageSize['bits']) {
+            switch ($imageSize['bits'] ?? 0) {
                 case 1:
                     $colorSpace = 'grey';
                     $accurate = true;
