@@ -491,7 +491,6 @@ class PhpService extends AbstractService
         // Try to extract additional metadata
         if (($imageSize = getimagesize($fileName)) !== false) {
             $colorSpace = null;
-            $accurate = false;
             switch ($imageSize['bits']) {
                 case 1:
                     $colorSpace = 'grey';
@@ -502,13 +501,16 @@ class PhpService extends AbstractService
                     $accurate = false;
                     break;
                 case 8:
-                    if ($imageSize['mime'] === 'image/jpeg' && $imageSize['channels'] == 4) {
+                    if ($imageSize['mime'] === 'image/jpeg' && $imageSize['channels'] === 4) {
                         $colorSpace = 'CMYK';
                         $accurate = true;
                     } else {
                         $colorSpace = 'RGB';
                         $accurate = false;  // Could be 'YUV'
                     }
+                    break;
+                default:
+                    $accurate = false;
                     break;
             }
 
