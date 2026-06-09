@@ -384,7 +384,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
         foreach ($output as $key => $value) {
             // Known cases: "keywords", "alternative", "SupplementalCategories"
             if (is_array($value)) {
-                $output[$key] = implode(', ', $value);
+                $output[$key] = implode(', ', array_unique($value));
             }
         }
 
