@@ -70,6 +70,10 @@
     },
     "typo3/cms": {
       "extension-key": "extractor",
+      "version": "2.6.2",
+      "Package": {
+        "providesPackages": {}
+      },
       "cms-package-dir": "{$vendor-dir}/typo3/cms"
     }
   }
