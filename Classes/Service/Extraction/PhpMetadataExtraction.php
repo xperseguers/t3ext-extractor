@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -26,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PhpMetadataExtraction extends AbstractExtractionService
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $priority = 50;
 
@@ -50,7 +51,7 @@ class PhpMetadataExtraction extends AbstractExtractionService
      * Checks if the given file can be processed by this extractor.
      *
      * @param File $file
-     * @return boolean
+     * @return bool
      */
     protected function _canProcess(File $file): bool
     {

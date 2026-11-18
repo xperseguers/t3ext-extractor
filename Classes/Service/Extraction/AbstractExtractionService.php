@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,9 +20,9 @@ use Causal\Extractor\Utility\ExtensionHelper;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -42,15 +43,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @var string
      * @abstract
      */
-    protected $serviceName = null;
-
-    /**
-     * AbstractService constructor.
-     */
-    public function __construct()
-    {
-        $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extractor') ?? [];
-    }
+    protected $serviceName;
 
     /**
      * @var array
@@ -68,6 +61,14 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @var int
      */
     protected $priority = 1;
+
+    /**
+     * AbstractService constructor.
+     */
+    public function __construct()
+    {
+        $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extractor') ?? [];
+    }
 
     /**
      * Returns an array of supported file types.
@@ -118,7 +119,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      *
      * Should be between 1 and 100, 100 is more important than 1.
      *
-     * @return integer
+     * @return int
      */
     public function getPriority()
     {
@@ -130,7 +131,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      *
      * Should be between 1 and 100, 100 means runs as first service, 1 runs at last service.
      *
-     * @return integer
+     * @return int
      */
     public function getExecutionPriority()
     {
@@ -181,7 +182,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
      * @param File $file
      * @return bool
      */
-    protected abstract function _canProcess(File $file): bool;
+    abstract protected function _canProcess(File $file): bool;
 
     /**
      * Returns the potential mapping files.
@@ -326,7 +327,7 @@ abstract class AbstractExtractionService implements ExtractorInterface
 
             $value = null;
             foreach ($alternativeKeys as $dataKey) {
-                if (strpos($dataKey, '->') !== false) {
+                if (str_contains($dataKey, '->')) {
                     [$compoundKey, $processor] = explode('->', $dataKey);
                 } else {
                     $compoundKey = $dataKey;

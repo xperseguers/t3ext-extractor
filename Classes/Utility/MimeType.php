@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -77,8 +78,6 @@ class MimeType
 
     /**
      * Initializes the mapping between mime types and extensions.
-     *
-     * @return void
      */
     private static function initialize(): void
     {
@@ -89,7 +88,7 @@ class MimeType
                 if (substr($buffer, 0, 1) === '#') {
                     continue;
                 }
-                list($mimeType, $extensions) = GeneralUtility::trimExplode("\t", $buffer, true);
+                [$mimeType, $extensions] = GeneralUtility::trimExplode("\t", $buffer, true);
                 $extensions = GeneralUtility::trimExplode(' ', $extensions, true);
                 static::$mimeTypesMapping[$mimeType] = $extensions;
                 foreach ($extensions as $extension) {

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,12 +15,11 @@
 
 namespace Causal\Extractor\Em;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Causal\Extractor\Service;
 use Causal\Extractor\Utility\SimpleString;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -220,7 +220,7 @@ class AjaxController
             ];
             $storageConfiguration = [
                 'basePath' => GeneralUtility::getFileAbsFileName($extensionPrefix),
-                'pathType' => 'absolute'
+                'pathType' => 'absolute',
             ];
 
             $virtualStorage = $resourceFactory->createStorageObject($recordData, $storageConfiguration);
@@ -258,7 +258,7 @@ class AjaxController
      *
      * @param array $metadata
      * @param int $indent
-     * @param null|string $parent
+     * @param string|null $parent
      * @return mixed
      */
     protected function htmlizeMetadata(array $metadata, int $indent = 0, ?string $parent = null)

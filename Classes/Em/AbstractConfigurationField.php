@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,7 +16,6 @@
 namespace Causal\Extractor\Em;
 
 use Causal\Extractor\Utility\SimpleString;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract class for configuration fields.

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -40,7 +41,6 @@ class SimpleString
         $str = preg_replace('/[\x00-\x1F]/', '', $str);
         return trim($str);
     }
-
 
     /**
      * Returns true if the passed $haystack starts from the $needle string or false otherwise.

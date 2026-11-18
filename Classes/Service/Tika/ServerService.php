@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,8 +19,6 @@ use Causal\Extractor\Service\AbstractService;
 use Causal\Extractor\Utility\MimeType;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Utility\CommandUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A Tika service implementation using the tika-server-x.x.jar.
@@ -210,7 +209,7 @@ class ServerService extends AbstractService implements TikaServiceInterface
         // Close the connection
         fclose($fh);
 
-        list($header, $payload) = explode(CRLF . CRLF, $buffer);
+        [$header, $payload] = explode(CRLF . CRLF, $buffer);
 
         return $payload;
     }

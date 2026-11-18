@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -210,7 +211,7 @@ class PhpService extends AbstractService
                     }
                     $metaDataLength[] = [
                         'offset' => $metaDataStartOffset,
-                        'length' => $metaLen
+                        'length' => $metaLen,
                     ];
                     // jump over the meta data section and start looking for another metadata section
                     $nextPossibleStartPosition = $metaDataStartOffset + $metaLen;
@@ -266,7 +267,7 @@ class PhpService extends AbstractService
     private function parseXMPMetaXML($xmpXMLData)
     {
         // we don't support AES encrypted METADATA currently
-        if (strpos($xmpXMLData, '<?xpacket') === false) {
+        if (!str_contains($xmpXMLData, '<?xpacket')) {
             return [];
         }
 
@@ -278,7 +279,7 @@ class PhpService extends AbstractService
         $dom->substituteEntities = false;
 
         if ($dom->documentElement === null
-            || 'x:xmpmeta' !== $dom->documentElement->nodeName) {
+            || $dom->documentElement->nodeName !== 'x:xmpmeta') {
             return $xmpMetadata;
         }
 
@@ -426,7 +427,7 @@ class PhpService extends AbstractService
                     if (!empty($metaDataChunkLength)) {
                         $metaDataLength[] = [
                             'file_offset' => $currentPointerPosition,
-                            'locations' => $metaDataChunkLength
+                            'locations' => $metaDataChunkLength,
                         ];
                     }
 
@@ -634,7 +635,7 @@ class PhpService extends AbstractService
         } else {
             // Fall back to hack
             $encodedText = utf8_encode($text);
-            if (strpos($encodedText, 'Ã') === false) {
+            if (!str_contains($encodedText, 'Ã')) {
                 $text = $encodedText;
             }
         }
@@ -658,9 +659,8 @@ class PhpService extends AbstractService
                 $components[$key] = 0;
             }
         }
-        list($hours, $minutes, $seconds) = $components;
+        [$hours, $minutes, $seconds] = $components;
 
         return $hours + ($minutes / 60) + ($seconds / 3600);
     }
 }
-

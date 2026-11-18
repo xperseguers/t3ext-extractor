@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3') || die();
 
 $typo3Version = (new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion();
@@ -155,7 +156,8 @@ $tempColumns = [
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
     'sys_file_metadata',
     'camera',
-    'camera_make, camera_model' );
+    'camera_make, camera_model'
+);
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'sys_file_metadata',
@@ -192,8 +194,8 @@ foreach ($loadedExtensions as $extension) {
         break;
     }
     $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extension);
-    $isSystemExtension = strpos($extensionPath, '/sysext/') !== false
-        || strpos($extensionPath, '/vendor/typo3/cms-') !== false;
+    $isSystemExtension = str_contains($extensionPath, '/sysext/')
+        || str_contains($extensionPath, '/vendor/typo3/cms-');
     if (!$isSystemExtension) {
         $overrideTcaFileName = $extensionPath . 'Configuration/TCA/Overrides/sys_file_metadata.php';
         if (is_file($overrideTcaFileName)) {

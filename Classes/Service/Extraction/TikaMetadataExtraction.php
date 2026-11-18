@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -26,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TikaMetadataExtraction extends AbstractExtractionService
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $priority = 80;
 
@@ -62,13 +63,13 @@ class TikaMetadataExtraction extends AbstractExtractionService
      * Checks if the given file can be processed by this extractor.
      *
      * @param File $file
-     * @return boolean
+     * @return bool
      */
     protected function _canProcess(File $file): bool
     {
         $tikaService = $this->getTikaService();
         $fileExtension = strtolower($file->getProperty('extension'));
-        return ($tikaService !== null && in_array($fileExtension, $this->supportedFileExtensions));
+        return $tikaService !== null && in_array($fileExtension, $this->supportedFileExtensions);
     }
 
     /**

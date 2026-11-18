@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -116,7 +117,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface
     protected function renderExtractorRow(ExtractorInterface $extractor): string
     {
         $class = get_class($extractor);
-        if (strpos($class, '\\') !== false) {
+        if (str_contains($class, '\\')) {
             $parts = explode('\\', $class);
             $extensionName = $parts[1] !== 'CMS'
                 ? GeneralUtility::camelCaseToLowerCaseUnderscored($parts[1])

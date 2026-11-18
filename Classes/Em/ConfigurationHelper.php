@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,10 +15,8 @@
 
 namespace Causal\Extractor\Em;
 
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\CommandUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Extractor\Service\Tika\TikaServiceFactory;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 
 /**
  * Class providing configuration checks for EXT:extractor.
@@ -27,7 +26,6 @@ use Causal\Extractor\Service\Tika\TikaServiceFactory;
  */
 class ConfigurationHelper extends AbstractConfigurationField
 {
-
     /**
      * Creates an input field for the Tika Jar path and checks its validity.
      *
@@ -111,8 +109,8 @@ class ConfigurationHelper extends AbstractConfigurationField
 
             $html .= '<div style="margin-top:1em">';
             $html .= '<img src="../../typo3conf/ext/extractor/Documentation/Images/' . (
-                    $success ? 'animation-ok.gif' : 'animation-ko.gif'
-                ) . '" alt="" />';
+                $success ? 'animation-ok.gif' : 'animation-ko.gif'
+            ) . '" alt="" />';
             $html .= '</div>';
         }
 

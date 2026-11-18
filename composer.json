@@ -37,6 +37,9 @@
     "typo3/cms-filemetadata": "^12 || ^13 || ^14",
     "james-heinrich/getid3": "^1.9"
   },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "~3.95.10"
+  },
   "autoload": {
     "psr-4": {
       "Causal\\Extractor\\": "Classes/"
@@ -62,6 +65,12 @@
     ],
     "extension-clean": [
       "rm -rf Libraries"
+    ],
+    "cs": [
+      "php-cs-fixer fix -v --dry-run --config .php-cs-fixer.php"
+    ],
+    "csfix": [
+      "php-cs-fixer fix -v --config .php-cs-fixer.php"
     ]
   },
   "extra": {
@@ -75,6 +84,12 @@
         "providesPackages": {}
       },
       "cms-package-dir": "{$vendor-dir}/typo3/cms"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "typo3/cms-composer-installers": true,
+      "typo3/class-alias-loader": true
     }
   }
 }

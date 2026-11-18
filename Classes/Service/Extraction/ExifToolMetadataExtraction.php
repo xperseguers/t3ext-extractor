@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -26,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ExifToolMetadataExtraction extends AbstractExtractionService
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $priority = 90;
 
@@ -57,13 +58,13 @@ class ExifToolMetadataExtraction extends AbstractExtractionService
      * Checks if the given file can be processed by this extractor.
      *
      * @param File $file
-     * @return boolean
+     * @return bool
      */
     protected function _canProcess(File $file): bool
     {
         $exifToolService = $this->getExifToolService();
         $fileExtension = strtolower($file->getProperty('extension'));
-        return ($exifToolService !== null && in_array($fileExtension, $this->supportedFileExtensions));
+        return $exifToolService !== null && in_array($fileExtension, $this->supportedFileExtensions);
     }
 
     /**

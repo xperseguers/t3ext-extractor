@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -40,7 +41,7 @@ class DateTime
         }
         if (preg_match('/^\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}$/', $str)) {
             // PHP built-in format when reading EXIF
-            list($date, $time) = explode(' ', $str, 2);
+            [$date, $time] = explode(' ', $str, 2);
             $str = str_replace(':', '/', $date) . ' ' . $time;
         } elseif (preg_match('/D:(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/', $str, $matches)) {
             // Native PDF format

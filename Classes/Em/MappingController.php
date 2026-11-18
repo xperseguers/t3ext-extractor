@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,7 +16,6 @@
 namespace Causal\Extractor\Em;
 
 use Causal\Extractor\Utility\SimpleString;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -371,14 +371,13 @@ CSS;
                 $output .= '</p><p>';
             } else {
                 $line = htmlspecialchars($line);
-                if (strpos($line, '__USERDIR__') !== false) {
+                if (str_contains($line, '__USERDIR__')) {
                     try {
                         $userDirectory = $this->getDefaultFolder();
                         $path = rtrim($userDirectory->getStorage()->getConfiguration()['basePath'], '/') . $userDirectory->getIdentifier();
                     } catch (\Exception $e) {
                         $path = 'fileadmin/user_upload/';
                     }
-
 
                     $line = str_replace('__USERDIR__', '<tt>' . htmlspecialchars($path) . '</tt>', $line);
                 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,7 +22,6 @@ use Causal\Extractor\Utility\MimeType;
  */
 class MimeTypeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-
     /**
      * @param string $mimeType
      * @param array $expectedExtensions
@@ -31,7 +31,7 @@ class MimeTypeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fetchExtensionByMimeType($mimeType, array $expectedExtensions)
     {
         $extensions = MimeType::getFileExtensions($mimeType);
-        $this->assertSame($expectedExtensions, $extensions);
+        self::assertSame($expectedExtensions, $extensions);
     }
 
     /**
@@ -55,11 +55,11 @@ class MimeTypeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             // Invalid and empty mime type
             'Invalid mime type' => [
                 'INVALID-MIME-TYPE',
-                []
+                [],
             ],
             'Empty mime type' => [
                 '',
-                []
+                [],
             ],
         ];
     }
@@ -73,7 +73,7 @@ class MimeTypeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function fetchMimeTypeByExtension($extension, $expectedMimeType)
     {
         $mimeType = MimeType::getMimeType($extension);
-        $this->assertSame($expectedMimeType, $mimeType);
+        self::assertSame($expectedMimeType, $mimeType);
     }
 
     /**

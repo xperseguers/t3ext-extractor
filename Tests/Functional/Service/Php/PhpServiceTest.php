@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,7 +22,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunctionalTestCase
 {
-
     /**
      * @var \Causal\Extractor\Service\Php\PhpService
      */
@@ -29,8 +29,6 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
 
     /**
      * Set up the service.
-     *
-     * @return void
      */
     public function setUp()
     {
@@ -50,12 +48,12 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
             case 'colorspace-grey.gif':
             case 'colorspace-grey.png':
             case 'colorspace-yuv.jpg':
-                $this->markTestSkipped('must be revisited.');
+                self::markTestSkipped('must be revisited.');
                 break;
         }
 
         $metadata = $this->service->extractMetadataFromLocalFile($fileName);
-        $this->assertSame($expectedColorSpace, strtolower($metadata['ColorSpace']));
+        self::assertSame($expectedColorSpace, strtolower($metadata['ColorSpace']));
     }
 
     /**
@@ -70,7 +68,7 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
             if (preg_match('/^colorspace-([a-z]+)/', $file, $matches)) {
                 $provider[$file] = [
                     $fileName,
-                    $matches[1]
+                    $matches[1],
                 ];
             }
         }
@@ -99,7 +97,7 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
 
         $metadata = $this->service->extractMetadataFromLocalFile($fileName);
         foreach ($keys as $key) {
-            $this->assertSame($expectedMetadata[$key], $metadata[$key], $key . ' is not the same.');
+            self::assertSame($expectedMetadata[$key], $metadata[$key], $key . ' is not the same.');
         }
     }
 
@@ -152,7 +150,7 @@ class PhpServiceTest extends \Causal\Extractor\Tests\Functional\AbstractFunction
 
         $metadata = $this->service->extractMetadataFromLocalFile($fileName);
         foreach ($keys as $key) {
-            $this->assertSame($expectedMetadata[$key], $metadata[$key], $key . ' is not the same.');
+            self::assertSame($expectedMetadata[$key], $metadata[$key], $key . ' is not the same.');
         }
     }
 

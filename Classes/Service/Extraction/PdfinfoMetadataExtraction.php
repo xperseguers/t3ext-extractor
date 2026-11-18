@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -27,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PdfinfoMetadataExtraction extends AbstractExtractionService
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $priority = 70;
 
@@ -61,13 +62,13 @@ class PdfinfoMetadataExtraction extends AbstractExtractionService
      * Checks if the given file can be processed by this extractor.
      *
      * @param File $file
-     * @return boolean
+     * @return bool
      */
     protected function _canProcess(File $file): bool
     {
         $pdfinfoService = $this->getPdfinfoService();
         $fileExtension = strtolower($file->getProperty('extension'));
-        return ($pdfinfoService !== null && in_array($fileExtension, $this->supportedFileExtensions));
+        return $pdfinfoService !== null && in_array($fileExtension, $this->supportedFileExtensions);
     }
 
     /**

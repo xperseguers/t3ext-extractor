@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,13 +16,10 @@
 namespace Causal\Extractor\Service;
 
 use Causal\Extractor\Resource\Event\AfterMetadataExtractedEvent;
-use Causal\Extractor\Service\ServiceInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
@@ -84,7 +82,7 @@ abstract class AbstractService implements ServiceInterface
                 'postMetaDataExtraction',
                 [
                     $file,
-                    &$metadata
+                    &$metadata,
                 ]
             );
         }
@@ -101,7 +99,6 @@ abstract class AbstractService implements ServiceInterface
      *
      * @param string $localTempFilePath Path to the local file copy
      * @param \TYPO3\CMS\Core\Resource\File $sourceFile Original file
-     * @return void
      */
     protected function cleanupTempFile($localTempFilePath, File $sourceFile)
     {

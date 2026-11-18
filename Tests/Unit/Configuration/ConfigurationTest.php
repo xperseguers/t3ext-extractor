@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,7 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-
     /**
      * @param string $service
      * @test
@@ -33,7 +33,7 @@ class ConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $files = $this->getConfigurationFiles($service);
         foreach ($files as $file) {
             $mapping = json_decode(file_get_contents($file));
-            $this->assertTrue(is_array($mapping), json_last_error_msg() . ' with file "' . $file . '"');
+            self::assertTrue(is_array($mapping), json_last_error_msg() . ' with file "' . $file . '"');
         }
     }
 

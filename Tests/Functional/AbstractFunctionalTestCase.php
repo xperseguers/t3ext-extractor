@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,7 +24,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class AbstractFunctionalTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-
     /**
      * Returns a list of file names for fixture assets.
      *
@@ -39,7 +39,7 @@ class AbstractFunctionalTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase
         foreach ($files as $file) {
             $fileName = $fixturesPath . $file;
             $baseName = PathUtility::basename($fileName);
-            if ($baseName{0} !== '.') {
+            if ($baseName[0] !== '.') {
                 $assets[$baseName] = $fileName;
             }
         }

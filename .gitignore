@@ -4,3 +4,6 @@ composer.lock
 /.Build/*
 /typo3cms
 /Libraries/*
+/vendor/
+.php-cs-fixer.cache.php
+/public/

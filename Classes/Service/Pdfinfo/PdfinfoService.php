@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -77,7 +78,7 @@ class PdfinfoService extends AbstractService
 
         $metadata = [];
         foreach (array_filter($shellOutput) as $line) {
-            list($key, $value) = GeneralUtility::trimExplode(':', $line, false, 2);
+            [$key, $value] = GeneralUtility::trimExplode(':', $line, false, 2);
             $metadata[$key] = $value;
         }
 
