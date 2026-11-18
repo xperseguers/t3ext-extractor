@@ -132,6 +132,9 @@ class ExtensionHelper
             case 'wmv':
             case 'yuv':
                 return 'video';
+            case 'youtube':
+            case 'vimeo':
+                return 'onlinemedia';
         }
 
         return 'other';
